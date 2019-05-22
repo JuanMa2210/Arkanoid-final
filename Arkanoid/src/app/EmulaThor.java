@@ -1,3 +1,4 @@
+package app;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -5,7 +6,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import com.sun.tools.javac.code.Preview;
 
 public class EmulaThor extends JFrame implements ActionListener, ItemListener {
     private JMenu Archivo;
@@ -86,7 +86,7 @@ public class EmulaThor extends JFrame implements ActionListener, ItemListener {
 			
 		if(evt.getSource().equals(Comenzar) && Juegos.getSelectedItem().equals("Arkanoid")){
 			System.out.println("Juego");
-			Arkanoid game = new Arkanoid();
+			//Arkanoid game = new Arkanoid();
 			this.dispose();
 		}
 	}

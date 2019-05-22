@@ -21,6 +21,11 @@ public class Menu extends JGame {
     protected BufferedImage img_titulo = null;
     protected BufferedImage img_nave=null;
     protected Nave nave=new Nave();
+    protected Escenario escenario=new Escenario();
+    protected Ranking ranking=new Ranking();
+    protected boolean isEscenario=false;
+    protected boolean isRanking=false;
+    
    
 
     public Menu(){
@@ -31,8 +36,14 @@ public class Menu extends JGame {
     @Override
     public void gameDraw(Graphics2D g) {
 
-        
+        dibujarMenu(g);
+        if(isEscenario){
+            escenario.draw(g);
+        }
+    }
 
+
+    private void dibujarMenu(Graphics2D g){
         g.drawImage(img_fondo,0,0,null);
         g.drawImage(img_titulo,130,20,null);
         g.setColor(Color.white);
@@ -77,25 +88,29 @@ public class Menu extends JGame {
     @Override
     public void gameUpdate(double delta) {
         Keyboard keyboard = this.getKeyboard();
-        
         // Procesar teclas de direccion
         if (keyboard.isKeyPressed(KeyEvent.VK_UP) && nave.getY()>290){
             nave.setY(nave.getY()-80);
         }
-
+        
         if (keyboard.isKeyPressed(KeyEvent.VK_DOWN)&& nave.getY()<450){
             nave.setY(nave.getY()+80);
         }
-
+        
         if(keyboard.isKeyPressed(KeyEvent.VK_ENTER)){
             switch((int)nave.getY()){
-                case 290: //CREAR UN NEW DEL ESCENARIO CON EL MODELO SNGLETON
-                case 370: //MOSTRAR VENTANA DEL RANKING
+                case 290: isEscenario=true;
+                case 370: isRanking=true;
                 case 450: //SALIR DEL JUEGO
             }
         }
 
-        nave.update(delta);
+        if(isEscenario){
+            escenario.update(delta,keyboard);
+        }
+        if(isRanking){
+            //ranking.update(delta,keyboard);
+        }
     }
     
 
@@ -107,34 +122,23 @@ public class Menu extends JGame {
         public Nave(){
     
         }
-    
         public void setImagen(BufferedImage img){
             this.imagen=img;
     
         }
-    
+
         public void setPosicion(double x, double y){
             posicion.setLocation(x, y);
         }
-    
-        public void setX(double x){
-            posicion.x=x;
-        }
-    
+
         public void setY(double y){
             posicion.y=y;
-        }
-        public double getX(){
-            return posicion.getX(); 
         }
     
         public double getY(){
             return posicion.getY(); 
         }
-        public void update(double delta){
-    
-        }
-    
+        
         public void draw(Graphics2D g){
             g.drawImage(imagen,(int)posicion.getX(),(int)posicion.getY(),null);
         }
