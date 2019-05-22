@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - EmulaThor",
+            "request": "launch",
+            "mainClass": "EmulaThor",
+            "projectName": "ARKANOID JAVA"
+        }
+    ]
+}
