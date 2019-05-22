@@ -1,3 +1,5 @@
+package app;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -5,11 +7,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import com.sun.tools.javac.code.Preview;
 
 public class EmulaThor extends JFrame implements ActionListener, ItemListener {
     private JMenu Archivo;
     private JMenu Ayuda;
+    private JMenu Configuraciones;
     private JButton Comenzar;
     private JPanel ListPanel;
     private List Juegos;
@@ -30,6 +32,7 @@ public class EmulaThor extends JFrame implements ActionListener, ItemListener {
         Comenzar = new JButton();
         jMenuBar1 = new JMenuBar();
         Archivo = new JMenu();
+        Configuraciones= new JMenu();
         Salir = new JMenuItem();
         Ayuda = new JMenu();
 

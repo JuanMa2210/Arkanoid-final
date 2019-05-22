@@ -1,4 +1,3 @@
-package app;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -10,6 +9,8 @@ import javax.swing.*;
 public class EmulaThor extends JFrame implements ActionListener, ItemListener {
     private JMenu Archivo;
     private JMenu Ayuda;
+    private JMenu Configuraciones;
+    private JFrame config; 
     private JButton Comenzar;
     private JPanel ListPanel;
     private List Juegos;
@@ -30,6 +31,7 @@ public class EmulaThor extends JFrame implements ActionListener, ItemListener {
         Comenzar = new JButton();
         jMenuBar1 = new JMenuBar();
         Archivo = new JMenu();
+        Configuraciones= new JMenu();
         Salir = new JMenuItem();
         Ayuda = new JMenu();
 
@@ -53,6 +55,8 @@ public class EmulaThor extends JFrame implements ActionListener, ItemListener {
         Salir.setText("Salir");
         Salir.addActionListener(this);
         Ayuda.setText("Ayuda");
+        Configuraciones.setText("Configuraciones");
+        Configuraciones.addActionListener(this);
         Archivo.add(Salir);
         jMenuBar1.add(Archivo);
         jMenuBar1.add(Ayuda);
@@ -75,7 +79,7 @@ public class EmulaThor extends JFrame implements ActionListener, ItemListener {
 		this.setVisible(true);
 		this.setResizable(false);
         this.pack();
-        setTitle("EMULATHOR");
+        setTitle("EmulaThor");
         this.setLocationRelativeTo(null);
 
     }
