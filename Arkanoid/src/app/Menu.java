@@ -99,9 +99,9 @@ public class Menu extends JGame {
         
         if(keyboard.isKeyPressed(KeyEvent.VK_ENTER)){
             switch((int)nave.getY()){
-                case 290: isEscenario=true;
-                case 370: isRanking=true;
-                case 450: //SALIR DEL JUEGO
+                case 290: isEscenario=true;break;
+                case 370: isRanking=true;break;
+                case 450: System.exit(0);break;
             }
         }
 
