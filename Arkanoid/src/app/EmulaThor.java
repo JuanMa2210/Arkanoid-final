@@ -105,53 +105,8 @@ public class EmulaThor extends JFrame implements ActionListener, ItemListener {
         if (evt.getSource().equals(Salir))
             System.exit(0);
         if (evt.getSource().equals(Configuraciones)){
-            /* 1. Juego en ventana o en pantalla completa (por defecto: en ventana)
-                2. Sonido activado/desactivado (por defecto: activado)
-                3. Definición de teclas (por defecto: flechas=dirección; disparos=barra espaciadora)
-                4. Selección de pista musical (por defecto: tema original)
-                5. Selección de la apariencia de la nave.
-                La interface debe incluir un botón para “Guardar” los cambios y 
-                además un botón “RESET” para volver todos los parámetros a sus valores por defecto.*/ 
-            
-            Base = new JPanel();
-            Superior = new JPanel();
-            Sound  = new JLabel("Sonido");
-            Superior.add(Sound);
-            Musica = new List();
-            Musica.addItemListener(this);
-            Guardar = new JButton("Guardar");
-            Reset = new JButton("Reset");
-            Base.add(Guardar);
-            Base.add(Reset);
-            JRadioButton Activado= new JRadioButton("Activado", true);
-                Activado.setBounds(20, 200, 109, 23);
-                Superior.add(Activado);
-                Activado.addItemListener(this);
-                if (evt.getSource().equals(Activado))
-                    System.out.println("sonido activado");
- 
-                JRadioButton Desactivado = new JRadioButton("Desactivado", false);
-                Desactivado.setBounds(40, 220, 109, 23);
-                Superior.add(Desactivado);
-                Desactivado.addItemListener(this);
- 
-                ButtonGroup bgroup = new ButtonGroup();
-                bgroup.add(Activado);
-                bgroup.add(Desactivado);
-
-            JFrame config =new JFrame();
-          //  Superior.setBounds(500, 300, 300, 300);
-           // Base.setBounds(800, 300, 100, 300);
-            config.add(Base, BorderLayout.SOUTH);
-            config.add(Superior, BorderLayout.NORTH);
-
-            config.setVisible(true);
-            config.setResizable(false);
-            config.pack();
-            config.setTitle("Configuraciones");
-            config.setLocationRelativeTo(null);
+            new Configuraciones();
         }
-
         if (evt.getSource().equals(Comenzar) && Juegos.getSelectedItem().equals("Arkanoid")) {
             System.out.println("Juego");
             Menu menu=new Menu();   //ARREGLAR
@@ -170,15 +125,15 @@ public class EmulaThor extends JFrame implements ActionListener, ItemListener {
 
 }
 
-class MyCanvas extends Canvas{
+class MyCanvas extends Canvas {
     private Image imagen;
 
 	public MyCanvas (Image i){
 		imagen = i;
 		this.setPreferredSize(new Dimension(600,400));
-	}
-
-	public void cambiarImagen(Image i){
+    }
+    
+	public void cambiarImagen(Image i) {
 		imagen = i;
 		repaint();
 	}
