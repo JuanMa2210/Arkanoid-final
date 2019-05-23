@@ -45,12 +45,12 @@ public class Menu extends JGame {
 
     private void dibujarMenu(Graphics2D g){
         g.drawImage(img_fondo,0,0,null);
-        g.drawImage(img_titulo,130,20,null);
+        g.drawImage(img_titulo,150,20,null);
         g.setColor(Color.white);
         g.setFont(new Font("Courier", Font.BOLD, 30));
-        g.drawString("Jugar", 350, 300);
-        g.drawString("Ranking", 350, 380);
-        g.drawString("Salir", 350, 460);
+        g.drawString("Jugar", 355, 300);
+        g.drawString("Ranking", 355, 380);
+        g.drawString("Salir", 355, 460);
         nave.draw(g);
     }
 

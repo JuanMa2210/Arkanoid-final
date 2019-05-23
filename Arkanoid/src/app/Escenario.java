@@ -1,5 +1,6 @@
 package app;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
@@ -28,7 +29,9 @@ public class Escenario {
     }
 
     public void draw(Graphics2D g){
+        
         g.drawImage(img_fondoAzul,0,25,null);
+        
         //dibujar fondo negro desde que termine la imagen hasta el borde de la ventana
         //dibujar los strings con los puntajes, etc
 
