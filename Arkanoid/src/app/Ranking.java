@@ -67,10 +67,10 @@ public class Ranking{
 
         int i=0;
         for (Puntaje p : datos.getPuntajes()) {
-            g.drawString(p.getNombre(), 40, 120+60*i);
-            g.drawString(p.getPuntos(), 250, 120+60*i);
-            g.drawString(p.getNivel(),470, 120+60*i);
-            g.drawString(p.getFecha(),640, 120+60*i);
+            g.drawString(p.getNombre(), 40, 120+50*i);
+            g.drawString(p.getPuntos(), 250, 120+50*i);
+            g.drawString(p.getNivel(),470, 120+50*i);
+            g.drawString(p.getFecha(),640, 120+50*i);
             i++;
         }
     }
