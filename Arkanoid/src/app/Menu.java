@@ -40,6 +40,9 @@ public class Menu extends JGame {
         if(isEscenario){
             escenario.draw(g);
         }
+        if(isRanking){
+            ranking.draw(g);
+        }
     }
 
 

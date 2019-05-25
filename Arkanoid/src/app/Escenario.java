@@ -16,7 +16,7 @@ public class Escenario {
     protected BufferedImage img_fondoRojo = null;
     protected BufferedImage fondo_negro = null;
     protected BufferedImage img_nave = null;
-    protected int cantidad_vidas=5;
+    protected int cantidad_vidas=3;
     
     public Escenario(){
         this.cargar();
