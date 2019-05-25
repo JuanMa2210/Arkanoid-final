@@ -19,6 +19,10 @@ public class Ranking{
     protected Gson gson=new Gson();
     protected BufferedReader br = null;
     protected TodosLosPuntajes datos=new TodosLosPuntajes();
+    protected String[] nombres;
+    protected String[] puntos;
+    protected String[] niveles;
+    protected String[] fechas;
 
     public Ranking(){
         this.cargarInfo();
@@ -32,7 +36,12 @@ public class Ranking{
             
             
             br = new BufferedReader(new FileReader("ranking.json"));
-            TodosLosPuntajes datos=gson.fromJson(br, TodosLosPuntajes.class);
+            datos=gson.fromJson(br,TodosLosPuntajes.class);
+            if (datos != null) {
+                for (Puntaje p : datos.getPuntajes()) {
+                    System.out.println(p.getNombre());
+                }
+            }
 
         } catch (Exception e) {
             //System.out.println("Error al cargar imagenes ranking");
@@ -41,6 +50,7 @@ public class Ranking{
     }
     public void escribirInfo(){
         //ESCRIBIMOS UN JSON
+        //ESTA FUNCION TAMBIEN TIENE QUE ORDENAR ANTS DE INSERTAR UN NUEVO.
         String json=gson.toJson(new Puntaje("Julian","1000","2","12/12/12"));
         System.out.println(json);
     }
@@ -54,10 +64,14 @@ public class Ranking{
         g.drawString("Nivel",450,80);
         g.drawString("Fecha",650,80);
         g.setColor(Color.ORANGE);
-        if (datos != null) {
-            for(Puntaje p: datos.getPuntajes()){
-                p.mostrar();
-            }
+
+        int i=0;
+        for (Puntaje p : datos.getPuntajes()) {
+            g.drawString(p.getNombre(), 40, 120+60*i);
+            g.drawString(p.getPuntos(), 250, 120+60*i);
+            g.drawString(p.getNivel(),470, 120+60*i);
+            g.drawString(p.getFecha(),640, 120+60*i);
+            i++;
         }
     }
 

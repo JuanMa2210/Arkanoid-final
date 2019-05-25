@@ -12,10 +12,16 @@ public class Puntaje{
         this.nivel=nivel;
         this.fecha=fecha;
     }
-    public void mostrar(){
-        System.out.println(this.nombre);
-        System.out.println(this.puntos);
-        System.out.println(this.nivel);
-        System.out.println(this.fecha);
+    public String getNombre(){
+        return (this.nombre);
+    }
+    public String getPuntos(){
+        return this.puntos;
+    }
+    public String getNivel(){
+        return this.nivel;
+    }
+    public String getFecha(){
+        return this.fecha;
     }
 }
