@@ -22,8 +22,10 @@ public class Escenario {
     protected BufferedImage img_fondoRojo = null;
     protected BufferedImage fondo_negro = null;
     protected BufferedImage img_nave = null;
+    protected BufferedImage img_bola = null;
     protected int cantidad_vidas=3; //limitar cantidad de vidas a 5
     protected Nave nave=new Nave();
+    protected Esfera esfera = new Esfera();  
     //protected Rectangle2D tablero=new Rectangle(0, 0, img_fondoAzul.getWidth(),600);//creo que aca es menos
     
     public Escenario(){
@@ -38,6 +40,7 @@ public class Escenario {
             img_fondoRojo= ImageIO.read(getClass().getResource("imagenes/FondoAzul.png"));
             fondo_negro=ImageIO.read(getClass().getResource("imagenes/negro_solido.png"));
             img_nave=ImageIO.read(getClass().getResource("imagenes/naveNormal.png"));
+            img_bola=ImageIO.read(getClass().getResource("imagenes/bola.png"));
         } catch (Exception e) {
             System.out.println("Error al cargas las imagenes del escenario");
         }
@@ -76,6 +79,8 @@ public class Escenario {
         g.drawString("1", limiteEscenario+250, 550);    //ACA VA EL NIVEL
         nave.setImagen(img_nave);
         nave.draw(g);
+        esfera.setImagen(img_bola);
+        esfera.draw(g);
     }
 
     public void update(double delta,Keyboard keyboard){
@@ -84,6 +89,11 @@ public class Escenario {
         }
         if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()<img_fondoAzul.getWidth()-60){
             nave.setX(nave.getX()+5);
+        }
+        if (keyboard.isKeyPressed(KeyEvent.VK_SPACE)){
+            //Aplicar desplazamiento a la bola para que arranque a jugar
+           esfera.setX(esfera.getX()+5);
+           esfera.setY(esfera.getY()-5);
         }
     }
 }

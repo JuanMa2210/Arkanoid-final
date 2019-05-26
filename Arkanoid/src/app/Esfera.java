@@ -1,22 +1,36 @@
 package app;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
 
 
 public class Esfera extends ObjetoGrafico implements Movible {
 
     
-    protected static double x;
+    protected double x;
     protected double y;
     protected double dx;
     protected double dy;
-    protected BufferedImage img_nave=null;
+    protected Image img_bola = null;
+    protected Rectangle2D estructura=new Rectangle();
 
     public Esfera(){
-        this.y= 400;
-        this.x= 400;
+        this.estructura.setRect(this.x, this.y, 12, 12);
+        this.x= 241.0;
+        this.y= 540.0;
+    }
+
+    public void cargarElementos(){
+        try {
+            this.img_bola=ImageIO.read(getClass().getResource("imagenes/bola.png"));
+        } catch (Exception e) {
+            System.out.println("Error al cargar imagenes");
+        }
     }
 
     public void mover(Rectangle2D limites, boolean colNav){
@@ -38,27 +52,28 @@ public class Esfera extends ObjetoGrafico implements Movible {
 
     @Override
     public void setPosition(double x, double y) {
-
+        this.x=x;
+        this.y=y;
     }
 
     @Override
     public void setX(double x) {
-
+        this.x=x;
     }
 
     @Override
     public void setY(double y) {
-
+        this.y=y;
     }
 
     @Override
     public double getX() {
-        return 0;
+        return this.x;
     }
 
     @Override
     public double getY() {
-        return 0;
+        return this.y;
     }
 
     @Override
@@ -66,9 +81,13 @@ public class Esfera extends ObjetoGrafico implements Movible {
 
     }
 
+    public void setImagen(BufferedImage img){
+        this.img_bola=img.getScaledInstance(12,12, Image.SCALE_SMOOTH);
+    }
+
     @Override
     public void draw(Graphics2D g) {
-
+        g.drawImage(this.img_bola,(int)this.getX(),(int)this.getY(),null);
     }
 
     @Override
