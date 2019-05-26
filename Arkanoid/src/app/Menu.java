@@ -20,7 +20,7 @@ public class Menu extends JGame {
     protected BufferedImage img_fondo = null;
     protected BufferedImage img_titulo = null;
     protected BufferedImage img_nave=null;
-    protected Nave nave=new Nave();
+    protected Puntero nave=new Puntero();
     protected Escenario escenario=new Escenario();
     protected Ranking ranking=new Ranking();
     protected boolean isEscenario=false;
@@ -30,7 +30,6 @@ public class Menu extends JGame {
 
     public Menu(){
         super("Arkanoid", 800, 600);
-        
     }
 
     @Override
@@ -117,12 +116,12 @@ public class Menu extends JGame {
     }
     
 
-    private class Nave{
+    private class Puntero{
 
         BufferedImage imagen=null;
         private Point2D.Double posicion  = new Point2D.Double();
     
-        public Nave(){
+        public Puntero(){
     
         }
         public void setImagen(BufferedImage img){
