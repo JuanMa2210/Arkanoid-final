@@ -4,12 +4,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
 import javax.imageio.ImageIO;
 
+import com.entropyinteractive.Keyboard;
 import com.google.gson.Gson;
 
 
@@ -24,6 +26,8 @@ public class Ranking{
     protected String[] puntos;
     protected String[] niveles;
     protected String[] fechas;
+
+    protected boolean isActive=true;
 
     public Ranking(){
         this.cargarInfo();
@@ -58,21 +62,31 @@ public class Ranking{
     public void draw(Graphics2D g){
         g.drawImage(fondo,0,0,null);
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Courier", Font.BOLD, 30));
-        g.drawString("Nombre",50,80);
-        g.drawString("Puntos",250,80);
-        g.drawString("Nivel",450,80);
-        g.drawString("Fecha",650,80);
+        g.setFont(new Font("Courier", Font.BOLD, 26));
+        g.drawString("Nombre",30,60);
+        g.drawString("Puntos",250,60);
+        g.drawString("Nivel",450,60);
+        g.drawString("Fecha",650,60);
         g.setColor(Color.ORANGE);
 
         int i=0;
         for (Puntaje p : datos.getPuntajes()) {
-            g.drawString(p.getNombre(), 40, 120+50*i);
-            g.drawString(p.getPuntos(), 250, 120+50*i);
-            g.drawString(p.getNivel(),470, 120+50*i);
-            g.drawString(p.getFecha(),640, 120+50*i);
+            g.drawString(p.getNombre(), 40, 100+40*i);
+            g.drawString(p.getPuntos(), 250, 100+40*i);
+            g.drawString(p.getNivel(),470, 100+40*i);
+            g.drawString(p.getFecha(),640, 100+40*i);
             i++;
         }
+    }
+
+    public void update(double delta,Keyboard teclado){
+        if(teclado.isKeyPressed(KeyEvent.VK_ENTER)){
+            isActive=false;
+        }
+    }
+
+    public boolean isActive(){
+        return isActive;
     }
 
     

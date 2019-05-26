@@ -109,9 +109,11 @@ public class EmulaThor extends JFrame implements ActionListener, ItemListener {
         }
         if (evt.getSource().equals(Comenzar) && Juegos.getSelectedItem().equals("Arkanoid")) {
             System.out.println("Juego");
-            Menu menu=new Menu();   //ARREGLAR
-            menu.run(1.0 / 30.0);
             this.dispose();
+            this.setFocusable(false);
+            Menu menu=new Menu();   //ARREGLAR
+            menu.run(1.0 / 60.0);
+            System.exit(0);
         }
     }
 
