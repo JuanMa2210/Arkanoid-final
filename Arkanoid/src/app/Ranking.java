@@ -3,6 +3,7 @@ package app;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -33,7 +34,6 @@ public class Ranking{
     public void cargarInfo(){
         try {
             fondo=ImageIO.read(getClass().getResource("imagenes/fondoRanking.jpg"));
-            
             
             br = new BufferedReader(new FileReader("ranking.json"));
             datos=gson.fromJson(br,TodosLosPuntajes.class);

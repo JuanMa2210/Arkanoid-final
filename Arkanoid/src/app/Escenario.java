@@ -1,5 +1,8 @@
 package app;
-
+/*
+* agregar metodo eliminarVidas();
+* agregar metodo sumarVidas();
+*/ 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -16,7 +19,7 @@ public class Escenario {
     protected BufferedImage img_fondoRojo = null;
     protected BufferedImage fondo_negro = null;
     protected BufferedImage img_nave = null;
-    protected int cantidad_vidas=3;
+    protected int cantidad_vidas=3; //limitar cantidad de vidas a 5
     
     public Escenario(){
         this.cargar();
