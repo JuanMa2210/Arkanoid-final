@@ -43,7 +43,7 @@ public class Ranking{
             datos=gson.fromJson(br,TodosLosPuntajes.class);
             if (datos != null) {
                 for (Puntaje p : datos.getPuntajes()) {
-                    System.out.println(p.getNombre());
+                    //System.out.println(p.getNombre());
                 }
             }
 

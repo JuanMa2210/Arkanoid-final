@@ -10,6 +10,8 @@ public abstract class Bloque extends ObjetoGrafico {
     protected double x;
     protected double y;
     protected Rectangle2D cuerpo;
+    protected int ancho=45;
+    protected int alto=20;
     protected int impactos;
     protected int puntaje;
     protected boolean tieneBonus;

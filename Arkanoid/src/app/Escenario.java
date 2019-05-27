@@ -1,8 +1,9 @@
 package app;
+
 /*
 * agregar metodo eliminarVidas();
 * agregar metodo sumarVidas();
-*/ 
+*/
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -11,6 +12,8 @@ import java.awt.Shape;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 import javax.imageio.ImageIO;
 
@@ -26,16 +29,7 @@ public class Escenario {
     protected int cantidad_vidas=3; //limitar cantidad de vidas a 5
     protected Nave nave=new Nave();
     protected Esfera esfera = new Esfera();  
-    protected BloqueAmarillo amarillo=new BloqueAmarillo(30, 60);
-    protected BloqueAzul azul=new BloqueAzul(75, 60);
-    protected BloqueBlanco blanco=new BloqueBlanco(120, 60);
-    protected BloqueCeleste celeste=new BloqueCeleste(165, 60);
-    protected BloqueDorado dorado=new BloqueDorado(210, 60);
-    protected BloqueNaranja naranja=new BloqueNaranja(255, 60);
-    protected BloquePlateado plateado=new BloquePlateado(300, 60,1);
-    protected BloqueRojo rojo=new BloqueRojo(345, 60);
-    protected BloqueVerde verde=new BloqueVerde(390, 60);
-    protected BloqueRosa rosa=new BloqueRosa(435, 60);
+    
     
     //protected Rectangle2D tablero=new Rectangle(0, 0, img_fondoAzul.getWidth(),600);//creo que aca es menos
     
@@ -92,16 +86,7 @@ public class Escenario {
         nave.draw(g);
         esfera.setImagen(img_bola);
         esfera.draw(g);
-        amarillo.draw(g);
-        blanco.draw(g);
-        azul.draw(g);
-        celeste.draw(g);
-        dorado.draw(g);
-        naranja.draw(g);
-        plateado.draw(g);
-        rojo.draw(g);
-        rosa.draw(g);
-        verde.draw(g);
+        
     }
 
     public void update(double delta,Keyboard keyboard){
@@ -117,4 +102,47 @@ public class Escenario {
            esfera.setY(esfera.getY()-5);
         }
     }
+
+    public void cargarNivel(){
+        try {
+            //cargar TODOS LOS ARCHIVOS DE TEXTO DENTO DE LA CARPETA NIVELES
+            //HACER ARREGLO DE ARCHIVOS DE TEXTO
+            //DEPENDIENDO EL NIVEL ACTUAL, LEER Y CARGAR EL ARCHIVO CORRESPONDIENTE
+
+        } catch (Exception e) {
+            System.out.println("Error al cargar los niveles");
+        }
+    }
+
+
+
+    /*try {
+        RandomAccessFile raf = new RandomAccessFile("demoraf.txt", "rw");
+       
+        raf.writeBytes("Hola Mundo!"); //Escribir algo
+     
+        raf.seek(0);// Se posiciona el puntero al inicio del archivo
+
+        // Leo e imprimo  
+        System.out.println("" + raf.readLine());
+
+        // Se posiciona el puntero al inicio del archivo
+        raf.seek(0);
+
+        //Escribo algo nuevo
+        raf.writeBytes("Hace mucho tiempo, en una galaxia muy, muy lejana...\n Episodio IV \n Una Nueva Esperanza");
+
+        // Se posiciona el puntero al inicio del archivo
+        raf.seek(0);
+
+        // Leo e imprimo 
+        System.out.println("" + raf.readLine());
+        
+        raf.close();
+     } catch (IOException ex) {
+        ex.printStackTrace();
+     }*/
+
+
+
 }

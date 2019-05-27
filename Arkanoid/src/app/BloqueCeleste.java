@@ -11,7 +11,7 @@ public class BloqueCeleste extends Bloque {
         this.x = x;
         this.y = y;
         this.puntaje = 70;
-        this.cuerpo = new Rectangle((int) this.x, (int) this.y, 12, 8);
+        this.cuerpo = new Rectangle((int) this.x, (int) this.y, this.ancho, this.alto);
         this.impactos = 1;
         try {
             this.img=ImageIO.read(getClass().getResource("imagenes/BloqCeleste.png"));
