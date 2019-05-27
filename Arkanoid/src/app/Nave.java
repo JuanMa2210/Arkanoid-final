@@ -18,16 +18,15 @@ public class Nave extends ObjetoGrafico implements Movible {
         this.cuerpo.setRect(this.x, this.y, this.getWidth(), 12);
         this.x=217.0;
         this.y=550.0;
-    }
-
-    public void cargarElementos(){
         try {
             //aca va a ir la nave que elija el usuario, ahora solo tenemos esta
             this.img_nave=ImageIO.read(getClass().getResource("imagenes/naveNormal.png"));
+            this.img_nave=img_nave.getScaledInstance(60,12, Image.SCALE_SMOOTH);
         } catch (Exception e) {
-            System.out.println("Error al cargar imagenes");
+            System.out.println("Error al cargar imagenes Nave");
         }
     }
+
 
     @Override
     public void setPosition(double x, double y) {
@@ -61,7 +60,7 @@ public class Nave extends ObjetoGrafico implements Movible {
     }
 
     public void setImagen(BufferedImage img){
-        this.img_nave=img.getScaledInstance(60,12, Image.SCALE_SMOOTH);
+        
     }
 
     @Override

@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
+
 public class BloqueAzul extends Bloque {
 
     public BloqueAzul(double x,double y){
@@ -13,9 +15,10 @@ public class BloqueAzul extends Bloque {
         this.cuerpo=new Rectangle((int)this.x,(int)this.y, 12, 8);
         this.impactos=1;
         try {
-            //this.img= CARGAR IMAGEN DEL BLOQUE
+            this.img=ImageIO.read(getClass().getResource("imagenes/BloqAzul.png"));
+            this.img=img.getScaledInstance(45,20, img.SCALE_SMOOTH);
         } catch (Exception e) {
-            System.out.println("ERROR AL CARGAR IMAGEN BLOQUE AZUL");
+            System.out.println("ERROR AL CARGAR IMAGEN BLOQUE AMARILLO");
         }
     }
     
@@ -62,7 +65,7 @@ public class BloqueAzul extends Bloque {
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawImage(this.img,(int)this.getX(),(int)this.getY(),null);
+        g.drawImage(this.img,(int)this.x,(int)this.y,null);
     }
 
     @Override

@@ -26,6 +26,17 @@ public class Escenario {
     protected int cantidad_vidas=3; //limitar cantidad de vidas a 5
     protected Nave nave=new Nave();
     protected Esfera esfera = new Esfera();  
+    protected BloqueAmarillo amarillo=new BloqueAmarillo(30, 60);
+    protected BloqueAzul azul=new BloqueAzul(75, 60);
+    protected BloqueBlanco blanco=new BloqueBlanco(120, 60);
+    protected BloqueCeleste celeste=new BloqueCeleste(165, 60);
+    protected BloqueDorado dorado=new BloqueDorado(210, 60);
+    protected BloqueNaranja naranja=new BloqueNaranja(255, 60);
+    protected BloquePlateado plateado=new BloquePlateado(300, 60,1);
+    protected BloqueRojo rojo=new BloqueRojo(345, 60);
+    protected BloqueVerde verde=new BloqueVerde(390, 60);
+    protected BloqueRosa rosa=new BloqueRosa(435, 60);
+    
     //protected Rectangle2D tablero=new Rectangle(0, 0, img_fondoAzul.getWidth(),600);//creo que aca es menos
     
     public Escenario(){
@@ -35,9 +46,9 @@ public class Escenario {
     //ESTE METODO CARGA TODAS LAS IMAGENES NECESARIAS PARA EL ESCENARIO
     private void cargar(){
         try {
-            img_fondoAzul= ImageIO.read(getClass().getResource("imagenes/FondoAzul.png"));
-            img_fondoVerde= ImageIO.read(getClass().getResource("imagenes/FondoAzul.png"));
-            img_fondoRojo= ImageIO.read(getClass().getResource("imagenes/FondoAzul.png"));
+            img_fondoAzul= ImageIO.read(getClass().getResource("imagenes/FondoAzul.jpg"));
+            img_fondoVerde= ImageIO.read(getClass().getResource("imagenes/FondoVerde.png"));
+            img_fondoRojo= ImageIO.read(getClass().getResource("imagenes/FondoRojo.jpg"));
             fondo_negro=ImageIO.read(getClass().getResource("imagenes/negro_solido.png"));
             img_nave=ImageIO.read(getClass().getResource("imagenes/naveNormal.png"));
             img_bola=ImageIO.read(getClass().getResource("imagenes/bola.png"));
@@ -77,10 +88,20 @@ public class Escenario {
         g.drawString("NIVEL:", limiteEscenario+150, 550);
         g.setColor(Color.white);
         g.drawString("1", limiteEscenario+250, 550);    //ACA VA EL NIVEL
-        nave.setImagen(img_nave);
+        //nave.setImagen(img_nave);
         nave.draw(g);
         esfera.setImagen(img_bola);
         esfera.draw(g);
+        amarillo.draw(g);
+        blanco.draw(g);
+        azul.draw(g);
+        celeste.draw(g);
+        dorado.draw(g);
+        naranja.draw(g);
+        plateado.draw(g);
+        rojo.draw(g);
+        rosa.draw(g);
+        verde.draw(g);
     }
 
     public void update(double delta,Keyboard keyboard){

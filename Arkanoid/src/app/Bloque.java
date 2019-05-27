@@ -1,8 +1,9 @@
 package app;
 
 
+import java.awt.Image;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
+
 
 
 public abstract class Bloque extends ObjetoGrafico {
@@ -12,7 +13,7 @@ public abstract class Bloque extends ObjetoGrafico {
     protected int impactos;
     protected int puntaje;
     protected boolean tieneBonus;
-    protected BufferedImage img;
+    protected Image img;
     //ELL ANCHO Y EL ALTO DE LOS LADRILLOS VA A SER FIJO ASI QUE PODRIA IR ACA
 
     //este metodo tambien es para todos igual
