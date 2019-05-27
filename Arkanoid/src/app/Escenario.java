@@ -14,6 +14,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 
@@ -29,14 +30,13 @@ public class Escenario {
     protected int cantidad_vidas=3; //limitar cantidad de vidas a 5
     protected Nave nave=new Nave(null);
     protected Esfera esfera = new Esfera();  
+    protected Vector<Bloque> bloques=new Vector<Bloque>();
     
     
     protected Rectangle2D limites=new Rectangle(0, 0, img_fondoAzul.getWidth(),600);//creo que aca es menos
     public Escenario(){
         this.cargar();
-        while (true){
-        esfera.mover();
-        }
+        this.cargarNivel(1);
     } 
 
     //ESTE METODO CARGA TODAS LAS IMAGENES NECESARIAS PARA EL ESCENARIO
@@ -88,6 +88,10 @@ public class Escenario {
         nave.draw(g);
         esfera.setImagen(img_bola);
         esfera.draw(g);
+        //ACA DIBUJO TODOS LOS BLOQUES QUE TENGA CARGADO
+        for (Bloque B : bloques) {
+            B.draw(g);
+        }
         
     }
 
@@ -121,11 +125,40 @@ public class Escenario {
     }
 
     public void cargarNivel(){
+    //NECESITARIA RECIBIR EL NIVEL QUE TENGO QUE CARGAR
+    public void cargarNivel(int nivelActual){
         try {
-            //cargar TODOS LOS ARCHIVOS DE TEXTO DENTO DE LA CARPETA NIVELES
-            //HACER ARREGLO DE ARCHIVOS DE TEXTO
-            //DEPENDIENDO EL NIVEL ACTUAL, LEER Y CARGAR EL ARCHIVO CORRESPONDIENTE
-
+            RandomAccessFile nivel1 = new RandomAccessFile("Nivel1.txt", "r");
+            int y=80;
+            int x=25;
+            int lineas=0;
+            while(nivel1.readLine()!=null){
+                lineas++;
+            }
+            nivel1.seek(0);
+            for(int j=0;j<lineas;j++){
+                String fila=nivel1.readLine();
+                String[] caracteres=fila.split(",");
+                for (String c : caracteres) {
+                    switch (c){
+                        case "A": bloques.add(new BloqueAmarillo(x,y));break;
+                        case "Z": bloques.add(new BloqueAzul(x,y));break;
+                        case "B": bloques.add(new BloqueBlanco(x,y));break;
+                        case "C": bloques.add(new BloqueCeleste(x,y));break;
+                        case "D": bloques.add(new BloqueDorado(x,y));break;
+                        case "N": bloques.add(new BloqueNaranja(x,y));break;
+                        case "P": bloques.add(new BloquePlateado(x,y,nivelActual));break;
+                        case "R": bloques.add(new BloqueRojo(x,y));break;
+                        case "S": bloques.add(new BloqueRosa(x,y));break;
+                        case "V": bloques.add(new BloqueVerde(x,y));break;
+                        case "X": break;
+                    }
+                    x=x+40;
+                }
+                x=25;
+                y = y + 25;
+            }
+            nivel1.close();
         } catch (Exception e) {
             System.out.println("Error al cargar los niveles");
         }

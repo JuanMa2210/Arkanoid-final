@@ -90,8 +90,9 @@ public class Menu extends JGame {
     @Override
     public void gameUpdate(double delta) {
         Keyboard keyboard = this.getKeyboard();
-        // Procesar teclas de direccion
+        
         if (keyboard.isKeyPressed(KeyEvent.VK_UP) && nave.getY()>290){
+            System.out.println("Entro al if ARRIBA");
             nave.setY(nave.getY()-80);
         }
         

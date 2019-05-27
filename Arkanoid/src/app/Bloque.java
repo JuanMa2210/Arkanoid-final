@@ -28,6 +28,8 @@ public abstract class Bloque extends ObjetoGrafico {
     }
 
     //Este metodo se puede implementar aca si va a ser para todos los ladrillos el mismo rebote
-    public abstract void rebote(Esfera esfera);
+    public void rebote(Esfera esfera){
+        
+    }
 
 }
