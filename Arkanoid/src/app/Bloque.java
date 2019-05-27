@@ -24,7 +24,7 @@ public abstract class Bloque extends ObjetoGrafico {
     }
 
     public  boolean tieneBonus(){   //posibilidades random y bonus random? Esto hay que charlarlo
-        return false;
+        return true;
     }
 
     //Este metodo se puede implementar aca si va a ser para todos los ladrillos el mismo rebote
