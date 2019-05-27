@@ -100,9 +100,4 @@ public class Esfera extends ObjetoGrafico implements Movible {
         return 0;
     }
 
-    @Override
-    public void setImagen(BufferedImage img) {
-
-    }
-
 }
