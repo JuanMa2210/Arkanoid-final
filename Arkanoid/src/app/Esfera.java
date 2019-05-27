@@ -11,13 +11,14 @@ import javax.imageio.ImageIO;
 
 public class Esfera extends ObjetoGrafico implements Movible {
 
-    
+    protected double DIAMETER;
     protected double x;
     protected double y;
-    protected double dx;
-    protected double dy;
+    protected int dx;
+    protected int dy;
     protected Image img_bola = null;
     protected Rectangle2D estructura=new Rectangle();
+    private Escenario juego;
 
     public Esfera(){
         this.estructura.setRect(this.x, this.y, 12, 12);
@@ -33,23 +34,9 @@ public class Esfera extends ObjetoGrafico implements Movible {
         }
     }
 
-    public void mover(Rectangle2D limites, boolean colNav){
-        x +=dx;
-        y +=dy;
-        
-        if (y < limites.getMinY());{
-            //definir metodo en escenario
-           // Escenario.eliminarVidas();
-
-            x= limites.getCenterX();
-            y= limites.getCenterY();
-
-            dy = -dy;
-
-
-        }
+    public Rectangle2D getStruct(){
+        return estructura;
     }
-
     @Override
     public void setPosition(double x, double y) {
         this.x=x;
@@ -60,10 +47,17 @@ public class Esfera extends ObjetoGrafico implements Movible {
     public void setX(double x) {
         this.x=x;
     }
+    
+    public void setDX(int dx) {
+        this.dx=dx;
+    }
 
     @Override
     public void setY(double y) {
         this.y=y;
+    }
+    public void setDY(int dy){
+        this.dy=dy;
     }
 
     @Override
@@ -71,9 +65,17 @@ public class Esfera extends ObjetoGrafico implements Movible {
         return this.x;
     }
 
+    public int getDX(){
+        return this.dx;
+    }
+
     @Override
     public double getY() {
         return this.y;
+    }
+
+    public int getDY(){
+        return this.dy;
     }
 
     @Override
@@ -98,6 +100,37 @@ public class Esfera extends ObjetoGrafico implements Movible {
     @Override
     public int getHeight() {
         return 0;
+    }
+
+    public void setDireccion(double x, double y, boolean colision){
+
+    }
+
+
+    @Override
+    public void mover() {
+        while (true){
+            y = y + dy;
+            y = y + dy;
+        }
+
+    }
+
+    public boolean colision(){
+        return (juego.nave.getBounds()).intersects(getBounds());
+    }
+
+    public Rectangle getBounds() {
+		return new Rectangle();
+	}
+    @Override
+    public void velocidad() {
+
+    }
+
+    @Override
+    public void aceleracion() {
+
     }
 
 }

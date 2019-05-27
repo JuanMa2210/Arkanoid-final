@@ -1,7 +1,7 @@
 package app;
 
 public interface Movible{
-    //mover
-    //velocidad
-    //aceleracion
+    public void mover() ;  //mover
+    public void velocidad() ;//velocidad
+    public void aceleracion() ;//aceleracion
 }

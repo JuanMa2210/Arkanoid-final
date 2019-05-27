@@ -3,18 +3,22 @@ package app;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 
 public class Nave extends ObjetoGrafico implements Movible {
+    protected int dx = 0;
     protected double x;
     protected double y;
     protected Image img_nave=null;
     protected Rectangle2D cuerpo=new Rectangle();
+    private Escenario juego;
+    private KeyEvent e;
 
-    public Nave(){
+    public Nave(Escenario juego){
         this.cuerpo.setRect(this.x, this.y, this.getWidth(), 12);
         this.x=217.0;
         this.y=550.0;
@@ -39,6 +43,10 @@ public class Nave extends ObjetoGrafico implements Movible {
         this.x=x;
     }
 
+    public void setDX(int dx) {
+        this.dx=dx;
+    }
+
     @Override
     public void setY(double y) {
         this.y=y;
@@ -47,6 +55,10 @@ public class Nave extends ObjetoGrafico implements Movible {
     @Override
     public double getX() {
         return this.x;
+    }
+
+    public int getDX() {
+        return dx;
     }
 
     @Override
@@ -77,6 +89,37 @@ public class Nave extends ObjetoGrafico implements Movible {
     public int getHeight() {
         return 0;
     }
-
     
-}
+    public void keyPress(){
+        if (e.getKeyCode() == KeyEvent.VK_LEFT)
+			dx = -1;
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+			dx = 1;
+    }   
+    
+    @Override
+    public void mover() {
+			x = x + dx;
+    }
+
+    @Override
+    public void velocidad() {
+
+    }
+
+    @Override
+    public void aceleracion() {
+
+    }
+
+
+	public Rectangle getBounds() {
+            return new Rectangle(this.getWidth(),this.getHeight());
+        }
+
+
+	public double getTOPY() {
+		return this.x - this.getWidth();
+	}
+	}
+

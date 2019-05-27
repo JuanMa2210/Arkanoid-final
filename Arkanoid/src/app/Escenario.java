@@ -27,14 +27,16 @@ public class Escenario {
     protected BufferedImage img_nave = null;
     protected BufferedImage img_bola = null;
     protected int cantidad_vidas=3; //limitar cantidad de vidas a 5
-    protected Nave nave=new Nave();
+    protected Nave nave=new Nave(null);
     protected Esfera esfera = new Esfera();  
     
     
-    //protected Rectangle2D tablero=new Rectangle(0, 0, img_fondoAzul.getWidth(),600);//creo que aca es menos
-    
+    protected Rectangle2D limites=new Rectangle(0, 0, img_fondoAzul.getWidth(),600);//creo que aca es menos
     public Escenario(){
         this.cargar();
+        while (true){
+        esfera.mover();
+        }
     } 
 
     //ESTE METODO CARGA TODAS LAS IMAGENES NECESARIAS PARA EL ESCENARIO
@@ -90,17 +92,32 @@ public class Escenario {
     }
 
     public void update(double delta,Keyboard keyboard){
-        if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && nave.getX()>10){
-            nave.setX(nave.getX()-5);
+        if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && (this.colisionNave())){
+            nave.mover();
         }
-        if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()<img_fondoAzul.getWidth()-60){
-            nave.setX(nave.getX()+5);
+        if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && (this.colisionNave())){
+            nave.mover();
         }
-        if (keyboard.isKeyPressed(KeyEvent.VK_SPACE)){
-            //Aplicar desplazamiento a la bola para que arranque a jugar
-           esfera.setX(esfera.getX()+5);
-           esfera.setY(esfera.getY()-5);
+        esfera.mover();
         }
+    
+
+    public void colisionBola(){
+        if(esfera.getX()+esfera.getDX() > limites.getWidth()- esfera.DIAMETER)
+        esfera.setDX(-1);
+        if(esfera.getY()+esfera.getDY() < 0)
+        esfera.setDY(1);
+        if (esfera.colision()){
+            esfera.setDY(-1);
+            esfera.y = nave.getTOPY() - esfera.DIAMETER;
+        }
+        esfera.mover();
+    }
+
+    public boolean colisionNave(){
+        if (nave.x + nave.dx > 50 && nave.x + nave.dx < (limites.getWidth()-20) - nave.getWidth() )
+            return true;
+        else return false;
     }
 
     public void cargarNivel(){
