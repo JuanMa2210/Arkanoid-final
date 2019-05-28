@@ -54,11 +54,8 @@ public class Escenario {
         }
     }
 
-    public void draw(Graphics2D g){
-        this.dibujoInicial(g);
-    }
 
-    public void dibujoInicial(Graphics2D g){
+    public void draw(Graphics2D g){
 
         int limiteEscenario=img_fondoAzul.getWidth();
 

@@ -13,6 +13,7 @@ public class BloqueAmarillo extends Bloque {
         this.puntaje = 120;
         this.cuerpo = new Rectangle((int) this.x, (int) this.y, this.ancho, this.alto);
         this.impactos = 1;
+        //this.bonus=
         try {
             this.img=ImageIO.read(getClass().getResource("imagenes/BloqAmarillo.png"));
             this.img=img.getScaledInstance(45,20, img.SCALE_SMOOTH);

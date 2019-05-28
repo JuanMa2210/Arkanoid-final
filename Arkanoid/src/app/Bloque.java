@@ -16,16 +16,31 @@ public abstract class Bloque extends ObjetoGrafico {
     protected int puntaje;
     protected boolean tieneBonus;
     protected Image img;
-    //ELL ANCHO Y EL ALTO DE LOS LADRILLOS VA A SER FIJO ASI QUE PODRIA IR ACA
+    //protected Bonus bonus=null;
 
-    //este metodo tambien es para todos igual
+    
     public void restarImpactos(){
         this.impactos--;    //cuando llegue a cero, el bloque va a estar destruido
     }
 
-    public  boolean tieneBonus(){   
-        return true;
+    public  void asignarBonus(){   //PUEDE ASIGNARLE UN BONUS AL BLOQUE O NO.
+        
+        if((int)Math.floor(Math.random()*4+1)==1){  //GENERA UN NUMERO DEL 1 AL 4 Y SOLO ASIGNA BONUS SI ES 1
+            int azar=(int)Math.floor(Math.random()*6+1);
+            switch(azar){
+                case 1: break;
+                case 2: break;      //una opcion para cada bonus
+                case 3: break;
+                case 4: break;
+                case 5: break;
+                case 6: break;
+            }
+        }
     }
+
+    /*public Bonus lanzarBonus(){
+        return this.bonus;              hay que ver que pasa aca cuando quiera devolver algo que no tenga
+    }*/
 
     @Override
     public double getX() {
@@ -52,19 +67,13 @@ public abstract class Bloque extends ObjetoGrafico {
             double xEsfera=esfera.getX();   //CREO QUE ACA ESTA MAL, PORQUE NO ESTOY CONSIDERANDO 
             double yEsfera=esfera.getY();           //EL CUERPO DE LA PELOTA
 
-            if(xEsfera==this.x){
-                //PEGO EN EL LADO IZQUIERDO
+            if(xEsfera==this.x || xEsfera==this.x+this.ancho){
+                //PEGO EN ALGUNO DE LOS LADOS
+                esfera.setDX(esfera.getDX()*-1);
             }else{
-                if(xEsfera==this.x+this.ancho){
-                    //PEGO EN EL LADO DERECHO
-                }else{
-                    if(yEsfera==this.y){
-                        //PEGO EN EL LADO DE ARRIBA
-                    }else{
-                        if(yEsfera==this.y+this.alto){
-                            //PEGO EN EL LADO DE ABAJO
-                        }
-                    }
+                if(yEsfera==this.y || yEsfera==this.y+this.alto){
+                    //PEGO ARRIBA O ABAJO
+                    esfera.setDY(esfera.getDY()*-1);
                 }
             }
             this.restarImpactos();
