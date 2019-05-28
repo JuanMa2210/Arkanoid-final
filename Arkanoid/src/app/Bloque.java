@@ -23,13 +23,18 @@ public abstract class Bloque extends ObjetoGrafico {
         return(this.impactos--);    //cuando llegue a cero, el bloque va a estar destruido
     }
 
-    public  boolean tieneBonus(){   //posibilidades random y bonus random? Esto hay que charlarlo
+    public  boolean tieneBonus(){   
         return true;
     }
 
+    public abstract void destruirse();  //ESTO TIENE QUE QUITAR EL BLOQUE DEL VECTOR EN ESCENARIO
+
     //Este metodo se puede implementar aca si va a ser para todos los ladrillos el mismo rebote
     public void rebote(Esfera esfera){
-        
+        if(this.cuerpo.intersects(esfera.getStruct())){
+            //ME TENGO QUE FIJAR EN QUE LADO PEGA.
+            //ASI MODIFICO EL VECTOR DIRECCION
+        }
     }
 
 }

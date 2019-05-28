@@ -31,9 +31,8 @@ public class Escenario {
     protected Nave nave=new Nave(null);
     protected Esfera esfera = new Esfera();  
     protected Vector<Bloque> bloques=new Vector<Bloque>();
+    //protected Rectangle2D limites=new Rectangle(0, 0, img_fondoAzul.getWidth(),600);//creo que aca es menos
     
-    
-    protected Rectangle2D limites=new Rectangle(0, 0, img_fondoAzul.getWidth(),600);//creo que aca es menos
     public Escenario(){
         this.cargar();
         this.cargarNivel(1);
@@ -96,17 +95,17 @@ public class Escenario {
     }
 
     public void update(double delta,Keyboard keyboard){
-        if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && (this.colisionNave())){
+        /*if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && (this.colisionNave())){
             nave.mover();
         }
         if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && (this.colisionNave())){
             nave.mover();
         }
-        esfera.mover();
-        }
+        esfera.mover();*/
+    }
     
 
-    public void colisionBola(){
+    /*public void colisionBola(){
         if(esfera.getX()+esfera.getDX() > limites.getWidth()- esfera.DIAMETER)
         esfera.setDX(-1);
         if(esfera.getY()+esfera.getDY() < 0)
@@ -122,10 +121,8 @@ public class Escenario {
         if (nave.x + nave.dx > 50 && nave.x + nave.dx < (limites.getWidth()-20) - nave.getWidth() )
             return true;
         else return false;
-    }
+    }*/
 
-    public void cargarNivel(){
-    //NECESITARIA RECIBIR EL NIVEL QUE TENGO QUE CARGAR
     public void cargarNivel(int nivelActual){
         try {
             RandomAccessFile nivel1 = new RandomAccessFile("Nivel1.txt", "r");
@@ -163,36 +160,5 @@ public class Escenario {
             System.out.println("Error al cargar los niveles");
         }
     }
-
-
-
-    /*try {
-        RandomAccessFile raf = new RandomAccessFile("demoraf.txt", "rw");
-       
-        raf.writeBytes("Hola Mundo!"); //Escribir algo
-     
-        raf.seek(0);// Se posiciona el puntero al inicio del archivo
-
-        // Leo e imprimo  
-        System.out.println("" + raf.readLine());
-
-        // Se posiciona el puntero al inicio del archivo
-        raf.seek(0);
-
-        //Escribo algo nuevo
-        raf.writeBytes("Hace mucho tiempo, en una galaxia muy, muy lejana...\n Episodio IV \n Una Nueva Esperanza");
-
-        // Se posiciona el puntero al inicio del archivo
-        raf.seek(0);
-
-        // Leo e imprimo 
-        System.out.println("" + raf.readLine());
-        
-        raf.close();
-     } catch (IOException ex) {
-        ex.printStackTrace();
-     }*/
-
-
 
 }
