@@ -19,22 +19,60 @@ public abstract class Bloque extends ObjetoGrafico {
     //ELL ANCHO Y EL ALTO DE LOS LADRILLOS VA A SER FIJO ASI QUE PODRIA IR ACA
 
     //este metodo tambien es para todos igual
-    public int contarImpactos(){
-        return(this.impactos--);    //cuando llegue a cero, el bloque va a estar destruido
+    public void restarImpactos(){
+        this.impactos--;    //cuando llegue a cero, el bloque va a estar destruido
     }
 
     public  boolean tieneBonus(){   
         return true;
     }
 
-    public abstract void destruirse();  //ESTO TIENE QUE QUITAR EL BLOQUE DEL VECTOR EN ESCENARIO
+    @Override
+    public double getX() {
+        return this.x;
+    }
+
+    @Override
+    public double getY() {
+        return this.y;
+    }
+
+    @Override
+    public int getHeight() {
+        return this.alto;
+    }
+    @Override
+    public int getWidth() {
+        return this.ancho;
+    }
 
     //Este metodo se puede implementar aca si va a ser para todos los ladrillos el mismo rebote
     public void rebote(Esfera esfera){
         if(this.cuerpo.intersects(esfera.getStruct())){
-            //ME TENGO QUE FIJAR EN QUE LADO PEGA.
-            //ASI MODIFICO EL VECTOR DIRECCION
+            double xEsfera=esfera.getX();   //CREO QUE ACA ESTA MAL, PORQUE NO ESTOY CONSIDERANDO 
+            double yEsfera=esfera.getY();           //EL CUERPO DE LA PELOTA
+
+            if(xEsfera==this.x){
+                //PEGO EN EL LADO IZQUIERDO
+            }else{
+                if(xEsfera==this.x+this.ancho){
+                    //PEGO EN EL LADO DERECHO
+                }else{
+                    if(yEsfera==this.y){
+                        //PEGO EN EL LADO DE ARRIBA
+                    }else{
+                        if(yEsfera==this.y+this.alto){
+                            //PEGO EN EL LADO DE ABAJO
+                        }
+                    }
+                }
+            }
+            this.restarImpactos();
         }
+    }
+
+    public int getImpactos(){
+        return(this.impactos);
     }
 
 }

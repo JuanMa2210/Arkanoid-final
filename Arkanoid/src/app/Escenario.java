@@ -32,6 +32,8 @@ public class Escenario {
     protected Esfera esfera = new Esfera();  
     protected Vector<Bloque> bloques=new Vector<Bloque>();
     //protected Rectangle2D limites=new Rectangle(0, 0, img_fondoAzul.getWidth(),600);//creo que aca es menos
+    //###############JUANMAAAAAA#################
+    //EL ANCHO DE TODAS LAS IMAGENES DE FONDO ES IGUAL, PORQUE LAS REDIMENSIONAMOS, ES DE 495
     
     public Escenario(){
         this.cargar();
@@ -83,13 +85,16 @@ public class Escenario {
         g.drawString("NIVEL:", limiteEscenario+150, 550);
         g.setColor(Color.white);
         g.drawString("1", limiteEscenario+250, 550);    //ACA VA EL NIVEL
-        //nave.setImagen(img_nave);
         nave.draw(g);
         esfera.setImagen(img_bola);
         esfera.draw(g);
-        //ACA DIBUJO TODOS LOS BLOQUES QUE TENGA CARGADO
+        //ACA DIBUJO TODOS LOS BLOQUES QUE TENGA CARGADO SI ES QUE NO SE DESTRUYERON
         for (Bloque B : bloques) {
-            B.draw(g);
+            if(B.getImpactos()==0){
+                bloques.remove(B);
+            }else{
+                B.draw(g);
+            }
         }
         
     }
