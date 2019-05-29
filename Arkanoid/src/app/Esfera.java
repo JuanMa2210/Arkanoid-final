@@ -26,7 +26,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
     private Nave nave;
     private Rectangle limites;
 
-    public Esfera(Escenario juego){
+    public Esfera(){
         this.estructura.setRect(this.x, this.y, 12, 12);
         this.x= 241.0;
         this.y= 540.0;
@@ -129,7 +129,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
 
     }
 
-    public boolean colision(){
+    public boolean colision(){      //esto lo tiene que hacer la nave
         return (juego.nave.getBounds()).intersects(getBounds());
     }
 

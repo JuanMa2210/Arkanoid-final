@@ -34,7 +34,7 @@ public class Menu extends JGame {
 
     @Override
     public void gameDraw(Graphics2D g) {
-
+        System.out.println("GAMEDRAW");
         dibujarMenu(g);
         if(isEscenario){
             escenario.draw(g);
@@ -105,12 +105,13 @@ public class Menu extends JGame {
                 case 450: System.exit(0);break;
             }
         }
-
+        
+        if(isRanking && ranking.isActive()){
+            ranking.update(delta);
+            isRanking=ranking.isActive();
+        }
         if(isEscenario){
             escenario.update(delta,keyboard);
-        }
-        if(isRanking){
-            //ranking.update(delta,keyboard);
         }
     }
     

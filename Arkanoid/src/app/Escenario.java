@@ -25,12 +25,11 @@ public class Escenario{
     protected BufferedImage img_bola = null;
     protected int cantidad_vidas=3; //limitar cantidad de vidas a 5
     protected Nave nave = new Nave(null);
-    protected Esfera esfera = new Esfera(null);  
+    protected Esfera esfera = new Esfera();  
     protected Vector<Bloque> bloques=new Vector<Bloque>();
     protected ArrayList<Esfera> bolas = new ArrayList<Esfera>();
-    protected Escenario juego =new Escenario();
 
-    protected Rectangle2D limites=new Rectangle(0, 0, img_fondoAzul.getWidth(),600);//creo que aca es menos
+    //protected Rectangle2D limites=new Rectangle(0, 0, img_fondoAzul.getWidth(),600);//creo que aca es menos
     private int nivelActual=1;
     private boolean comenzo;
     private int cont;
@@ -61,12 +60,11 @@ public class Escenario{
 
     // incializamos todo en estas variables.
     public void inicio() {
-        this.nave = new Nave(this.juego);
+        this.nave = new Nave(this);
         this.bolas = new ArrayList<Esfera>();
-        Esfera esfera = new Esfera(this.juego);
+        this.esfera = new Esfera();
         esfera.parada = true;
         bolas.add(esfera);
-
         cargarNivel(nivelActual);
     }
 
@@ -74,12 +72,12 @@ public class Escenario{
         // actualizo las bolas en el vector
         for (int i=0; i< bolas.size(); i++){
             Esfera esfera = bolas.get(i);
-            if (esfera.y >= nave.getTOPY()){
+            if (esfera.y <= nave.getTOPY()){
                 bolas.remove(i);
                 // ahora cuando no haya mas bolas perderemos una vida
                 if (bolas.size()==0){
                     this.cantidad_vidas--;
-                    Esfera esferaNew =new Esfera(this);
+                    Esfera esferaNew =new Esfera();
                     esferaNew.parada=true;
                     bolas.add(esferaNew);
                 }
@@ -106,7 +104,7 @@ public class Escenario{
             }
         }      
     //nave.start();
-    if (nuevoNivel){
+    if (nuevoNivel){    //aca pasamos al siguiente nivel
         this.finNivel();// definir funcion
     }
     }
@@ -175,24 +173,22 @@ public class Escenario{
         g2.fill(new Rectangle2D.Double(0,0,20,20));
         //ACA DIBUJO TODOS LOS BLOQUES QUE TENGA CARGADO
         for (Bloque B : bloques) {
-            B.draw(g);
+            if(B.getImpactos()==0){
+                bloques.remove(B);
+            }else{
+                B.draw(g);
+            }
         }
         
     }
 
-    public void update(){
-      // esfera.mover(getBounds(), colision(this.limites),colision(nave.cuerpo));
-      // nave.mover();
-
-      if (e.getKeyCode() == KeyEvent.VK_LEFT){
-        nave.dx = -1;
-        System.out.println("puto");
-        nave.mover();
-    }
-    if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-        nave.dx = 1;
-        nave.mover();
-    }
+    public void update(double delta,Keyboard keyboard){
+        if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && nave.getX()>10){
+            nave.setX(nave.getX()-5);
+        }
+        if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()<img_fondoAzul.getWidth()-60){
+            nave.setX(nave.getX()+5);
+        }
 
     }
 
@@ -200,26 +196,6 @@ public class Escenario{
         return esfera.getStruct().intersects(nave.cuerpo);
     }
     
-
-  /*  public void colisionBola(Rectangle2D limites){
-        if(esfera.getX()+esfera.getDX() > limites.getWidth()- esfera.DIAMETER)
-        esfera.setDX(-1);
-        if(esfera.getY()+esfera.getDY() < 0)
-        esfera.setDY(-1);
-        if (esfera.colision()){
-            esfera.setDY(-1);
-            esfera.y = nave.getTOPY() - esfera.DIAMETER;
-        }
-        esfera.mover();
-    }
-
-    public boolean colisionNave(){
-
-        if (nave.x + nave.dx > 50 && nave.x + nave.dx < (limites.getWidth()-20) - nave.getWidth() )
-            return true;
-        else return false;
-    }
-*/
     
     //NECESITARIA RECIBIR EL NIVEL QUE TENGO QUE CARGAR
     public void cargarNivel(int nivelActual){
@@ -259,36 +235,5 @@ public class Escenario{
             System.out.println("Error al cargar los niveles");
         }
     }
-
-
-
-    /*try {
-        RandomAccessFile raf = new RandomAccessFile("demoraf.txt", "rw");
-       
-        raf.writeBytes("Hola Mundo!"); //Escribir algo
-     
-        raf.seek(0);// Se posiciona el puntero al inicio del archivo
-
-        // Leo e imprimo  
-        System.out.println("" + raf.readLine());
-
-        // Se posiciona el puntero al inicio del archivo
-        raf.seek(0);
-
-        //Escribo algo nuevo
-        raf.writeBytes("Hace mucho tiempo, en una galaxia muy, muy lejana...\n Episodio IV \n Una Nueva Esperanza");
-
-        // Se posiciona el puntero al inicio del archivo
-        raf.seek(0);
-
-        // Leo e imprimo 
-        System.out.println("" + raf.readLine());
-        
-        raf.close();
-     } catch (IOException ex) {
-        ex.printStackTrace();
-     }*/
-
-
 
 }
