@@ -5,7 +5,8 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-
+import app.Nave;
+import app.Escenario;
 import javax.imageio.ImageIO;
 
 
@@ -17,10 +18,15 @@ public class Esfera extends ObjetoGrafico implements Movible {
     protected int dx;
     protected int dy;
     protected Image img_bola = null;
-    protected Rectangle2D estructura=new Rectangle();
+    private int ancho;
+    private int alto;
+    protected Rectangle2D estructura=new Rectangle2D.Double(x,y,ancho,alto);
     private Escenario juego;
+	public boolean parada;
+    private Nave nave;
+    private Rectangle limites;
 
-    public Esfera(){
+    public Esfera(Escenario juego){
         this.estructura.setRect(this.x, this.y, 12, 12);
         this.x= 241.0;
         this.y= 540.0;
@@ -35,8 +41,9 @@ public class Esfera extends ObjetoGrafico implements Movible {
     }
 
     public Rectangle2D getStruct(){
-        return estructura;
+        return new Rectangle2D.Double(x, y, getWidth(), getHeight());
     }
+
     @Override
     public void setPosition(double x, double y) {
         this.x=x;
@@ -109,9 +116,15 @@ public class Esfera extends ObjetoGrafico implements Movible {
 
     @Override
     public void mover() {
-        while (true){
             y = y + dy;
             y = y + dy;
+            if(this.getX()+this.getDX() > limites.getWidth()- this.DIAMETER)
+            this.setDX(-1);
+            if(this.getY()+this.getDY() < 0)
+            this.setDY(-1);
+            if (this.colision()){
+            this.setDY(-1);
+            this.y = nave.getTOPY() - this.DIAMETER;
         }
 
     }

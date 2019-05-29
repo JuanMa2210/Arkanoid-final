@@ -91,15 +91,19 @@ public class Nave extends ObjetoGrafico implements Movible {
     }
     
     public void keyPress(){
-        if (e.getKeyCode() == KeyEvent.VK_LEFT)
-			dx = -1;
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-			dx = 1;
+        if (e.getKeyCode() == KeyEvent.VK_LEFT){
+            this.dx = -1;
+            this.mover();
+        }
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT){
+            this.dx = 1;
+            this.mover();
+        }
     }   
     
     @Override
-    public void mover() {
-			x = x + dx;
+    public void mover(){ 
+        this.x = x + dx;
     }
 
     @Override
@@ -113,13 +117,18 @@ public class Nave extends ObjetoGrafico implements Movible {
     }
 
 
-	public Rectangle getBounds() {
+	public Rectangle2D getBounds() {
             return new Rectangle(this.getWidth(),this.getHeight());
         }
 
 
 	public double getTOPY() {
 		return this.x - this.getWidth();
+	}
+
+
+	public Object getStruct() {
+		return null;
 	}
 	}
 
