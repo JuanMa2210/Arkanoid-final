@@ -19,6 +19,7 @@ public class BloqueRojo extends Bloque {
         } catch (Exception e) {
             System.out.println("ERROR AL CARGAR IMAGEN BLOQUE AMARILLO");
         }
+        //super.rebote(esfera);
     }
 
     @Override

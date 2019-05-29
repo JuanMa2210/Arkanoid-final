@@ -183,6 +183,7 @@ public class Escenario{
     }
 
     public void update(double delta,Keyboard keyboard){
+        this.esfera.mover();
         if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && nave.getX()>10){
             nave.setX(nave.getX()-5);
         }
