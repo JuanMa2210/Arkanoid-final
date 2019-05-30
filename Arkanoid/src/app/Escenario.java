@@ -24,8 +24,8 @@ public class Escenario{
     protected BufferedImage img_nave = null;
     protected BufferedImage img_bola = null;
     protected int cantidad_vidas=3; //limitar cantidad de vidas a 5
-    protected Nave nave = new Nave(null);
-    protected Esfera esfera = new Esfera(null);  
+    protected Nave nave = new Nave();
+    protected Esfera esfera = new Esfera();  
     protected Vector<Bloque> bloques=new Vector<Bloque>();
     protected ArrayList<Esfera> bolas = new ArrayList<Esfera>();
     protected Escenario juego =new Escenario();
@@ -61,9 +61,9 @@ public class Escenario{
 
     // incializamos todo en estas variables.
     public void inicio() {
-        this.nave = new Nave(this.juego);
+        this.nave = new Nave();
         this.bolas = new ArrayList<Esfera>();
-        Esfera esfera = new Esfera(this.juego);
+        this.esfera = new Esfera();
         esfera.parada = true;
         bolas.add(esfera);
 
@@ -79,7 +79,7 @@ public class Escenario{
                 // ahora cuando no haya mas bolas perderemos una vida
                 if (bolas.size()==0){
                     this.cantidad_vidas--;
-                    Esfera esferaNew =new Esfera(this);
+                    Esfera esferaNew =new Esfera();
                     esferaNew.parada=true;
                     bolas.add(esferaNew);
                 }
@@ -171,8 +171,8 @@ public class Escenario{
         nave.draw(g);
         esfera.setImagen(img_bola);
         esfera.draw(g);
-        Graphics2D g2 = (Graphics2D)g;
-        g2.fill(new Rectangle2D.Double(0,0,20,20));
+        //Graphics2D g2 = (Graphics2D)g;
+        //g2.fill(new Rectangle2D.Double(0,0,20,20));
         //ACA DIBUJO TODOS LOS BLOQUES QUE TENGA CARGADO
         for (Bloque B : bloques) {
             B.draw(g);
@@ -180,21 +180,19 @@ public class Escenario{
         
     }
 
-    public void update(){
-      // esfera.mover(getBounds(), colision(this.limites),colision(nave.cuerpo));
-      // nave.mover();
-
-      if (e.getKeyCode() == KeyEvent.VK_LEFT){
-        nave.dx = -1;
-        System.out.println("puto");
-        nave.mover();
-    }
-    if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-        nave.dx = 1;
+    public void update(double delta,Keyboard keyboard){
+     // esfera.mover(getBounds(), colision(this.limites),colision(nave.cuerpo));
+      //nave.mover();
+      System.out.println("holaaaaa");
+    if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && (nave.getX()>20)){
+        nave.setX(nave.getX()+5);
+     }
+     if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && (nave.getX()<img_fondoAzul.getWidth()-60)){
         nave.mover();
     }
 
     }
+
 
     private Object colision(Rectangle2D limites) {
         return esfera.getStruct().intersects(nave.cuerpo);

@@ -107,6 +107,7 @@ public class Menu extends JGame {
         }
 
         if(isEscenario){
+            System.out.println("holiss");
             escenario.update(delta,keyboard);
         }
         if(isRanking){
