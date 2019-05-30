@@ -79,7 +79,8 @@ public class Ranking{
         }
     }
 
-    public void update(double delta,Keyboard teclado){
+    public void update(double delta){
+        Keyboard teclado=new Keyboard();
         if(teclado.isKeyPressed(KeyEvent.VK_ENTER)){
             isActive=false;
         }

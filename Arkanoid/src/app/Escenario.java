@@ -9,6 +9,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -28,10 +30,10 @@ public class Escenario{
     protected Esfera esfera = new Esfera();  
     protected Vector<Bloque> bloques=new Vector<Bloque>();
     protected ArrayList<Esfera> bolas = new ArrayList<Esfera>();
-    protected Escenario juego =new Escenario();
+    protected ArrayList<String> niveles=new ArrayList<String>();
 
-    protected Rectangle2D limites=new Rectangle(0, 0, img_fondoAzul.getWidth(),600);//creo que aca es menos
-    private int nivelActual=1;
+    //protected Rectangle2D limites=new Rectangle(0, 0, img_fondoAzul.getWidth(),600);//creo que aca es menos
+    private int nivelActual=3;
     private boolean comenzo;
     private int cont;
     protected static boolean nuevoNivel=true;
@@ -54,27 +56,33 @@ public class Escenario{
             fondo_negro = ImageIO.read(getClass().getResource("imagenes/negro_solido.png"));
             img_nave = ImageIO.read(getClass().getResource("imagenes/naveNormal.png"));
             img_bola = ImageIO.read(getClass().getResource("imagenes/bola.png"));
+            int i=0;
+            Files.walk(Paths.get("Niveles")).forEach(ruta-> {
+                if (Files.isRegularFile(ruta)) {
+                    System.out.println(String.valueOf(ruta));
+                    this.niveles.add(String.valueOf(ruta));
+                }
+            });
         } catch (Exception e) {
             System.out.println("Error al cargas las imagenes del escenario");
         }
     }
 
     // incializamos todo en estas variables.
-    public void inicio() {
-        this.nave = new Nave();
+    public void inicio() {   
+        this.nave = new Nave(this);
         this.bolas = new ArrayList<Esfera>();
-        this.esfera = new Esfera();
+        this.esfera = new Esfera(this);
         esfera.parada = true;
         bolas.add(esfera);
-
-        cargarNivel(nivelActual);
+        cargarLadrillos(nivelActual);
     }
 
     public void corriendo(){
         // actualizo las bolas en el vector
         for (int i=0; i< bolas.size(); i++){
             Esfera esfera = bolas.get(i);
-            if (esfera.y >= nave.getTOPY()){
+            if (esfera.y <= nave.getTOPY()){
                 bolas.remove(i);
                 // ahora cuando no haya mas bolas perderemos una vida
                 if (bolas.size()==0){
@@ -106,7 +114,7 @@ public class Escenario{
             }
         }      
     //nave.start();
-    if (nuevoNivel){
+    if (nuevoNivel){    //aca pasamos al siguiente nivel
         this.finNivel();// definir funcion
     }
     }
@@ -175,54 +183,35 @@ public class Escenario{
         //g2.fill(new Rectangle2D.Double(0,0,20,20));
         //ACA DIBUJO TODOS LOS BLOQUES QUE TENGA CARGADO
         for (Bloque B : bloques) {
-            B.draw(g);
+            if(B.getImpactos()==0){
+                bloques.remove(B);
+            }else{
+                B.draw(g);
+            }
         }
         
     }
 
     public void update(double delta,Keyboard keyboard){
-     // esfera.mover(getBounds(), colision(this.limites),colision(nave.cuerpo));
-      //nave.mover();
-      System.out.println("holaaaaa");
-    if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && (nave.getX()>20)){
-        nave.setX(nave.getX()+5);
-     }
-     if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && (nave.getX()<img_fondoAzul.getWidth()-60)){
-        nave.mover();
-    }
+        this.esfera.mover();
+        if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && nave.getX()>10){
+            nave.setX(nave.getX()-5);
+        }
+        if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()<img_fondoAzul.getWidth()-60){
+            nave.setX(nave.getX()+5);
+        }
 
     }
-
 
     private Object colision(Rectangle2D limites) {
         return esfera.getStruct().intersects(nave.cuerpo);
     }
     
-
-  /*  public void colisionBola(Rectangle2D limites){
-        if(esfera.getX()+esfera.getDX() > limites.getWidth()- esfera.DIAMETER)
-        esfera.setDX(-1);
-        if(esfera.getY()+esfera.getDY() < 0)
-        esfera.setDY(-1);
-        if (esfera.colision()){
-            esfera.setDY(-1);
-            esfera.y = nave.getTOPY() - esfera.DIAMETER;
-        }
-        esfera.mover();
-    }
-
-    public boolean colisionNave(){
-
-        if (nave.x + nave.dx > 50 && nave.x + nave.dx < (limites.getWidth()-20) - nave.getWidth() )
-            return true;
-        else return false;
-    }
-*/
     
     //NECESITARIA RECIBIR EL NIVEL QUE TENGO QUE CARGAR
-    public void cargarNivel(int nivelActual){
+    public void cargarLadrillos(int nivelActual){
         try {
-            RandomAccessFile nivel1 = new RandomAccessFile("Nivel1.txt", "r");
+            RandomAccessFile nivel1 = new RandomAccessFile(this.niveles.get(nivelActual-1), "r");
             int y=80;
             int x=25;
             int lineas=0;
@@ -257,36 +246,5 @@ public class Escenario{
             System.out.println("Error al cargar los niveles");
         }
     }
-
-
-
-    /*try {
-        RandomAccessFile raf = new RandomAccessFile("demoraf.txt", "rw");
-       
-        raf.writeBytes("Hola Mundo!"); //Escribir algo
-     
-        raf.seek(0);// Se posiciona el puntero al inicio del archivo
-
-        // Leo e imprimo  
-        System.out.println("" + raf.readLine());
-
-        // Se posiciona el puntero al inicio del archivo
-        raf.seek(0);
-
-        //Escribo algo nuevo
-        raf.writeBytes("Hace mucho tiempo, en una galaxia muy, muy lejana...\n Episodio IV \n Una Nueva Esperanza");
-
-        // Se posiciona el puntero al inicio del archivo
-        raf.seek(0);
-
-        // Leo e imprimo 
-        System.out.println("" + raf.readLine());
-        
-        raf.close();
-     } catch (IOException ex) {
-        ex.printStackTrace();
-     }*/
-
-
 
 }

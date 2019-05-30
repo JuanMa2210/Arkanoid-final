@@ -1,3 +1,0 @@
-B,A,Z,C,D
-P,R,S,N
-B,B,B,B,B

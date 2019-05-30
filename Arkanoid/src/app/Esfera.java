@@ -26,10 +26,14 @@ public class Esfera extends ObjetoGrafico implements Movible {
     private Nave nave;
     private Rectangle limites;
 
-    public Esfera(){
+
+    //JUANMA, AL FINAL ESTABA BIEN.. LA ESFERA SI O SI TIENE QUE RECIBIR EL ESCENARIO.. Y LOS REBOTES LOS TIENE QUE CALCULAR LA ESFERA
+    public Esfera(Escenario escenario){
         this.estructura.setRect(this.x, this.y, 12, 12);
         this.x= 241.0;
         this.y= 540.0;
+        this.dx=1;
+        this.dy=-1;
     }
 
     public void cargarElementos(){
@@ -116,21 +120,23 @@ public class Esfera extends ObjetoGrafico implements Movible {
 
     @Override
     public void mover() {
-            y = y + dy;
-            y = y + dy;
-            if(this.getX()+this.getDX() > limites.getWidth()- this.DIAMETER)
+            //y = y + dy;
+            this.setY(this.getY()+this.getDY());
+            this.setX(this.getX()+this.getDX());
+            //y = y + dy;
+            /*if(this.getX()+this.getDX() > limites.getWidth()- this.DIAMETER)
             this.setDX(-1);
             if(this.getY()+this.getDY() < 0)
             this.setDY(-1);
             if (this.colision()){
             this.setDY(-1);
             this.y = nave.getTOPY() - this.DIAMETER;
-        }
+            }*/
 
     }
 
-    public boolean colision(){
-        return (nave.getBounds()).intersects(getBounds());
+    public boolean colision(){      //esto lo tiene que hacer la nave
+        return (juego.nave.getBounds()).intersects(getBounds());
     }
 
     public Rectangle getBounds() {
