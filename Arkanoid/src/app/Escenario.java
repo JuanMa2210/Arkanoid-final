@@ -9,6 +9,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -25,12 +27,13 @@ public class Escenario{
     protected BufferedImage img_bola = null;
     protected int cantidad_vidas=3; //limitar cantidad de vidas a 5
     protected Nave nave = new Nave(null);
-    protected Esfera esfera = new Esfera();  
+    protected Esfera esfera = new Esfera(null);  
     protected Vector<Bloque> bloques=new Vector<Bloque>();
     protected ArrayList<Esfera> bolas = new ArrayList<Esfera>();
+    protected ArrayList<String> niveles=new ArrayList<String>();
 
     //protected Rectangle2D limites=new Rectangle(0, 0, img_fondoAzul.getWidth(),600);//creo que aca es menos
-    private int nivelActual=1;
+    private int nivelActual=3;
     private boolean comenzo;
     private int cont;
     protected static boolean nuevoNivel=true;
@@ -53,19 +56,26 @@ public class Escenario{
             fondo_negro = ImageIO.read(getClass().getResource("imagenes/negro_solido.png"));
             img_nave = ImageIO.read(getClass().getResource("imagenes/naveNormal.png"));
             img_bola = ImageIO.read(getClass().getResource("imagenes/bola.png"));
+            int i=0;
+            Files.walk(Paths.get("Niveles")).forEach(ruta-> {
+                if (Files.isRegularFile(ruta)) {
+                    System.out.println(String.valueOf(ruta));
+                    this.niveles.add(String.valueOf(ruta));
+                }
+            });
         } catch (Exception e) {
             System.out.println("Error al cargas las imagenes del escenario");
         }
     }
 
     // incializamos todo en estas variables.
-    public void inicio() {
+    public void inicio() {   
         this.nave = new Nave(this);
         this.bolas = new ArrayList<Esfera>();
-        this.esfera = new Esfera();
+        this.esfera = new Esfera(this);
         esfera.parada = true;
         bolas.add(esfera);
-        cargarNivel(nivelActual);
+        cargarLadrillos(nivelActual);
     }
 
     public void corriendo(){
@@ -77,7 +87,7 @@ public class Escenario{
                 // ahora cuando no haya mas bolas perderemos una vida
                 if (bolas.size()==0){
                     this.cantidad_vidas--;
-                    Esfera esferaNew =new Esfera();
+                    Esfera esferaNew =new Esfera(this);
                     esferaNew.parada=true;
                     bolas.add(esferaNew);
                 }
@@ -199,9 +209,9 @@ public class Escenario{
     
     
     //NECESITARIA RECIBIR EL NIVEL QUE TENGO QUE CARGAR
-    public void cargarNivel(int nivelActual){
+    public void cargarLadrillos(int nivelActual){
         try {
-            RandomAccessFile nivel1 = new RandomAccessFile("Nivel1.txt", "r");
+            RandomAccessFile nivel1 = new RandomAccessFile(this.niveles.get(nivelActual-1), "r");
             int y=80;
             int x=25;
             int lineas=0;

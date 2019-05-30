@@ -1,0 +1,8 @@
+Z,X,R,X,V,X,S,X,Z,X,R
+P,X,P,X,P,X,P,X,P,X,P
+X,V,X,R,X,Z,X,S,X,V,X
+X,P,X,P,X,P,X,P,X,P,X
+S,X,Z,X,R,X,V,X,S,X,Z
+P,X,P,X,P,X,P,X,P,X,P
+X,S,X,V,X,R,X,Z,X,S,X
+X,P,X,P,X,P,X,P,X,P,X

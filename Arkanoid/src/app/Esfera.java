@@ -26,7 +26,9 @@ public class Esfera extends ObjetoGrafico implements Movible {
     private Nave nave;
     private Rectangle limites;
 
-    public Esfera(){
+
+    //JUANMA, AL FINAL ESTABA BIEN.. LA ESFERA SI O SI TIENE QUE RECIBIR EL ESCENARIO.. Y LOS REBOTES LOS TIENE QUE CALCULAR LA ESFERA
+    public Esfera(Escenario escenario){
         this.estructura.setRect(this.x, this.y, 12, 12);
         this.x= 241.0;
         this.y= 540.0;

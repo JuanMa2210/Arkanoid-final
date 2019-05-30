@@ -34,7 +34,6 @@ public class Menu extends JGame {
 
     @Override
     public void gameDraw(Graphics2D g) {
-        System.out.println("GAMEDRAW");
         dibujarMenu(g);
         if(isEscenario){
             escenario.draw(g);
