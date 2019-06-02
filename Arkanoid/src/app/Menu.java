@@ -101,11 +101,15 @@ public class Menu extends JGame {
         if(keyboard.isKeyPressed(KeyEvent.VK_ENTER)){
             switch((int)nave.getY()){
                 case 290: isEscenario=true;break;
-                case 370: isRanking=true;break;
+                case 370: isRanking=true;ranking.activar();break;
                 case 450: System.exit(0);break;
             }
         }
-
+        
+        if(isRanking && ranking.isActive()){
+            ranking.update(delta,keyboard);
+            isRanking=ranking.isActive();
+        }
         if(isEscenario){
             escenario.update(delta,keyboard);
         }

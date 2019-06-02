@@ -77,13 +77,18 @@ public class Ranking{
             g.drawString(p.getFecha(),640, 100+40*i);
             i++;
         }
+        g.setColor(Color.WHITE);
+        g.drawString("ESC para volver...",290,550);
     }
 
-    public void update(double delta){
-        Keyboard teclado=new Keyboard();
-        if(teclado.isKeyPressed(KeyEvent.VK_ENTER)){
-            isActive=false;
+    public void update(double delta,Keyboard teclado){
+        if(teclado.isKeyPressed(KeyEvent.VK_ESCAPE)){
+            this.isActive=false;
         }
+    }
+
+    public void activar(){
+        this.isActive=true;
     }
 
     public boolean isActive(){
