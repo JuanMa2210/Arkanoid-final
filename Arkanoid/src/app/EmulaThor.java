@@ -13,18 +13,6 @@ public class EmulaThor extends JFrame implements ActionListener, ItemListener {
     private JMenu Ayuda;
     private JMenuItem Configuraciones;
     private JMenuItem Salir;
-    private JFrame config;
-    //Botones y opciones de config
-    private JPanel Base;
-    private JPanel Superior;
-    private JButton Guardar;
-    private JButton Reset;
-    private JLabel Sound;
-    private JRadioButton Activado;
-    private JRadioButton Desactivado;
-    private List Musica;
-    
-    ///
     private JButton Comenzar;
     private JPanel ListPanel;
     private List Juegos;

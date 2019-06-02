@@ -88,17 +88,17 @@ public class Nave extends ObjetoGrafico implements Movible {
 
     @Override
     public void mover(){
-        this.setX(getX()+5);
+        this.setX(getX()+(this.getDX()*this.velocidad()));
     }
 
     @Override
-    public void velocidad() {
-
+    public double velocidad() {
+        return 3.5;
     }
 
     @Override
-    public void aceleracion() {
-
+    public double aceleracion() {
+        return 3.0;
     }
 
 

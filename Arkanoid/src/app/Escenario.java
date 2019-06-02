@@ -7,7 +7,6 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -32,19 +31,20 @@ public class Escenario{
     protected ArrayList<Esfera> bolas = new ArrayList<Esfera>();
     protected ArrayList<String> niveles=new ArrayList<String>();
 
-    //protected Rectangle2D limites=new Rectangle(0, 0, img_fondoAzul.getWidth(),600);//creo que aca es menos
+    protected Rectangle2D limites;//creo que aca es menos
     private int nivelActual=3;
     private boolean comenzo;
     private int cont;
     protected static boolean nuevoNivel=true;
     protected Thread t;
-    private KeyEvent e;
+ 
 
 
     
     public Escenario() {
         this.cargar();
         this.inicio();
+      //  this.limites=new Rectangle(40, 90, img_fondoAzul.getWidth()-30,img_fondoAzul.getHeight()-30);
     }
 
     // ESTE METODO CARGA TODAS LAS IMAGENES NECESARIAS PARA EL ESCENARIO
@@ -56,7 +56,7 @@ public class Escenario{
             fondo_negro = ImageIO.read(getClass().getResource("imagenes/negro_solido.png"));
             img_nave = ImageIO.read(getClass().getResource("imagenes/naveNormal.png"));
             img_bola = ImageIO.read(getClass().getResource("imagenes/bola.png"));
-            int i=0;
+         //   int i=0;
             Files.walk(Paths.get("Niveles")).forEach(ruta-> {
                 if (Files.isRegularFile(ruta)) {
                     System.out.println(String.valueOf(ruta));
@@ -194,18 +194,22 @@ public class Escenario{
 
     public void update(double delta,Keyboard keyboard){
         this.esfera.mover();
-        if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && nave.getX()>20){
-            nave.setX(nave.getX()-5);
+     //   if(this.colision())
+     //   System.out.println("chocamo");
+        if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && nave.getX()>23){
+            nave.setDX(-1);
+            nave.mover();
         }
-        if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()<img_fondoAzul.getWidth()-80){
-            nave.setX(nave.getX()+5);
+        if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()<img_fondoAzul.getWidth()-84){
+            nave.setDX(1);
+            nave.mover();
         }
 
     }
 
-    private Object colision(Rectangle2D limites) {
-        return esfera.getStruct().intersects(nave.cuerpo);
-    }
+  /*  private boolean colision() {
+        return this.esfera.getStruct().intersects(this.limites);
+    }*/
     
     
     //NECESITARIA RECIBIR EL NIVEL QUE TENGO QUE CARGAR

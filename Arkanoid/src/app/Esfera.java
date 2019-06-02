@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 
 public class Esfera extends ObjetoGrafico implements Movible {
 
-    protected double DIAMETER;
+    protected double DIAMETER=12;
     protected double x;
     protected double y;
     protected int dx;
@@ -22,9 +22,8 @@ public class Esfera extends ObjetoGrafico implements Movible {
     private int alto;
     protected Rectangle2D estructura=new Rectangle2D.Double(x,y,ancho,alto);
   
-	public boolean parada;
-    private Nave nave;
-    private Rectangle limites;
+    public boolean parada;
+    protected Rectangle2D bordes= new Rectangle2D.Double(); 
 
 
     //JUANMA, AL FINAL ESTABA BIEN.. LA ESFERA SI O SI TIENE QUE RECIBIR EL ESCENARIO.. Y LOS REBOTES LOS TIENE QUE CALCULAR LA ESFERA
@@ -121,35 +120,38 @@ public class Esfera extends ObjetoGrafico implements Movible {
     @Override
     public void mover() {
             //y = y + dy;
-            this.setY(this.getY()+this.getDY());
-            this.setX(this.getX()+this.getDX());
-            //y = y + dy;
-             /*if(this.getX()+this.getDX() > limites.getWidth()- this.DIAMETER)
+            if(this.getX()+this.getDX() > 474- this.DIAMETER)//colision derecha escenario
             this.setDX(-1);
-            if(this.getY()+this.getDY() < 0)
+            if(this.getX()+this.getDX() < 8 + this.DIAMETER)//colision izq escenario
+            this.setDX(1);
+            if(this.getY()+this.getDY() <30 + this.DIAMETER)//colision sup escenario
+            this.setDY(1);
+            if(this.getY()+this.getDY() > 550 - this.DIAMETER)//colision inf escenario
             this.setDY(-1);
-            if (this.colision()){
+        //    if(this.)
+            /*if (this.colision()){
             this.setDY(-1);
             this.y = nave.getTOPY() - this.DIAMETER;
             }*/
-
+            this.setY(this.getY()+(this.getDY()*this.velocidad()));
+            this.setX(this.getX()+(this.getDX()*this.velocidad()));
     }
 
-    public boolean colision(){      //esto lo tiene que hacer la nave
+ /*   public boolean colision(){      //esto lo tiene que hacer la nave
         return (nave.getBounds()).intersects(getBounds());
     }
-
+*/
     public Rectangle getBounds() {
 		return new Rectangle();
 	}
     @Override
-    public void velocidad() {
-
+    public double velocidad() {
+        return 2;
     }
 
     @Override
-    public void aceleracion() {
-
+    public double aceleracion() {
+        return 3.0; 
     }
 
 }
