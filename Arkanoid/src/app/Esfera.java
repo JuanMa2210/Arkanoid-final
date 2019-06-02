@@ -124,7 +124,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
             this.setY(this.getY()+this.getDY());
             this.setX(this.getX()+this.getDX());
             //y = y + dy;
-            /*if(this.getX()+this.getDX() > limites.getWidth()- this.DIAMETER)
+             /*if(this.getX()+this.getDX() > limites.getWidth()- this.DIAMETER)
             this.setDX(-1);
             if(this.getY()+this.getDY() < 0)
             this.setDY(-1);
@@ -136,7 +136,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
     }
 
     public boolean colision(){      //esto lo tiene que hacer la nave
-        return (juego.nave.getBounds()).intersects(getBounds());
+        return (nave.getBounds()).intersects(getBounds());
     }
 
     public Rectangle getBounds() {

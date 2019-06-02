@@ -27,7 +27,7 @@ public class Escenario{
     protected BufferedImage img_bola = null;
     protected int cantidad_vidas=3; //limitar cantidad de vidas a 5
     protected Nave nave = new Nave();
-    protected Esfera esfera = new Esfera();  
+    protected Esfera esfera = new Esfera(this);  
     protected Vector<Bloque> bloques=new Vector<Bloque>();
     protected ArrayList<Esfera> bolas = new ArrayList<Esfera>();
     protected ArrayList<String> niveles=new ArrayList<String>();
@@ -70,7 +70,7 @@ public class Escenario{
 
     // incializamos todo en estas variables.
     public void inicio() {   
-        this.nave = new Nave(this);
+        this.nave = new Nave();
         this.bolas = new ArrayList<Esfera>();
         this.esfera = new Esfera(this);
         esfera.parada = true;
@@ -87,7 +87,7 @@ public class Escenario{
                 // ahora cuando no haya mas bolas perderemos una vida
                 if (bolas.size()==0){
                     this.cantidad_vidas--;
-                    Esfera esferaNew =new Esfera();
+                    Esfera esferaNew =new Esfera(this);
                     esferaNew.parada=true;
                     bolas.add(esferaNew);
                 }
@@ -194,10 +194,10 @@ public class Escenario{
 
     public void update(double delta,Keyboard keyboard){
         this.esfera.mover();
-        if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && nave.getX()>10){
+        if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && nave.getX()>20){
             nave.setX(nave.getX()-5);
         }
-        if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()<img_fondoAzul.getWidth()-60){
+        if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()<img_fondoAzul.getWidth()-80){
             nave.setX(nave.getX()+5);
         }
 
