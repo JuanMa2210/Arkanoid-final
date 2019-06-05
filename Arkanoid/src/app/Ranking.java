@@ -8,6 +8,8 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -22,10 +24,12 @@ public class Ranking{
     protected Gson gson=new Gson();
     protected BufferedReader br = null;
     protected TodosLosPuntajes datos=new TodosLosPuntajes();
-    protected String[] nombres;
-    protected String[] puntos;
-    protected String[] niveles;
-    protected String[] fechas;
+
+    protected ArrayList<String> nombres=new ArrayList<>();
+    protected ArrayList<Integer> puntos=new ArrayList<>();
+    protected ArrayList<String> niveles=new ArrayList<>();
+    protected ArrayList<String> fechas=new ArrayList<>();
+
 
     protected boolean isActive=true;
 
@@ -34,27 +38,38 @@ public class Ranking{
         //this.escribirInfo();
     }
     
-
     public void cargarInfo(){
         try {
             fondo=ImageIO.read(getClass().getResource("imagenes/fondoRanking.jpg"));
-            
-            br = new BufferedReader(new FileReader("ranking.json"));
-            datos=gson.fromJson(br,TodosLosPuntajes.class);
-            if (datos != null) {
-                for (Puntaje p : datos.getPuntajes()) {
-                    //System.out.println(p.getNombre());
-                }
+            RandomAccessFile datos = new RandomAccessFile("ranking.txt", "r");
+            int lineas=0;
+            while(datos.readLine()!=null){
+                lineas++;
+            }
+            datos.seek(0);
+
+            for(int i=0;i<lineas;i++){
+                String renglon=datos.readLine();
+                String palabras[]=renglon.split("-");
+                this.nombres.add(palabras[0]);
+                this.puntos.add(Integer.parseInt(palabras[1]));
+                this.niveles.add(palabras[2]);
+                this.fechas.add(palabras[3]);
             }
 
+            for (String nombre : nombres) {
+                System.out.println(nombre);
+            }
+            datos.close();
         } catch (Exception e) {
-            //System.out.println("Error al cargar imagenes ranking");
-            System.out.println(e);
+            System.out.println("ERROR"+e);
         }
     }
+
+
+    
     public void escribirInfo(){
-        //ESCRIBIMOS UN JSON
-        //ESTA FUNCION TAMBIEN TIENE QUE ORDENAR ANTS DE INSERTAR UN NUEVO.
+        
         String json=gson.toJson(new Puntaje("Julian","1000","2","12/12/12"));
         System.out.println(json);
     }
@@ -69,13 +84,11 @@ public class Ranking{
         g.drawString("Fecha",650,60);
         g.setColor(Color.ORANGE);
 
-        int i=0;
-        for (Puntaje p : datos.getPuntajes()) {
-            g.drawString(p.getNombre(), 40, 100+40*i);
-            g.drawString(p.getPuntos(), 250, 100+40*i);
-            g.drawString(p.getNivel(),470, 100+40*i);
-            g.drawString(p.getFecha(),640, 100+40*i);
-            i++;
+        for (int i=0;i<nombres.size();i++){
+            g.drawString(this.nombres.get(i), 40, 100+40*i);
+            g.drawString(this.puntos.get(i).toString(), 250, 100+40*i);
+            g.drawString(this.niveles.get(i),470, 100+40*i);
+            g.drawString(this.fechas.get(i),640, 100+40*i);
         }
         g.setColor(Color.WHITE);
         g.drawString("ESC para volver...",290,550);

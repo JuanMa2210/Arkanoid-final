@@ -94,6 +94,7 @@ public class Menu extends JGame {
             nave.setY(nave.getY()-80);
         }
         
+        
         if (keyboard.isKeyPressed(KeyEvent.VK_DOWN)&& nave.getY()<450){
             nave.setY(nave.getY()+80);
         }
@@ -112,9 +113,6 @@ public class Menu extends JGame {
         }
         if(isEscenario){
             escenario.update(delta,keyboard);
-        }
-        if(isRanking){
-            //ranking.update(delta,keyboard);
         }
     }
     
