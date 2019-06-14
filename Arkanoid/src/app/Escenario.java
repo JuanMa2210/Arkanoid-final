@@ -32,7 +32,7 @@ public class Escenario{
     protected ArrayList<String> niveles=new ArrayList<String>();
 
     protected Rectangle2D limites;//creo que aca es menos
-    private int nivelActual=3;
+    private int nivelActual=1;
     private boolean comenzo;
     private int cont;
     protected static boolean nuevoNivel=true;
