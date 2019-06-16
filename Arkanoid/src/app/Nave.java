@@ -108,7 +108,7 @@ public class Nave extends ObjetoGrafico implements Movible {
 
 
 	public double getTOPY() {
-		return this.x - this.getWidth();
+		return this.y - this.getWidth();
 	}
 
 
@@ -116,4 +116,5 @@ public class Nave extends ObjetoGrafico implements Movible {
 		return null;
     }
 }
+
 

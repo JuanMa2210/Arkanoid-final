@@ -31,8 +31,8 @@ public class Escenario{
     protected ArrayList<Esfera> bolas = new ArrayList<Esfera>();
     protected ArrayList<String> niveles=new ArrayList<String>();
 
-    protected Rectangle2D limites;//creo que aca es menos
-    private int nivelActual=1;
+    protected Rectangle limites;//creo que aca es menos
+    private int nivelActual=2;
     private boolean comenzo;
     private int cont;
     protected static boolean nuevoNivel=true;
@@ -44,7 +44,7 @@ public class Escenario{
     public Escenario() {
         this.cargar();
         this.inicio();
-      //  this.limites=new Rectangle(40, 90, img_fondoAzul.getWidth()-30,img_fondoAzul.getHeight()-30);
+        this.limites=new Rectangle(20, 45, img_fondoAzul.getWidth()-40,img_fondoAzul.getHeight()-90);
     }
 
     // ESTE METODO CARGA TODAS LAS IMAGENES NECESARIAS PARA EL ESCENARIO
@@ -176,6 +176,8 @@ public class Escenario{
         g.setColor(Color.white);
         g.drawString("1", limiteEscenario+250, 550);    //ACA VA EL NIVEL
         //nave.setImagen(img_nave);
+        Graphics2D g2 = (Graphics2D)g;
+        g2.draw(this.limites);
         nave.draw(g);
         esfera.setImagen(img_bola);
         esfera.draw(g);
@@ -193,23 +195,54 @@ public class Escenario{
     }
 
     public void update(double delta,Keyboard keyboard){
-        this.esfera.mover();
-     //   if(this.colision())
-     //   System.out.println("chocamo");
+       
         if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && nave.getX()>23){
             nave.setDX(-1);
-            nave.mover();
+             nave.mover();
         }
         if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()<img_fondoAzul.getWidth()-84){
             nave.setDX(1);
             nave.mover();
         }
+        if (keyboard.isKeyPressed(KeyEvent.VK_SPACE)){
+            this.esfera.parada = false;
+        }
 
+
+        if (this.esfera.parada){
+            
+            if ((keyboard.isKeyPressed(KeyEvent.VK_LEFT) || keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) 
+                                && (nave.getX()>23 && nave.getX()<img_fondoAzul.getWidth()-84)){
+              this.esfera.setX(nave.getX()+(nave.getHeight()/2)+(nave.getDX()*5));
+              this.esfera.mover();
+            }
+            if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()<img_fondoAzul.getWidth()-84){
+               nave.setDX(1);
+               nave.mover();
+            }
+        }
+
+        else{
+         this.esfera.mover();
+          if(esfera.getY()==nave.getY()&&(esfera.getX()>=nave.getX()&&esfera.getX()<=(nave.getX()+nave.getWidth())))
+            {
+                esfera.setDY(-1);
+                esfera.setY(nave.getTOPY() - esfera.DIAMETER);
+            }
+         // if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && nave.getX()>23){
+        //      nave.setDX(-1);
+        //       nave.mover();
+         // }
+         // if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()<img_fondoAzul.getWidth()-84){
+         //     nave.setDX(1);
+         //     nave.mover();
+         // }
+        }
     }
 
-  /*  private boolean colision() {
-        return this.esfera.getStruct().intersects(this.limites);
-    }*/
+    private boolean colision() {
+        return this.esfera.getStruct().intersects(this.nave.cuerpo);
+    }
     
     
     //NECESITARIA RECIBIR EL NIVEL QUE TENGO QUE CARGAR
