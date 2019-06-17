@@ -22,10 +22,6 @@ public class BloqueNaranja extends Bloque {
         }
     }
 
-    @Override
-    public void rebote(Esfera esfera) {
-
-    }
 
     @Override
     public void setPosition(double x, double y) {

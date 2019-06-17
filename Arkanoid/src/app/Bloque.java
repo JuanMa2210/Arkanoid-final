@@ -9,7 +9,7 @@ import java.awt.geom.Rectangle2D;
 public abstract class Bloque extends ObjetoGrafico {
     protected double x;
     protected double y;
-    protected Rectangle2D cuerpo = new Rectangle() ;
+    protected Rectangle2D cuerpo = new Rectangle2D.Double(this.x,this.y,this.ancho,this.alto);
     protected int ancho=45;
     protected int alto=20;
     protected int impactos;
@@ -61,28 +61,9 @@ public abstract class Bloque extends ObjetoGrafico {
         return this.ancho;
     }
 
-    //Este metodo se puede implementar aca si va a ser para todos los ladrillos el mismo rebote
-    public void rebote(Esfera esfera){//no puedo lograr que ingrese
-        
-       /* if(esfera.getBounds().intersects(getBounds())){
-            System.out.println("chocamo un bloque");
-            double xEsfera=esfera.getX();   //CREO QUE ACA ESTA MAL, PORQUE NO ESTOY CONSIDERANDO 
-            double yEsfera=esfera.getY();           //EL CUERPO DE LA PELOTA
-            if(xEsfera==this.x || xEsfera==this.x+this.ancho){
-                //PEGO EN ALGUNO DE LOS LADOS
-                esfera.setDX(esfera.getDX()*-1);
-            }else{
-                if(yEsfera==this.y || yEsfera==this.y+this.alto){
-                    //PEGO ARRIBA O ABAJO
-                    esfera.setDY(esfera.getDY()*-1);
-                }
-            }
-            this.restarImpactos();
-        }*/
-    }
 
-    public Rectangle getBounds() {
-        return new Rectangle((int)this.getX(), (int)this.getY(), this.ancho, this.alto);
+    public Rectangle2D getBounds() {
+        return new Rectangle2D.Double(this.getX(),this.getY(), this.ancho, this.alto);
     }
 
     public int getImpactos(){

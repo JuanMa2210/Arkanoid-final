@@ -31,11 +31,11 @@ public class Escenario{
     protected ArrayList<String> niveles=new ArrayList<String>();
 
     protected Rectangle limites;//creo que aca es menos
-    private int nivelActual= 3;
+    private int nivelActual= 1;
     private boolean comenzo;
     private int cont;
     protected static boolean nuevoNivel=true;
-    protected Thread t;
+    protected Thread t;     //ESTO PARA QUE LO USAMOS?
  
 
 
@@ -181,18 +181,25 @@ public class Escenario{
         esfera.setImagen(img_bola);
         esfera.draw(g);
         //ACA DIBUJO TODOS LOS BLOQUES QUE TENGA CARGADO
-        for (Bloque B : bloques) {
-            if(B.getImpactos()==0){
-                bloques.remove(B);
-            }else{
-                B.draw(g);
+        for(int i=0;i<this.bloques.size();i++){
+            if(this.bloques.get(i).impactos<=0){
+                this.bloques.remove(i);
             }
+        }
+        for (Bloque B : this.bloques) {
+            B.draw(g);
         }
         
     }
 
+    public Vector<Bloque> getBloques(){
+        return this.bloques;
+    }
+
     public void update(double delta,Keyboard keyboard){
-        this.rebote(this.esfera);
+        for (int i=0;i<bolas.size();i++) {
+           bolas.get(i).rebote();
+        }
         if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && nave.getX()>23){
             nave.setDX(-1);
              nave.mover();
@@ -260,40 +267,14 @@ public class Escenario{
                     x=x+40;
                 }
                 x=25;
-                y = y + 25;
+                y = y + 20;
             }
             nivel1.close();
         } catch (Exception e) {
             System.out.println("Error al cargar los niveles");
         }
     }
-
-    public void rebote(Esfera esfera){ //lo traje para acá a ver si lo podia hacer andar
-                                        // pero tampoco anda, no me entra al if
-        
-        for(int i=0;i<bloques.size();i++){
-           Bloque bloquesillo= bloques.get(i); 
-           
-            if(this.esfera.getBounds().intersects(bloquesillo.getBounds())){
-                double xEsfera=esfera.getX()+esfera.getWidth();   //CREO QUE ACA ESTA MAL, PORQUE NO ESTOY CONSIDERANDO 
-                double yEsfera=esfera.getY()+esfera.getHeight();           //EL CUERPO DE LA PELOTA
-                if(xEsfera==bloquesillo.x || xEsfera==bloquesillo.x+bloquesillo.ancho){
-                   //PEGO EN ALGUNO DE LOS LADOS
-                    esfera.setDX(esfera.getDX()*-1);
-                }else{
-                    if(yEsfera==bloquesillo.y || yEsfera==bloquesillo.y+bloquesillo.alto){
-                        //PEGO ARRIBA O ABAJO
-                        esfera.setDY(esfera.getDY()*-1);
-                    }
-                }
-                bloquesillo.restarImpactos();
-                if(bloquesillo.getImpactos()==0){
-                    System.out.println("removiendo bloques");
-                    bloques.remove(i);
-
-                }
-            }
-        }
-    }
+    //CALCULA EL REBOTE DE LA PELOTA CON LOS BLOQUES
+    
 
 }

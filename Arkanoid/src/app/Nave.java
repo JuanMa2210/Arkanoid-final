@@ -56,7 +56,7 @@ public class Nave extends ObjetoGrafico implements Movible {
     }
 
     public int getDX() {
-        return dx;
+        return this.dx;
     }
 
     @Override
@@ -95,7 +95,7 @@ public class Nave extends ObjetoGrafico implements Movible {
 
     @Override
     public double velocidad() {
-        return 3.5;
+        return 5.5;
     }
 
     @Override

@@ -23,10 +23,6 @@ public class BloqueRojo extends Bloque {
         //super.rebote(esfera);
     }
 
-    @Override
-    public void rebote(Esfera esfera) {
-
-    }
 
     @Override
     public void setPosition(double x, double y) {

@@ -22,10 +22,7 @@ public class BloqueBlanco extends Bloque {
         }
     }
 
-    @Override
-    public void rebote(Esfera esfera) {
-
-    }
+    
 
     @Override
     public void setPosition(double x, double y) {
@@ -75,8 +72,5 @@ public class BloqueBlanco extends Bloque {
     @Override
     public int getHeight() {
         return 0;
-    }
-    public Rectangle getBounds() {
-        return new Rectangle((int)this.getX(), (int)this.getY(), this.ancho, this.alto);
     }
 }

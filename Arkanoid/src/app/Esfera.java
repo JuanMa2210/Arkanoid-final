@@ -105,12 +105,12 @@ public class Esfera extends ObjetoGrafico implements Movible {
 
     @Override
     public int getWidth() {
-        return 0;
+        return (int)this.DIAMETER;
     }
 
     @Override
     public int getHeight() {
-        return 0;
+        return (int)this.DIAMETER;
     }
 
     public void setDireccion(double x, double y, boolean colision) {
@@ -131,7 +131,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
                if(escenario.cantidad_vidas == 0){
                    System.out.println("GAME OVER");
                    //mostrar pantalla de game over, junto a un pulsar para volver.
-                   System.exit(0);
+                   //System.exit(0);
                }
                else{
                     escenario.nave.setPosition(217, 550);
@@ -160,8 +160,8 @@ public class Esfera extends ObjetoGrafico implements Movible {
 		return escenario.nave.getBounds().intersects(getBounds());
     }
     
-    public Rectangle getBounds() {
-        return new Rectangle((int)this.getX(),(int)this.getY(), (int) DIAMETER, (int) DIAMETER);
+    public Rectangle2D getBounds() {
+        return new Rectangle2D.Double(this.getX(),this.getY(), DIAMETER, DIAMETER);
 	}
     @Override
     public double velocidad() {
@@ -171,6 +171,19 @@ public class Esfera extends ObjetoGrafico implements Movible {
     @Override
     public double aceleracion() {
         return 3.0; 
+    }
+
+    public void rebote(){ 
+        for (Bloque bloquesillo : escenario.getBloques()) {           
+            if(this.getBounds().intersects(bloquesillo.getBounds())){  
+                if((this.getX()+this.DIAMETER)==bloquesillo.getX() || this.getX()==(bloquesillo.getX()+this.DIAMETER)){
+                    this.setDX(this.getDX()*-1);
+                }else{
+                    this.setDY(this.getDY()*-1);
+                }
+                bloquesillo.restarImpactos();
+            }
+        }
     }
 
 

@@ -12,9 +12,9 @@ public class BloqueDorado extends Bloque {
         this.x=x;
         this.y=y;
         this.puntaje=0;
-        this.cuerpo = new Rectangle();
+        this.cuerpo=new Rectangle();
         this.cuerpo.setRect(this.x, this.y, 45, 20);
-        this.impactos=1000;
+        this.impactos=1000000;
         try {
             this.img=ImageIO.read(getClass().getResource("imagenes/BloqDorado.png"));
             this.img=img.getScaledInstance(45,20, img.SCALE_SMOOTH);
@@ -24,10 +24,6 @@ public class BloqueDorado extends Bloque {
     }
 
 
-    @Override
-    public void rebote(Esfera esfera) {
-
-    }
 
     @Override
     public void setPosition(double x, double y) {
