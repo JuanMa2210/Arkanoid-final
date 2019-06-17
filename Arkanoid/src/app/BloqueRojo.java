@@ -11,7 +11,8 @@ public class BloqueRojo extends Bloque {
         this.x = x;
         this.y = y;
         this.puntaje = 90;
-        this.cuerpo = new Rectangle((int) this.x, (int) this.y, this.ancho, this.alto);
+        this.cuerpo = new Rectangle();
+        this.cuerpo.setRect(this.x, this.y, 45, 20);
         this.impactos = 1;
         try {
             this.img=ImageIO.read(getClass().getResource("imagenes/BloqRojo.png"));
@@ -75,5 +76,8 @@ public class BloqueRojo extends Bloque {
     @Override
     public int getHeight() {
         return 0;
+    }
+    public Rectangle getBounds() {
+        return new Rectangle((int)this.getX(), (int)this.getY(), this.ancho, this.alto);
     }
 }

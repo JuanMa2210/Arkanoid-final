@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
@@ -32,7 +31,7 @@ public class Escenario{
     protected ArrayList<String> niveles=new ArrayList<String>();
 
     protected Rectangle limites;//creo que aca es menos
-    private int nivelActual=2;
+    private int nivelActual= 3;
     private boolean comenzo;
     private int cont;
     protected static boolean nuevoNivel=true;
@@ -181,8 +180,6 @@ public class Escenario{
         nave.draw(g);
         esfera.setImagen(img_bola);
         esfera.draw(g);
-        //Graphics2D g2 = (Graphics2D)g;
-        //g2.fill(new Rectangle2D.Double(0,0,20,20));
         //ACA DIBUJO TODOS LOS BLOQUES QUE TENGA CARGADO
         for (Bloque B : bloques) {
             if(B.getImpactos()==0){
@@ -195,7 +192,7 @@ public class Escenario{
     }
 
     public void update(double delta,Keyboard keyboard){
-       
+        this.rebote(this.esfera);
         if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && nave.getX()>23){
             nave.setDX(-1);
              nave.mover();
@@ -208,12 +205,11 @@ public class Escenario{
             this.esfera.parada = false;
         }
 
-
         if (this.esfera.parada){
             
             if ((keyboard.isKeyPressed(KeyEvent.VK_LEFT) || keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) 
                                 && (nave.getX()>23 && nave.getX()<img_fondoAzul.getWidth()-84)){
-              this.esfera.setX(nave.getX()+(nave.getHeight()/2)+(nave.getDX()*5));
+              this.esfera.setX(nave.getX()+(nave.getWidth()/2)-(this.esfera.getWidth()/2));
               this.esfera.mover();
             }
             if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()<img_fondoAzul.getWidth()-84){
@@ -229,19 +225,7 @@ public class Escenario{
                 esfera.setDY(-1);
                 esfera.setY(nave.getTOPY() - esfera.DIAMETER);
             }
-         // if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && nave.getX()>23){
-        //      nave.setDX(-1);
-        //       nave.mover();
-         // }
-         // if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()<img_fondoAzul.getWidth()-84){
-         //     nave.setDX(1);
-         //     nave.mover();
-         // }
         }
-    }
-
-    private boolean colision() {
-        return this.esfera.getStruct().intersects(this.nave.cuerpo);
     }
     
     
@@ -281,6 +265,29 @@ public class Escenario{
             nivel1.close();
         } catch (Exception e) {
             System.out.println("Error al cargar los niveles");
+        }
+    }
+
+    public void rebote(Esfera esfera){ //lo traje para acá a ver si lo podia hacer andar
+                                        // pero tampoco anda, no me entra al if
+        
+        for(int i=0;i<bloques.size();i++){
+           Bloque bloquesillo= bloques.get(i); 
+            if(esfera.getBounds().intersects(bloquesillo.getBounds())){
+                System.out.println("chocamo un bloque");
+                double xEsfera=esfera.getX();   //CREO QUE ACA ESTA MAL, PORQUE NO ESTOY CONSIDERANDO 
+                double yEsfera=esfera.getY();           //EL CUERPO DE LA PELOTA
+                if(xEsfera==bloquesillo.x || xEsfera==bloquesillo.x+bloquesillo.ancho){
+                   //PEGO EN ALGUNO DE LOS LADOS
+                    esfera.setDX(esfera.getDX()*-1);
+                }else{
+                    if(yEsfera==bloquesillo.y || yEsfera==bloquesillo.y+bloquesillo.alto){
+                        //PEGO ARRIBA O ABAJO
+                        esfera.setDY(esfera.getDY()*-1);
+                    }
+                }
+                bloquesillo.restarImpactos();
+            }
         }
     }
 

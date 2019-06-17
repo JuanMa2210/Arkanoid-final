@@ -3,11 +3,9 @@ package app;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 

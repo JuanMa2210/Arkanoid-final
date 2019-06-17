@@ -14,9 +14,11 @@ public class Nave extends ObjetoGrafico implements Movible {
     protected double y;
     protected Image img_nave=null;
     protected Rectangle2D cuerpo=new Rectangle();
+    private int width = 60;
+    private int height = 12;
 
     public Nave() {
-        this.cuerpo.setRect(this.x, this.y, this.getWidth(), 12);
+        this.cuerpo.setRect(this.x, this.y, this.getWidth(), this.getHeight());
         this.x = 217.0;
         this.y = 550.0;
         try {
@@ -78,12 +80,12 @@ public class Nave extends ObjetoGrafico implements Movible {
 
     @Override
     public int getWidth() {
-        return 0;
+        return this.width;
     }
 
     @Override
     public int getHeight() {
-        return 0;
+        return this.height;
     }
 
     @Override
@@ -102,19 +104,14 @@ public class Nave extends ObjetoGrafico implements Movible {
     }
 
 
-	public Rectangle2D getBounds() {
-            return new Rectangle(this.getWidth(),this.getHeight());
+	public Rectangle getBounds() {
+            return new Rectangle((int)this.getX(), (int)this.getY(), this.getWidth(), this.getHeight());
         }
 
 
 	public double getTOPY() {
-		return this.y - this.getWidth();
+		return this.y - this.getHeight();
 	}
-
-
-	public Object getStruct() {
-		return null;
-    }
 }
 
 

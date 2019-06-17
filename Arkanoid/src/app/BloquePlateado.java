@@ -11,7 +11,8 @@ public class BloquePlateado extends Bloque {
         this.x = x;
         this.y = y;
         this.puntaje = 50 * nivel;
-        this.cuerpo = new Rectangle((int) this.x, (int) this.y, this.ancho, this.alto);
+        this.cuerpo = new Rectangle();
+        this.cuerpo.setRect(this.x, this.y, 45, 20);
         this.impactos = 2;
         try {
             this.img=ImageIO.read(getClass().getResource("imagenes/BloqPlata.png"));

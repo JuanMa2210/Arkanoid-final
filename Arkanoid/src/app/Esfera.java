@@ -22,14 +22,16 @@ public class Esfera extends ObjetoGrafico implements Movible {
     private int alto;
     protected Rectangle2D estructura=new Rectangle2D.Double(x,y,ancho,alto);
     protected Nave nave= new Nave();
-    public boolean parada;
+    protected boolean parada;
     protected Rectangle2D bordes= new Rectangle2D.Double();
-    private boolean parada2;
+    private Escenario escenario;
+
 
     // JUANMA, AL FINAL ESTABA BIEN.. LA ESFERA SI O SI TIENE QUE RECIBIR EL
     // ESCENARIO.. Y LOS REBOTES LOS TIENE QUE CALCULAR LA ESFERA
     public Esfera(Escenario escenario) {
-        this.estructura.setRect(this.x, this.y, 12, 12);
+        this.escenario = escenario;
+        this.estructura.setRect(this.x, this.y, DIAMETER, DIAMETER);
         this.x = 241.0;
         this.y = 540.0;
         this.dx = 1;
@@ -42,10 +44,6 @@ public class Esfera extends ObjetoGrafico implements Movible {
         } catch (Exception e) {
             System.out.println("Error al cargar imagenes");
         }
-    }
-
-    public Rectangle2D getStruct() {
-        return new Rectangle2D.Double(x, y, getWidth(), getHeight());
     }
 
     @Override
@@ -123,33 +121,44 @@ public class Esfera extends ObjetoGrafico implements Movible {
     public void mover() {
         // y = y + dy;
             if(this.getX()+this.getDX() > 474- this.DIAMETER)//colision derecha escenario
-            this.setDX(-1);
+              this.setDX(-1);
             if(this.getX()+this.getDX() < 8 + this.DIAMETER)//colision izq escenario
-            this.setDX(1);
+               this.setDX(1);
             if(this.getY()+this.getDY() <30 + this.DIAMETER)//colision sup escenario
-            this.setDY(1);
-            if((this.getY()+this.getDY() > 590 - this.DIAMETER))//&& colion nave)//colision inf escenario
-            System.out.println("siamo fuori");
+               this.setDY(1);
+            if((this.getY()+this.getDY() > 590 - this.DIAMETER)){//&& colion nave)//colision inf escenario
+               escenario.cantidad_vidas --;
+               escenario.nave.setPosition(217, 550);
+               this.setPosition(241,540);
+               this.parada = true;
+            }
         if(!this.parada)
         {   
             this.setY(this.getY()+(this.getDY()*this.velocidad()));
             this.setX(this.getX()+(this.getDX()*this.velocidad()));
+            if (collision()){
+			this.dy = -1;
+			this.y = escenario.nave.getTOPY() - DIAMETER;
+		}
         }
         else{
             this.setX(this.getX()+5); 
         }
+
+        
+
     }
 
- /*   public boolean colision(){      //esto lo tiene que hacer la nave
-        return (nave.getBounds()).intersects(getBounds());
+    private boolean collision() {
+		return escenario.nave.getBounds().intersects(getBounds());
     }
-*/
+    
     public Rectangle getBounds() {
-		return new Rectangle();
+        return new Rectangle((int)this.getX(),(int)this.getY(), (int) DIAMETER, (int) DIAMETER);
 	}
     @Override
     public double velocidad() {
-        return 2;
+        return 4;
     }
 
     @Override
