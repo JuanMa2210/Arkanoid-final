@@ -51,12 +51,12 @@ public class BloqueDorado extends Bloque {
 
     @Override
     public double getX() {
-        return 0;
+        return this.x;
     }
 
     @Override
     public double getY() {
-        return 0;
+        return this.y;
     }
 
     @Override

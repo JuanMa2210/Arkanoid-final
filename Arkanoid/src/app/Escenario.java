@@ -273,10 +273,10 @@ public class Escenario{
         
         for(int i=0;i<bloques.size();i++){
            Bloque bloquesillo= bloques.get(i); 
-            if(esfera.getBounds().intersects(bloquesillo.getBounds())){
-                System.out.println("chocamo un bloque");
-                double xEsfera=esfera.getX();   //CREO QUE ACA ESTA MAL, PORQUE NO ESTOY CONSIDERANDO 
-                double yEsfera=esfera.getY();           //EL CUERPO DE LA PELOTA
+           
+            if(this.esfera.getBounds().intersects(bloquesillo.getBounds())){
+                double xEsfera=esfera.getX()+esfera.getWidth();   //CREO QUE ACA ESTA MAL, PORQUE NO ESTOY CONSIDERANDO 
+                double yEsfera=esfera.getY()+esfera.getHeight();           //EL CUERPO DE LA PELOTA
                 if(xEsfera==bloquesillo.x || xEsfera==bloquesillo.x+bloquesillo.ancho){
                    //PEGO EN ALGUNO DE LOS LADOS
                     esfera.setDX(esfera.getDX()*-1);
@@ -287,6 +287,11 @@ public class Escenario{
                     }
                 }
                 bloquesillo.restarImpactos();
+                if(bloquesillo.getImpactos()==0){
+                    System.out.println("removiendo bloques");
+                    bloques.remove(i);
+
+                }
             }
         }
     }

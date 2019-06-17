@@ -128,9 +128,16 @@ public class Esfera extends ObjetoGrafico implements Movible {
                this.setDY(1);
             if((this.getY()+this.getDY() > 590 - this.DIAMETER)){//&& colion nave)//colision inf escenario
                escenario.cantidad_vidas --;
-               escenario.nave.setPosition(217, 550);
-               this.setPosition(241,540);
-               this.parada = true;
+               if(escenario.cantidad_vidas == 0){
+                   System.out.println("GAME OVER");
+                   //mostrar pantalla de game over, junto a un pulsar para volver.
+                   System.exit(0);
+               }
+               else{
+                    escenario.nave.setPosition(217, 550);
+                    this.setPosition(241,540);
+                    this.parada = true;
+               }
             }
         if(!this.parada)
         {   
