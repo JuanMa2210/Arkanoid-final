@@ -10,8 +10,8 @@ import javax.imageio.ImageIO;
 
 public class Nave extends ObjetoGrafico implements Movible {
     protected int dx = 0;
-    protected double x;
-    protected double y;
+    protected int x;
+    protected int y;
     protected Image img_nave=null;
     protected Rectangle2D cuerpo=new Rectangle();
     private int width = 60;
@@ -19,8 +19,8 @@ public class Nave extends ObjetoGrafico implements Movible {
 
     public Nave() {
         this.cuerpo.setRect(this.x, this.y, this.getWidth(), this.getHeight());
-        this.x = 217.0;
-        this.y = 550.0;
+        this.x = 217;
+        this.y = 550;
         try {
             // aca va a ir la nave que elija el usuario, ahora solo tenemos esta
             this.img_nave = ImageIO.read(getClass().getResource("imagenes/naveNormal.png"));
@@ -31,13 +31,13 @@ public class Nave extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public void setPosition(double x, double y) {
+    public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
     @Override
-    public void setX(double x) {
+    public void setX(int x) {
         this.x = x;
     }
 
@@ -46,12 +46,12 @@ public class Nave extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public void setY(double y) {
+    public void setY(int y) {
         this.y = y;
     }
 
     @Override
-    public double getX() {
+    public int getX() {
         return this.x;
     }
 
@@ -60,7 +60,7 @@ public class Nave extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public double getY() {
+    public int getY() {
         return this.y;
     }
 
@@ -94,13 +94,13 @@ public class Nave extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public double velocidad() {
-        return 5.5;
+    public int velocidad() {
+        return 5;
     }
 
     @Override
-    public double aceleracion() {
-        return 3.0;
+    public int aceleracion() {
+        return 3;
     }
 
 
@@ -109,7 +109,7 @@ public class Nave extends ObjetoGrafico implements Movible {
         }
 
 
-	public double getTOPY() {
+	public int getTOPY() {
 		return this.y - this.getHeight();
 	}
 }

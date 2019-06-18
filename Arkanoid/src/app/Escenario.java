@@ -29,12 +29,15 @@ public class Escenario{
     protected Vector<Bloque> bloques=new Vector<Bloque>();
     protected ArrayList<Esfera> bolas = new ArrayList<Esfera>();
     protected ArrayList<String> niveles=new ArrayList<String>();
+    protected ArrayList<BufferedImage> fondos=new ArrayList<BufferedImage>();
+    protected float puntaje_actual=0;
+    protected float puntaje_maximo=0;
 
     protected Rectangle limites;//creo que aca es menos
-    private int nivelActual= 1;
+    private int nivelActual= 2;
     private boolean comenzo;
     private int cont;
-    protected static boolean nuevoNivel=true;
+    protected boolean nuevoNivel=false;
     protected Thread t;     //ESTO PARA QUE LO USAMOS?
  
 
@@ -55,10 +58,13 @@ public class Escenario{
             fondo_negro = ImageIO.read(getClass().getResource("imagenes/negro_solido.png"));
             img_nave = ImageIO.read(getClass().getResource("imagenes/naveNormal.png"));
             img_bola = ImageIO.read(getClass().getResource("imagenes/bola.png"));
-         //   int i=0;
+
+            fondos.add(img_fondoAzul);
+            fondos.add(img_fondoRojo);
+            fondos.add(img_fondoVerde);
+
             Files.walk(Paths.get("Niveles")).forEach(ruta-> {
                 if (Files.isRegularFile(ruta)) {
-                    System.out.println(String.valueOf(ruta));
                     this.niveles.add(String.valueOf(ruta));
                 }
             });
@@ -112,14 +118,18 @@ public class Escenario{
                 }
             }
         }      
-    //nave.start();
-    if (nuevoNivel){    //aca pasamos al siguiente nivel
-        this.finNivel();// definir funcion
-    }
     }
 
-    private void finNivel() {
-
+    public void siguienteNivel(){
+        this.nivelActual++;
+        this.nave = new Nave();
+        this.bolas = new ArrayList<Esfera>();
+        this.esfera = new Esfera(this);
+        esfera.parada = true;
+        bolas.add(esfera);
+        cargarLadrillos(nivelActual);
+        
+        this.nuevoNivel=false;
     }
 
     private void finJuego() {
@@ -144,28 +154,29 @@ public class Escenario{
     }
 
     public void draw(Graphics2D g) {
-        this.dibujoInicial(g);
+        this.dibujoInicial(g,this.nivelActual,this. puntaje_actual,this.puntaje_maximo);
     }
 
-    public void dibujoInicial(Graphics2D g){
+    public void dibujoInicial(Graphics2D g,int nivelActual,float puntaje_actual,float puntaje_maximo){
 
-        int limiteEscenario=img_fondoAzul.getWidth();
+        BufferedImage fondo=fondos.get(nivelActual-1);
 
-        g.drawRect(18, 43, limiteEscenario-38, img_fondoAzul.getHeight()-42);
-        g.drawImage(img_fondoAzul,0,25,null);
+        int limiteEscenario=fondo.getWidth();
+        g.drawRect(18, 43, limiteEscenario-38, fondo.getHeight()-42);
+        g.drawImage(fondo,0,25,null);
         g.drawImage(fondo_negro, limiteEscenario, 0,null);
         g.setColor(Color.RED);
         g.setFont(new Font("Courier", Font.BOLD, 25));
         g.drawString("PUNTAJE", limiteEscenario+50, 60);
         g.drawString(" MAXIMO", limiteEscenario+50, 95);
         g.setColor(Color.white);
-        g.drawString(" 0000000", limiteEscenario+50, 125);  //VARIABLE DEL PUNTAJE MAXIMO, VA A SER LA POS 0 DEL RANK
+        g.drawString(""+this.puntaje_maximo, limiteEscenario+50, 125);  //VARIABLE DEL PUNTAJE MAXIMO, VA A SER LA POS 0 DEL RANK
         g.setColor(Color.ORANGE);
         g.setFont(new Font("Courier", Font.BOLD, 25));
         g.drawString("PUNTAJE", limiteEscenario+50, 180);
         g.drawString(" ACTUAL", limiteEscenario+50, 215);
         g.setColor(Color.white);
-        g.drawString(" 0000000", limiteEscenario+50, 245);  //VARIABLE DEL PUNTAJE ACTUAL
+        g.drawString(""+puntaje_actual, limiteEscenario+50, 245);  //VARIABLE DEL PUNTAJE ACTUAL
         //DIBUJAR LAS NAVES DEPENDIENDO DE LAS VIDAS QUE TENGA
         for(int i=0;i<cantidad_vidas;i++){
             g.drawImage(img_nave, limiteEscenario+50+(45*i), 300, null);
@@ -173,7 +184,7 @@ public class Escenario{
         g.setColor(Color.RED);
         g.drawString("NIVEL:", limiteEscenario+150, 550);
         g.setColor(Color.white);
-        g.drawString("1", limiteEscenario+250, 550);    //ACA VA EL NIVEL
+        g.drawString(""+nivelActual, limiteEscenario+250, 550);    //ACA VA EL NIVEL
         //nave.setImagen(img_nave);
         Graphics2D g2 = (Graphics2D)g;
         g2.draw(this.limites);
@@ -183,6 +194,7 @@ public class Escenario{
         //ACA DIBUJO TODOS LOS BLOQUES QUE TENGA CARGADO
         for(int i=0;i<this.bloques.size();i++){
             if(this.bloques.get(i).impactos<=0){
+                this.puntaje_actual+=this.bloques.get(i).getPuntaje();
                 this.bloques.remove(i);
             }
         }
@@ -194,6 +206,10 @@ public class Escenario{
 
     public Vector<Bloque> getBloques(){
         return this.bloques;
+    }
+
+    public int getNivel(){
+        return this.nivelActual;
     }
 
     public void update(double delta,Keyboard keyboard){
@@ -233,6 +249,9 @@ public class Escenario{
                 esfera.setY(nave.getTOPY() - esfera.DIAMETER);
             }
         }
+        if(this.bloques.isEmpty()){
+            siguienteNivel();
+        }
     }
     
     
@@ -252,16 +271,16 @@ public class Escenario{
                 String[] caracteres=fila.split(",");
                 for (String c : caracteres) {
                     switch (c){
-                        case "A": bloques.add(new BloqueAmarillo(x,y));break;
-                        case "Z": bloques.add(new BloqueAzul(x,y));break;
-                        case "B": bloques.add(new BloqueBlanco(x,y));break;
-                        case "C": bloques.add(new BloqueCeleste(x,y));break;
-                        case "D": bloques.add(new BloqueDorado(x,y));break;
-                        case "N": bloques.add(new BloqueNaranja(x,y));break;
-                        case "P": bloques.add(new BloquePlateado(x,y,nivelActual));break;
-                        case "R": bloques.add(new BloqueRojo(x,y));break;
-                        case "S": bloques.add(new BloqueRosa(x,y));break;
-                        case "V": bloques.add(new BloqueVerde(x,y));break;
+                        case "A": bloques.add(new Bloque(this, "A", x, y));break;
+                        case "Z": bloques.add(new Bloque(this, "Z", x, y));break;
+                        case "B": bloques.add(new Bloque(this, "B", x, y));break;
+                        case "C": bloques.add(new Bloque(this, "C", x, y));break;
+                        case "D": bloques.add(new Bloque(this, "D", x, y));break;
+                        case "N": bloques.add(new Bloque(this, "N", x, y));break;
+                        case "P": bloques.add(new Bloque(this, "P", x, y));break;
+                        case "R": bloques.add(new Bloque(this, "R", x, y));break;
+                        case "S": bloques.add(new Bloque(this, "S", x, y));break;
+                        case "V": bloques.add(new Bloque(this, "V", x, y));break;
                         case "X": break;
                     }
                     x=x+40;
@@ -271,7 +290,8 @@ public class Escenario{
             }
             nivel1.close();
         } catch (Exception e) {
-            System.out.println("Error al cargar los niveles");
+            //System.out.println("Error al cargar los niveles");
+            System.out.println(e);
         }
     }
     //CALCULA EL REBOTE DE LA PELOTA CON LOS BLOQUES

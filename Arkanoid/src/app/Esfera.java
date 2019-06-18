@@ -12,9 +12,9 @@ import javax.imageio.ImageIO;
 
 public class Esfera extends ObjetoGrafico implements Movible {
 
-    protected double DIAMETER=12;
-    protected double x;
-    protected double y;
+    protected int DIAMETER=12;
+    protected int x;
+    protected int y;
     protected int dx;
     protected int dy;
     protected Image img_bola = null;
@@ -27,13 +27,11 @@ public class Esfera extends ObjetoGrafico implements Movible {
     private Escenario escenario;
 
 
-    // JUANMA, AL FINAL ESTABA BIEN.. LA ESFERA SI O SI TIENE QUE RECIBIR EL
-    // ESCENARIO.. Y LOS REBOTES LOS TIENE QUE CALCULAR LA ESFERA
     public Esfera(Escenario escenario) {
         this.escenario = escenario;
         this.estructura.setRect(this.x, this.y, DIAMETER, DIAMETER);
-        this.x = 241.0;
-        this.y = 540.0;
+        this.x = 241;
+        this.y = 540;
         this.dx = 1;
         this.dy = -1;
     }
@@ -47,13 +45,13 @@ public class Esfera extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public void setPosition(double x, double y) {
+    public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
     @Override
-    public void setX(double x) {
+    public void setX(int x) {
         this.x = x;
     }
 
@@ -62,7 +60,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public void setY(double y) {
+    public void setY(int y) {
         this.y = y;
     }
 
@@ -71,7 +69,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public double getX() {
+    public int getX() {
         return this.x;
     }
 
@@ -80,7 +78,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public double getY() {
+    public int getY() {
         return this.y;
     }
 
@@ -164,24 +162,24 @@ public class Esfera extends ObjetoGrafico implements Movible {
         return new Rectangle2D.Double(this.getX(),this.getY(), DIAMETER, DIAMETER);
 	}
     @Override
-    public double velocidad() {
+    public int velocidad() {
         return 4;
     }
 
     @Override
-    public double aceleracion() {
-        return 3.0; 
+    public int aceleracion() {
+        return 3; 
     }
 
     public void rebote(){ 
-        for (Bloque bloquesillo : escenario.getBloques()) {           
-            if(this.getBounds().intersects(bloquesillo.getBounds())){  
-                if((this.getX()+this.DIAMETER)==bloquesillo.getX() || this.getX()==(bloquesillo.getX()+this.DIAMETER)){
+        for (int i=0;i<escenario.getBloques().size();i++) {           
+            if(this.getBounds().intersects(escenario.bloques.get(i).getBounds())){  
+                if((this.getX()+this.DIAMETER)==escenario.bloques.get(i).getX() || this.getX()==(escenario.bloques.get(i).getX()+this.DIAMETER)){
                     this.setDX(this.getDX()*-1);
                 }else{
                     this.setDY(this.getDY()*-1);
                 }
-                bloquesillo.restarImpactos();
+                escenario.bloques.get(i).restarImpactos();
             }
         }
     }
