@@ -1,5 +1,6 @@
 package app;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -172,14 +173,16 @@ public class Esfera extends ObjetoGrafico implements Movible {
     }
 
     public void rebote(){ 
-        for (int i=0;i<escenario.getBloques().size();i++) {           
-            if(this.getBounds().intersects(escenario.bloques.get(i).getBounds())){  
-                if((this.getX()+this.DIAMETER)==escenario.bloques.get(i).getX() || this.getX()==(escenario.bloques.get(i).getX()+this.DIAMETER)){
-                    this.setDX(this.getDX()*-1);
-                }else{
+        for (int i=0;i<escenario.getBloques().size();i++) {  
+            Bloque bloque=escenario.bloques.get(i);         
+            if(this.getBounds().intersects(bloque.getBounds())){  
+                if((this.getX()+this.DIAMETER)<=bloque.getX() || this.getX()<=(bloque.getX()+this.DIAMETER)){
                     this.setDY(this.getDY()*-1);
+                }else{
+                    this.setDX(this.getDX()*-1);
                 }
-                escenario.bloques.get(i).restarImpactos();
+                bloque.restarImpactos();
+                break;
             }
         }
     }
