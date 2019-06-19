@@ -2,7 +2,6 @@ package app;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import app.Nave;
@@ -183,6 +182,4 @@ public class Esfera extends ObjetoGrafico implements Movible {
             }
         }
     }
-
-
 }

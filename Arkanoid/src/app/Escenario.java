@@ -3,6 +3,7 @@ package app;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -38,7 +39,7 @@ public class Escenario{
     private boolean comenzo;
     private int cont;
     protected boolean nuevoNivel=false;
-    protected Thread t;     //ESTO PARA QUE LO USAMOS?
+    //protected Thread t;     //lo puse para hacer el cronometro 
  
 
 
@@ -56,7 +57,7 @@ public class Escenario{
             img_fondoVerde = ImageIO.read(getClass().getResource("imagenes/FondoVerde.png"));
             img_fondoRojo = ImageIO.read(getClass().getResource("imagenes/FondoRojo.jpg"));
             fondo_negro = ImageIO.read(getClass().getResource("imagenes/negro_solido.png"));
-            img_nave = ImageIO.read(getClass().getResource("imagenes/naveNormal.png"));
+            img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus1.png"));
             img_bola = ImageIO.read(getClass().getResource("imagenes/bola.png"));
 
             fondos.add(img_fondoAzul);

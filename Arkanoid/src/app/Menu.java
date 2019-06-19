@@ -76,7 +76,7 @@ public class Menu extends JGame {
         try{
             img_fondo= ImageIO.read(getClass().getResource("imagenes/fondoMenu.jpg"));
             img_titulo=ImageIO.read(getClass().getResource("imagenes/arkanoid_logo.png"));
-            img_nave=ImageIO.read(getClass().getResource("imagenes/naveNormal.png"));
+            img_nave=ImageIO.read(getClass().getResource("imagenes/Vaus0.png"));
             nave.setImagen(img_nave);
             nave.setPosicion(308, 290);
             

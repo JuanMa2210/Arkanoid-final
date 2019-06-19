@@ -23,7 +23,7 @@ public class Nave extends ObjetoGrafico implements Movible {
         this.y = 550;
         try {
             // aca va a ir la nave que elija el usuario, ahora solo tenemos esta
-            this.img_nave = ImageIO.read(getClass().getResource("imagenes/naveNormal.png"));
+            this.img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus1.png"));
             this.img_nave = img_nave.getScaledInstance(60, 12, Image.SCALE_SMOOTH);
         } catch (Exception e) {
             System.out.println("Error al cargar imagenes Nave");
@@ -105,7 +105,7 @@ public class Nave extends ObjetoGrafico implements Movible {
 
 
 	public Rectangle getBounds() {
-            return new Rectangle((int)this.getX(), (int)this.getY(), this.getWidth(), this.getHeight());
+            return new Rectangle((int)this.getX()+3, (int)this.getY(), this.getWidth()-6, this.getHeight());
         }
 
 
