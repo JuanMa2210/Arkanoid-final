@@ -134,6 +134,10 @@ public class Bloque extends ObjetoGrafico {
         return this.puntaje;
     }
 
+    public boolean tieneBonus(){
+        return this.tieneBonus;
+    }
+
     @Override
     public void setPosition(int x, int y) {
         this.x=x;
