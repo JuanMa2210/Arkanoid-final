@@ -27,7 +27,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
     private Escenario escenario;
     private boolean EsqDerNave;
     private boolean EsqIzqNave;
-    
+    private boolean activa;
 
 
     public Esfera(Escenario escenario) {
@@ -36,6 +36,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
         this.y = 540.0;
         this.dx = 1;
         this.dy = -1;
+        activa=true;
     }
 
     public void cargarElementos() {
@@ -50,6 +51,10 @@ public class Esfera extends ObjetoGrafico implements Movible {
     public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
+    }
+
+    public boolean isActiva(){
+        return this.activa;
     }
 
     @Override
@@ -123,17 +128,20 @@ public class Esfera extends ObjetoGrafico implements Movible {
             if(this.getY()+this.getDY() <30 + this.DIAMETER)//colision sup escenario
                this.setDY(1);
             if((this.getY()+this.getDY() > 590 - this.DIAMETER)){//&& colion nave)//colision inf escenario
-               escenario.cantidad_vidas --;
-               if(escenario.cantidad_vidas == 0){
-                   System.out.println("GAME OVER");
-                   //mostrar pantalla de game over, junto a un pulsar para volver.
-                   //System.exit(0);
-               }
-               else{
-                    escenario.nave.setPosition(217, 550);
-                    escenario.nave.update(0);
-                    this.setPosition(241,540);
-                    this.parada = true;
+                this.activa=false;
+                if(escenario.cantidad_vidas == 0){
+                    System.out.println("GAME OVER");
+                    //mostrar pantalla de game over, junto a un pulsar para volver.
+                    //System.exit(0);
+                }
+                else{
+                    if(escenario.getBolas().isEmpty()){
+                        escenario.cantidad_vidas --;
+                        escenario.nave.setPosition(217, 550);
+                        escenario.nave.update(0);
+                        this.setPosition(241,540);
+                        this.parada = true;
+                    }
                }
             }
         if(!this.parada)
@@ -189,7 +197,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public Double velocidad() {
+    public double velocidad() {
         return this.velocidad;
     }
 

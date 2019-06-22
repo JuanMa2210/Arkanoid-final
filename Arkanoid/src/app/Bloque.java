@@ -107,7 +107,7 @@ public class Bloque extends ObjetoGrafico {
         this.y=y;
         this.cuerpo=new Rectangle();
         this.cuerpo.setRect(this.getX(),this.getY(),this.getWidth(),this.getHeight());
-        this.asignarBonus();
+        this.asignarBonus(escenario);
 
     }
 
@@ -120,12 +120,12 @@ public class Bloque extends ObjetoGrafico {
         if((int)Math.floor(Math.random()*4+1)==1){  //GENERA UN NUMERO DEL 1 AL 4 Y SOLO ASIGNA BONUS SI ES 1
             int azar=(int)Math.floor(Math.random()*6+1);
             switch(azar){
-                case 1: this.bonus=new BonusDuplicate(escenario,this.x,this.y);break;  //CATCH
-                case 2: this.bonus=new BonusDuplicate(escenario,this.x,this.y);break;  //DUPLICATE
-                case 3: this.bonus=new BonusDuplicate(escenario,this.x,this.y);break;  //ENLARGE
-                case 4: this.bonus=new BonusDuplicate(escenario,this.x,this.y);break;  //EXTRA_PLAYER
-                case 5: this.bonus=new BonusDuplicate(escenario,this.x,this.y);break;  //SLOW
-                case 6: this.bonus=new BonusDuplicate(escenario,this.x,this.y);break;  //WARP
+                case 1: this.bonus=new BonusSlow(escenario,this.x,this.y);break;  //CATCH
+                case 2: this.bonus=new BonusSlow(escenario,this.x,this.y);break;  //DUPLICATE
+                case 3: this.bonus=new BonusSlow(escenario,this.x,this.y);break;  //ENLARGE
+                case 4: this.bonus=new BonusSlow(escenario,this.x,this.y);break;  //EXTRA_PLAYER
+                case 5: this.bonus=new BonusSlow(escenario,this.x,this.y);break;  //SLOW
+                case 6: this.bonus=new BonusSlow(escenario,this.x,this.y);break;  //WARP
             }
             this.tieneBonus=true;
         }

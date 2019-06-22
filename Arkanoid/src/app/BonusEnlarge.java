@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 
 public class BonusEnlarge extends Bonus {
     //ESTE BONUS ALARGA LA NAVE
-    public BonusEnlarge(Escenario escenario,int x,int y){
+    public BonusEnlarge(Escenario escenario,double x,double y){
         this.x=x;
         this.y=y;
         this.cuerpo=new Rectangle();
@@ -32,7 +32,7 @@ public class BonusEnlarge extends Bonus {
     }
 
     @Override
-    public int velocidad() {
+    public double velocidad() {
         return 1;
     }
 
@@ -84,7 +84,7 @@ public class BonusEnlarge extends Bonus {
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawImage(this.imagen, this.x, this.y, null);
+        g.drawImage(this.imagen, (int)this.x, (int)this.y, null);
     }
 
     @Override

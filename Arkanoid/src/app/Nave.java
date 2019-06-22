@@ -17,13 +17,11 @@ public class Nave extends ObjetoGrafico implements Movible {
     protected Rectangle2D cuerpo=new Rectangle();
     private int width = 60;
     private int height = 12;
-    private Escenario escenario;
     protected boolean bonusActivo=false;
 
-        this.escenario=escenario;
+    public Nave(Escenario escenario) {
         this.x = 217.0;
         this.y = 550.0;
-    public Nave(Escenario escenario) {
         try {
             // aca va a ir la nave que elija el usuario, ahora solo tenemos esta
             this.img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus1.png"));
@@ -79,8 +77,8 @@ public class Nave extends ObjetoGrafico implements Movible {
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawImage(this.img_nave, (int) this.getX(), (int) this.getY(), null);
         this.cuerpo.setRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+        g.drawImage(img_nave.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH),(int)this.getX(),(int)this.getY(),null);
     }
 
     @Override
@@ -100,7 +98,7 @@ public class Nave extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public Double velocidad() {
+    public double velocidad() {
         return 5.0;
     }
 

@@ -123,15 +123,20 @@ public class Escenario{
     }
 
     public void siguienteNivel(){
-        this.nivelActual++;
-        this.nave = new Nave(this);
-        this.bolas = new ArrayList<Esfera>();
-        this.esfera = new Esfera(this);
-        esfera.parada = true;
-        bolas.add(esfera);
-        cargarLadrillos(nivelActual);
-        
-        this.nuevoNivel=false;
+        if(this.nivelActual<this.niveles.size()){
+            this.nivelActual++;
+            this.nave = new Nave(this);
+            this.bolas = new ArrayList<Esfera>();
+            this.esfera = new Esfera(this);
+            esfera.parada = true;
+            this.bolas.clear();
+            this.bonuses.clear();
+            this.bloques.clear();
+            bolas.add(esfera);
+            cargarLadrillos(nivelActual);
+            
+            this.nuevoNivel=false;
+        }
     }
 
     private void finJuego() {
@@ -209,11 +214,15 @@ public class Escenario{
         for(int i=0;i<bonuses.size();i++){
             if(bonuses.get(i)!=null){
                 bonuses.get(i).draw(g);
-                bonuses.get(i).update(0);
             }
         }
         
     }
+
+    public ArrayList<String> getNiveles(){
+        return this.niveles;
+    }
+
     public Vector<Bonus> getBonuses(){
         return this.bonuses;
     }
@@ -243,11 +252,18 @@ public class Escenario{
            bolas.get(i).rebote();
         }
         for(int i=0;i<bonuses.size();i++){
-            if(bonuses.get(i)!=null)
+            if(bonuses.get(i)!=null){
                 bonuses.get(i).mover();
-            /*if(bonuses.get(i).cuerpo.intersects(this.nave.cuerpo)){
-                bonuses.remove(i);
-            }*/
+                if(bonuses.get(i).cuerpo.intersects(this.nave.cuerpo)){
+                    bonuses.get(i).update(0);
+                    try {
+                        bonuses.remove(i);
+                    } catch (Exception e) {
+                        //ESTO ES SOLO PARA CUANDO PASA DE NIVEL
+                        System.out.println("Paso de nivel");
+                    }
+                }
+            }
         }
         if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && nave.getX()>23){
             nave.setDX(-1);
@@ -275,11 +291,10 @@ public class Escenario{
         }
         else{
             for (Esfera esfera : this.bolas) {
-                esfera.mover();
-                if(esfera.getY()==nave.getY()&&(esfera.getX()>=nave.getX()&&esfera.getX()<=(nave.getX()+nave.getWidth())))
-                {
-                    esfera.setDY(-1);
-                    esfera.setY(nave.getTOPY() - esfera.DIAMETER);
+                if(esfera.isActiva()==false){
+                    this.bolas.remove(esfera);      //TENGO ERRORES ACA
+                }else{
+                    esfera.mover();
                 }
             }
         }
@@ -291,6 +306,14 @@ public class Escenario{
     public void addBonus(Bloque bloque){
         if(bloque.tieneBonus())
             this.bonuses.add(bloque.getBonus());
+    }
+
+    public int getVidas(){
+        return this.cantidad_vidas;
+    }
+
+    public void setVidas(int vidas){
+        this.cantidad_vidas=vidas;
     }
     
     //NECESITARIA RECIBIR EL NIVEL QUE TENGO QUE CARGAR
@@ -328,8 +351,7 @@ public class Escenario{
             }
             nivel1.close();
         } catch (Exception e) {
-            //System.out.println("Error al cargar los niveles");
-            System.out.println(e);
+            System.out.println("Error al cargar los niveles");
         }
     }
     //CALCULA EL REBOTE DE LA PELOTA CON LOS BLOQUES
