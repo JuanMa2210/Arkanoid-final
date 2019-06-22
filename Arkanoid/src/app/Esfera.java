@@ -2,6 +2,7 @@ package app;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import app.Escenario;
@@ -20,9 +21,9 @@ public class Esfera extends ObjetoGrafico implements Movible {
     protected Image img_bola = null;
     private int ancho;
     private int alto;
-    protected Rectangle2D estructura=new Rectangle2D.Double(x,y,ancho,alto);
+    protected Rectangle2D estructura=new Rectangle();
+    //protected Nave nave= new Nave();
     protected boolean parada;
-    //protected Rectangle2D bordes= new Rectangle2D.Double();
     private Escenario escenario;
     private boolean EsqDerNave;
     private boolean EsqIzqNave;
@@ -129,8 +130,9 @@ public class Esfera extends ObjetoGrafico implements Movible {
                    //System.exit(0);
                }
                else{
-                    escenario.nave.setPosition(217.0, 550.0);
-                    this.setPosition(241.0,540.0);
+                    escenario.nave.setPosition(217, 550);
+                    escenario.nave.update(0);
+                    this.setPosition(241,540);
                     this.parada = true;
                }
             }

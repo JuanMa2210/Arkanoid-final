@@ -1,5 +1,6 @@
 package app;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -16,14 +17,17 @@ public class Nave extends ObjetoGrafico implements Movible {
     protected Rectangle2D cuerpo=new Rectangle();
     private int width = 60;
     private int height = 12;
+    private Escenario escenario;
+    protected boolean bonusActivo=false;
 
-    public Nave() {
+        this.escenario=escenario;
         this.x = 217.0;
         this.y = 550.0;
+    public Nave(Escenario escenario) {
         try {
             // aca va a ir la nave que elija el usuario, ahora solo tenemos esta
-            this.img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus3.png"));
-            this.img_nave = img_nave.getScaledInstance(60, 12, Image.SCALE_SMOOTH);
+            this.img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus1.png"));
+            this.img_nave = img_nave.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
         } catch (Exception e) {
             System.out.println("Error al cargar imagenes Nave");
         }
@@ -39,6 +43,7 @@ public class Nave extends ObjetoGrafico implements Movible {
     public void setX(double x) {
         this.x = x;
     }
+
 
     public void setDX(int dx) {
         this.dx = dx;
@@ -90,7 +95,8 @@ public class Nave extends ObjetoGrafico implements Movible {
 
     @Override
     public void mover(){
-        this.setX(this.getX()+(this.getDX()*this.velocidad()));
+        this.setX(getX()+(this.getDX()*this.velocidad()));
+        this.update(0);
     }
 
     @Override
@@ -103,15 +109,25 @@ public class Nave extends ObjetoGrafico implements Movible {
         return 3;
     }
 
+    public void setWidth(int ancho){
+        this.width=ancho;
+    }
 
-	public Rectangle getBounds() {
-            return (Rectangle) this.cuerpo;
-        }
+	public Rectangle2D getBounds() {
+        return this.cuerpo;
+    }
 
 
 	public Double getTOPY() {
 		return this.y - this.getHeight();
-	}
+    }
+    
+    public void setActivo(boolean verdad){
+        this.bonusActivo=verdad;
+    }
+    public boolean isActivo(){
+        return this.bonusActivo;
+    }
 }
 
 
