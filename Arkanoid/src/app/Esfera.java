@@ -3,6 +3,7 @@ package app;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import app.Nave;
@@ -20,10 +21,9 @@ public class Esfera extends ObjetoGrafico implements Movible {
     protected Image img_bola = null;
     private int ancho;
     private int alto;
-    protected Rectangle2D estructura=new Rectangle2D.Double(x,y,ancho,alto);
-    protected Nave nave= new Nave();
+    protected Rectangle2D estructura=new Rectangle();
+    //protected Nave nave= new Nave();
     protected boolean parada;
-    protected Rectangle2D bordes= new Rectangle2D.Double();
     private Escenario escenario;
 
 
@@ -133,6 +133,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
                }
                else{
                     escenario.nave.setPosition(217, 550);
+                    escenario.nave.update(0);
                     this.setPosition(241,540);
                     this.parada = true;
                }
@@ -155,11 +156,11 @@ public class Esfera extends ObjetoGrafico implements Movible {
     }
 
     private boolean collision() {
-		return escenario.nave.getBounds().intersects(getBounds());
+		return this.getBounds().intersects(escenario.nave.getBounds());
     }
     
     public Rectangle2D getBounds() {
-        return new Rectangle2D.Double(this.getX(),this.getY(), DIAMETER, DIAMETER);
+        return new Rectangle(this.getX(),this.getY(), DIAMETER, DIAMETER);
 	}
     @Override
     public int velocidad() {
@@ -173,12 +174,20 @@ public class Esfera extends ObjetoGrafico implements Movible {
 
     public void rebote(){ 
         for (int i=0;i<escenario.getBloques().size();i++) {  
-            Bloque bloque=escenario.bloques.get(i);         
-            if(this.getBounds().intersects(bloque.getBounds())){  
-                if((this.getX()+this.DIAMETER)<=bloque.getX() || this.getX()<=(bloque.getX()+this.DIAMETER)){
-                    this.setDY(this.getDY()*-1);
-                }else{
+            Bloque bloque=escenario.getBloques().get(i);         
+            if(this.getBounds().intersects(bloque.getBounds())){
+                /*System.out.println("X DE LA ESFERA  "+this.getX());
+                System.out.println("X DEL FIN DE LA ESFERA  "+(this.getX()+12));
+                System.out.println("Y DE LA ESFERA  "+this.getY());
+                System.out.println("Y DEL FIN DE LA ESFERA  "+(this.getX()+12));  
+                System.out.println("X DEl BLOQUE  "+bloque.getX());
+                System.out.println("X FINAL DEl BLOQUE  "+(bloque.getX()+bloque.getWidth()));
+                System.out.println("Y DEl BLOQUE  "+bloque.getY());
+                System.out.println("Y FINAL DEl BLOQUE  "+(bloque.getY()+bloque.getHeight()));*/
+                if((this.getX()+this.DIAMETER)==bloque.getX() || this.getX()==(bloque.getX()+bloque.getWidth())){
                     this.setDX(this.getDX()*-1);
+                }else{
+                    this.setDY(this.getDY()*-1);
                 }
                 bloque.restarImpactos();
                 break;

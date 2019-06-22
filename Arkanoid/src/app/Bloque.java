@@ -18,6 +18,7 @@ public class Bloque extends ObjetoGrafico {
     protected int puntaje;
     protected boolean tieneBonus;
     protected Image img;
+    protected Bonus bonus;
 
     public Bloque(Escenario escenario,String color,int x,int y){
         switch(color){
@@ -106,25 +107,24 @@ public class Bloque extends ObjetoGrafico {
         this.y=y;
         this.cuerpo=new Rectangle();
         this.cuerpo.setRect(this.x,this.y,45,20);
-        this.asignarBonus();
-
+        this.asignarBonus(escenario);
     }
 
     public void restarImpactos(){
         this.impactos--;    //cuando llegue a cero, el bloque va a estar destruido
     }
 
-    public  void asignarBonus(){   //PUEDE ASIGNARLE UN BONUS AL BLOQUE O NO.
+    public  void asignarBonus(Escenario escenario){   //PUEDE ASIGNARLE UN BONUS AL BLOQUE O NO.
         
         if((int)Math.floor(Math.random()*4+1)==1){  //GENERA UN NUMERO DEL 1 AL 4 Y SOLO ASIGNA BONUS SI ES 1
             int azar=(int)Math.floor(Math.random()*6+1);
             switch(azar){
-                case 1: break;  //CATCH
-                case 2: break;  //DUPLICATE
-                case 3: break;  //ENLARGE
-                case 4: break;  //EXTRA_PLAYER
-                case 5: break;  //SLOW
-                case 6: break;  //WARP
+                case 1: this.bonus=new BonusDuplicate(escenario,this.x,this.y);break;  //CATCH
+                case 2: this.bonus=new BonusDuplicate(escenario,this.x,this.y);break;  //DUPLICATE
+                case 3: this.bonus=new BonusDuplicate(escenario,this.x,this.y);break;  //ENLARGE
+                case 4: this.bonus=new BonusDuplicate(escenario,this.x,this.y);break;  //EXTRA_PLAYER
+                case 5: this.bonus=new BonusDuplicate(escenario,this.x,this.y);break;  //SLOW
+                case 6: this.bonus=new BonusDuplicate(escenario,this.x,this.y);break;  //WARP
             }
             this.tieneBonus=true;
         }
@@ -133,6 +133,11 @@ public class Bloque extends ObjetoGrafico {
     public int getPuntaje(){
         return this.puntaje;
     }
+
+    public Bonus getBonus(){
+        return this.bonus;
+    }
+
 
     public boolean tieneBonus(){
         return this.tieneBonus;
@@ -190,7 +195,7 @@ public class Bloque extends ObjetoGrafico {
     }
 
     public Rectangle2D getBounds() {
-        return new Rectangle2D.Double(this.getX(),this.getY(), this.ancho, this.alto);
+        return this.cuerpo;
     }
     
     

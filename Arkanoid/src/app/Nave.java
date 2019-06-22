@@ -1,5 +1,6 @@
 package app;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -16,15 +17,18 @@ public class Nave extends ObjetoGrafico implements Movible {
     protected Rectangle2D cuerpo=new Rectangle();
     private int width = 60;
     private int height = 12;
+    private Escenario escenario;
+    protected boolean bonusActivo=false;
 
-    public Nave() {
-        this.cuerpo.setRect(this.x, this.y, this.getWidth(), this.getHeight());
+    public Nave(Escenario escenario) {
         this.x = 217;
         this.y = 550;
+        this.cuerpo.setRect(this.x, this.y, this.getWidth(), this.getHeight());
+        this.escenario=escenario;
         try {
             // aca va a ir la nave que elija el usuario, ahora solo tenemos esta
             this.img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus1.png"));
-            this.img_nave = img_nave.getScaledInstance(60, 12, Image.SCALE_SMOOTH);
+            this.img_nave = img_nave.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
         } catch (Exception e) {
             System.out.println("Error al cargar imagenes Nave");
         }
@@ -40,6 +44,7 @@ public class Nave extends ObjetoGrafico implements Movible {
     public void setX(int x) {
         this.x = x;
     }
+
 
     public void setDX(int dx) {
         this.dx = dx;
@@ -66,7 +71,7 @@ public class Nave extends ObjetoGrafico implements Movible {
 
     @Override
     public void update(double delta) {
-
+        this.cuerpo.setRect(this.x, this.y, this.getWidth(), this.getHeight());
     }
 
     public void setImagen(BufferedImage img) {
@@ -75,7 +80,7 @@ public class Nave extends ObjetoGrafico implements Movible {
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawImage(this.img_nave, (int) this.getX(), (int) this.getY(), null);
+        g.drawImage(img_nave.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH),this.getX(),this.getY(),null);
     }
 
     @Override
@@ -91,6 +96,7 @@ public class Nave extends ObjetoGrafico implements Movible {
     @Override
     public void mover(){
         this.setX(getX()+(this.getDX()*this.velocidad()));
+        this.update(0);
     }
 
     @Override
@@ -103,15 +109,25 @@ public class Nave extends ObjetoGrafico implements Movible {
         return 3;
     }
 
+    public void setWidth(int ancho){
+        this.width=ancho;
+    }
 
-	public Rectangle getBounds() {
-            return new Rectangle((int)this.getX()+3, (int)this.getY(), this.getWidth()-6, this.getHeight());
-        }
+	public Rectangle2D getBounds() {
+        return this.cuerpo;
+    }
 
 
 	public int getTOPY() {
 		return this.y - this.getHeight();
-	}
+    }
+    
+    public void setActivo(boolean verdad){
+        this.bonusActivo=verdad;
+    }
+    public boolean isActivo(){
+        return this.bonusActivo;
+    }
 }
 
 

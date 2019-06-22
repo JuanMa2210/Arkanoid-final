@@ -25,11 +25,12 @@ public class Escenario{
     protected BufferedImage img_nave = null;
     protected BufferedImage img_bola = null;
     protected int cantidad_vidas=3; //limitar cantidad de vidas a 5
-    protected Nave nave = new Nave();
+    protected Nave nave = new Nave(this);
     protected Esfera esfera = new Esfera(this);  
     protected Vector<Bloque> bloques=new Vector<Bloque>();
     protected ArrayList<Esfera> bolas = new ArrayList<Esfera>();
     protected ArrayList<String> niveles=new ArrayList<String>();
+    protected Vector<Bonus> bonuses=new Vector<Bonus>();
     protected ArrayList<BufferedImage> fondos=new ArrayList<BufferedImage>();
     protected float puntaje_actual=0;
     protected float puntaje_maximo=0;
@@ -76,7 +77,7 @@ public class Escenario{
 
     // incializamos todo en estas variables.
     public void inicio() {   
-        this.nave = new Nave();
+        this.nave = new Nave(this);
         this.bolas = new ArrayList<Esfera>();
         this.esfera = new Esfera(this);
         esfera.parada = true;
@@ -123,7 +124,7 @@ public class Escenario{
 
     public void siguienteNivel(){
         this.nivelActual++;
-        this.nave = new Nave();
+        this.nave = new Nave(this);
         this.bolas = new ArrayList<Esfera>();
         this.esfera = new Esfera(this);
         esfera.parada = true;
@@ -188,21 +189,45 @@ public class Escenario{
         g.drawString(""+nivelActual, limiteEscenario+250, 550);    //ACA VA EL NIVEL
         //nave.setImagen(img_nave);
         Graphics2D g2 = (Graphics2D)g;
-        g2.draw(this.limites);
+        //g2.draw(this.limites);
         nave.draw(g);
-        esfera.setImagen(img_bola);
-        esfera.draw(g);
+        for (Esfera esfera : this.bolas) {
+            esfera.setImagen(img_bola);
+            esfera.draw(g);
+        }
         //ACA DIBUJO TODOS LOS BLOQUES QUE TENGA CARGADO
         for(int i=0;i<this.bloques.size();i++){
             if(this.bloques.get(i).impactos<=0){
                 this.puntaje_actual+=this.bloques.get(i).getPuntaje();
+                this.bonuses.add(this.bloques.get(i).getBonus());
                 this.bloques.remove(i);
             }
         }
         for (Bloque B : this.bloques) {
             B.draw(g);
         }
+        for(int i=0;i<bonuses.size();i++){
+            if(bonuses.get(i)!=null){
+                bonuses.get(i).draw(g);
+                bonuses.get(i).update(0);
+            }
+        }
         
+    }
+    public Vector<Bonus> getBonuses(){
+        return this.bonuses;
+    }
+
+    public ArrayList<Esfera> getBolas(){
+        return this.bolas;
+    }
+
+    public void setBolas(ArrayList<Esfera> bolas){
+        this.bolas=bolas;
+    }
+
+    public Nave getNave(){
+        return this.nave;
     }
 
     public Vector<Bloque> getBloques(){
@@ -217,11 +242,18 @@ public class Escenario{
         for (int i=0;i<bolas.size();i++) {
            bolas.get(i).rebote();
         }
+        for(int i=0;i<bonuses.size();i++){
+            if(bonuses.get(i)!=null)
+                bonuses.get(i).mover();
+            /*if(bonuses.get(i).cuerpo.intersects(this.nave.cuerpo)){
+                bonuses.remove(i);
+            }*/
+        }
         if (keyboard.isKeyPressed(KeyEvent.VK_LEFT) && nave.getX()>23){
             nave.setDX(-1);
              nave.mover();
         }
-        if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()<img_fondoAzul.getWidth()-84){
+        if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()+nave.getWidth()<img_fondoAzul.getWidth()-20){
             nave.setDX(1);
             nave.mover();
         }
@@ -232,22 +264,24 @@ public class Escenario{
         if (this.esfera.parada){
             
             if ((keyboard.isKeyPressed(KeyEvent.VK_LEFT) || keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) 
-                                && (nave.getX()>23 && nave.getX()<img_fondoAzul.getWidth()-84)){
+                                && (nave.getX()>23 && nave.getX()+nave.getWidth()<img_fondoAzul.getWidth()-20)){
               this.esfera.setX(nave.getX()+(nave.getWidth()/2)-(this.esfera.getWidth()/2));
               this.esfera.mover();
             }
-            if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()<img_fondoAzul.getWidth()-84){
+            if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()+nave.getWidth()<img_fondoAzul.getWidth()-20){
                nave.setDX(1);
                nave.mover();
             }
         }
 
         else{
-         this.esfera.mover();
-          if(esfera.getY()==nave.getY()&&(esfera.getX()>=nave.getX()&&esfera.getX()<=(nave.getX()+nave.getWidth())))
-            {
-                esfera.setDY(-1);
-                esfera.setY(nave.getTOPY() - esfera.DIAMETER);
+            for (Esfera esfera : this.bolas) {
+                esfera.mover();
+                if(esfera.getY()==nave.getY()&&(esfera.getX()>=nave.getX()&&esfera.getX()<=(nave.getX()+nave.getWidth())))
+                {
+                    esfera.setDY(-1);
+                    esfera.setY(nave.getTOPY() - esfera.DIAMETER);
+                }
             }
         }
         if(this.bloques.isEmpty()){
@@ -255,6 +289,10 @@ public class Escenario{
         }
     }
     
+    public void addBonus(Bloque bloque){
+        if(bloque.tieneBonus())
+            this.bonuses.add(bloque.getBonus());
+    }
     
     //NECESITARIA RECIBIR EL NIVEL QUE TENGO QUE CARGAR
     public void cargarLadrillos(int nivelActual){
