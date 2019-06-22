@@ -184,12 +184,12 @@ public class Esfera extends ObjetoGrafico implements Movible {
         return new Rectangle2D.Double(this.getX(),this.getY(), DIAMETER, DIAMETER);
     }
     
-    public void setVelocidad(Double velocidad) {
+    public void setVelocidad(double velocidad) {
         this.velocidad = velocidad;
     }
 
     @Override
-    public Double velocidad() {
+    public double velocidad() {
         return this.velocidad;
     }
 
@@ -202,19 +202,22 @@ public class Esfera extends ObjetoGrafico implements Movible {
         for (int i=0;i<escenario.getBloques().size();i++) {  
             Bloque bloque=escenario.bloques.get(i);    
             if(this.getBounds().intersects(bloque.getBounds())){  //Divido en colisiones por arriba y abajo, y por otro lado laterales
-                System.out.println("bloque x:"+bloque.getX()+"bloque y:"+bloque.getY()+"ancho:"+bloque.getWidth()+"Alto:"+bloque.getHeight());
-                System.out.println("esfera en x:"+this.getX()+" esfera en y:"+this.getY()); 
+              //  System.out.println("bloque x:"+bloque.getX()+"bloque y:"+bloque.getY()+"ancho:"+bloque.getWidth()+"Alto:"+bloque.getHeight());
+              //  System.out.println("esfera en x:"+this.getX()+" esfera en y:"+this.getY()); 
                 if((this.getY()<=bloque.cuerpo.getMaxY())||((this.getY()+this.DIAMETER+this.velocidad())<=bloque.cuerpo.getY())
                         &&(this.getX()>bloque.cuerpo.getMinX()&&this.getX()<bloque.cuerpo.getMaxX())){
                     this.setDY(this.getDY()*-1);
-                }else if(((this.getX()+this.DIAMETER+this.velocidad())<=bloque.cuerpo.getX())||(this.getX()<=bloque.cuerpo.getMaxX())
+                }
+                if(((this.getX()+this.DIAMETER+this.velocidad())<=bloque.cuerpo.getX())||(this.getX()+5<=bloque.cuerpo.getMaxX())
                             &&(this.getY()>bloque.cuerpo.getMinY()&&this.getY()<bloque.cuerpo.getMaxY())){
+                            System.out.println("entro");
                     this.setDX(this.getDX()*-1);
                 }
+            
                 bloque.restarImpactos();
                     
                 break;
-            }
+            }    
         }
     }
 }

@@ -10,8 +10,8 @@ public abstract class Bonus extends ObjetoGrafico implements Movible{
     protected Rectangle2D cuerpo;
     protected int ancho=30;
     protected int alto=15;
-    protected int x;
-    protected int y;
+    protected double x;
+    protected double y;
     protected Escenario escenario;
 
     protected Rectangle2D getBounds(){

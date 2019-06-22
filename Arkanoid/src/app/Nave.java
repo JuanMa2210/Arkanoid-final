@@ -20,10 +20,11 @@ public class Nave extends ObjetoGrafico implements Movible {
     private Escenario escenario;
     protected boolean bonusActivo=false;
 
+      public Nave(Escenario escenario) {  
         this.escenario=escenario;
         this.x = 217.0;
         this.y = 550.0;
-    public Nave(Escenario escenario) {
+    
         try {
             // aca va a ir la nave que elija el usuario, ahora solo tenemos esta
             this.img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus1.png"));
@@ -100,7 +101,7 @@ public class Nave extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public Double velocidad() {
+    public double velocidad() {
         return 5.0;
     }
 

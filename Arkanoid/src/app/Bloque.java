@@ -107,7 +107,7 @@ public class Bloque extends ObjetoGrafico {
         this.y=y;
         this.cuerpo=new Rectangle();
         this.cuerpo.setRect(this.getX(),this.getY(),this.getWidth(),this.getHeight());
-        this.asignarBonus();
+        this.asignarBonus(escenario);
 
     }
 

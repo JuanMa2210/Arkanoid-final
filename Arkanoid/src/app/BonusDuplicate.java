@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 
 public class BonusDuplicate extends Bonus {
     //ESTE BONUS ALARGA LA NAVE
-    public BonusDuplicate(Escenario escenario,int x,int y){
+    public BonusDuplicate(Escenario escenario,double x,double y){
         this.x=x;
         this.y=y;
         this.cuerpo=new Rectangle();
@@ -32,7 +32,7 @@ public class BonusDuplicate extends Bonus {
     }
 
     @Override
-    public int velocidad() {
+    public double velocidad() {
         return 1;
     }
 
@@ -42,17 +42,17 @@ public class BonusDuplicate extends Bonus {
     }
 
     @Override
-    public void setPosition(int x, int y) {
+    public void setPosition(double x, double y) {
 
     }
 
     @Override
-    public void setX(int x) {
+    public void setX(double x) {
 
     }
 
     @Override
-    public void setY(int y) {
+    public void setY(double y) {
 
     }
 
@@ -62,12 +62,12 @@ public class BonusDuplicate extends Bonus {
     }
 
     @Override
-    public int getX() {
+    public double getX() {
         return 0;
     }
 
     @Override
-    public int getY() {
+    public double getY() {
         return 0;
     }
 
@@ -90,7 +90,7 @@ public class BonusDuplicate extends Bonus {
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawImage(this.imagen, this.x, this.y, null);
+        g.drawImage(this.imagen,(int) this.x,(int) this.y, null);
     }
 
     @Override
