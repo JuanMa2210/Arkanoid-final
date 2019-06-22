@@ -21,8 +21,8 @@ public class BonusEnlarge extends Bonus {
     }
 
     @Override
-    public int velocidad() {
-        return 0;
+    public Double velocidad() {
+        return null;
     }
 
     @Override
@@ -31,17 +31,17 @@ public class BonusEnlarge extends Bonus {
     }
 
     @Override
-    public void setPosition(int x, int y) {
+    public void setPosition(double x, double y) {
 
     }
 
     @Override
-    public void setX(int x) {
+    public void setX(double x) {
 
     }
 
     @Override
-    public void setY(int y) {
+    public void setY(double y) {
 
     }
 
@@ -51,12 +51,12 @@ public class BonusEnlarge extends Bonus {
     }
 
     @Override
-    public int getX() {
+    public double getX() {
         return 0;
     }
 
     @Override
-    public int getY() {
+    public double getY() {
         return 0;
     }
 
@@ -79,5 +79,6 @@ public class BonusEnlarge extends Bonus {
     public int getHeight() {
         return 0;
     }
+
     
 }

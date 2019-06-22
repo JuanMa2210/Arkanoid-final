@@ -9,17 +9,17 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 public class Bloque extends ObjetoGrafico {
-    protected int x;
-    protected int y;
+    protected double x;
+    protected double y;
     protected Rectangle2D cuerpo;
-    protected int ancho=45;
-    protected int alto=20;
+    protected static int ancho=45;
+    protected static int alto=20;
     protected int impactos;
     protected int puntaje;
     protected boolean tieneBonus;
     protected Image img;
 
-    public Bloque(Escenario escenario,String color,int x,int y){
+    public Bloque(Escenario escenario,String color,double x,double y){
         switch(color){
             case "A":
                 this.puntaje=120;this.impactos=1;
@@ -105,7 +105,8 @@ public class Bloque extends ObjetoGrafico {
         this.x=x;
         this.y=y;
         this.cuerpo=new Rectangle();
-        this.cuerpo.setRect(this.x,this.y,45,20);
+        this.cuerpo.setRect(this.getX(),this.getY(),this.getWidth(),this.getHeight());
+        System.out.println("posicion x:"+this.getX()+"posicion y:"+this.getY()+"ancho:"+this.getWidth()+"Alto:"+this.getHeight());
         this.asignarBonus();
 
     }
@@ -139,18 +140,18 @@ public class Bloque extends ObjetoGrafico {
     }
 
     @Override
-    public void setPosition(int x, int y) {
+    public void setPosition(double x, double y) {
         this.x=x;
         this.y=y;
     }
 
     @Override
-    public void setX(int x) {
+    public void setX(double x) {
         this.x=x;
     }
 
     @Override
-    public void setY(int y) {
+    public void setY(double y) {
         this.y=y;
     }
 
@@ -160,12 +161,12 @@ public class Bloque extends ObjetoGrafico {
     }
 
     @Override
-    public int getX() {
+    public double getX() {
         return this.x;
     }
 
     @Override
-    public int getY() {
+    public double getY() {
         return this.y;
     }
 
@@ -176,21 +177,23 @@ public class Bloque extends ObjetoGrafico {
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawImage(this.img, this.x, this.y, null);
+        g.drawImage(this.img, (int)this.getX(),(int) this.getY(), null);
+        this.cuerpo.setRect(this.getX(),this.getY(),this.getWidth(),this.getHeight());
+        
     }
 
     @Override
     public int getWidth() {
-        return this.ancho;
+        return ancho;
     }
 
     @Override
     public int getHeight() {
-        return this.alto;
+        return alto;
     }
 
     public Rectangle2D getBounds() {
-        return new Rectangle2D.Double(this.getX(),this.getY(), this.ancho, this.alto);
+        return new Rectangle2D.Double(this.getX(),this.getY(), ancho, alto);
     }
     
     

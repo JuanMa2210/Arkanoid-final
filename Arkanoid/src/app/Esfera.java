@@ -1,37 +1,38 @@
 package app;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import app.Nave;
 import app.Escenario;
 import javax.imageio.ImageIO;
+import javax.lang.model.util.ElementScanner6;
 
 
 public class Esfera extends ObjetoGrafico implements Movible {
 
     protected int DIAMETER=12;
-    protected int x;
-    protected int y;
+    protected double x;
+    protected double y;
     protected int dx;
     protected int dy;
+    private double velocidad=3.0;
     protected Image img_bola = null;
     private int ancho;
     private int alto;
     protected Rectangle2D estructura=new Rectangle2D.Double(x,y,ancho,alto);
-    protected Nave nave= new Nave();
     protected boolean parada;
-    protected Rectangle2D bordes= new Rectangle2D.Double();
+    //protected Rectangle2D bordes= new Rectangle2D.Double();
     private Escenario escenario;
+    private boolean EsqDerNave;
+    private boolean EsqIzqNave;
+    
 
 
     public Esfera(Escenario escenario) {
         this.escenario = escenario;
-        this.estructura.setRect(this.x, this.y, DIAMETER, DIAMETER);
-        this.x = 241;
-        this.y = 540;
+        this.x = 241.0;
+        this.y = 540.0;
         this.dx = 1;
         this.dy = -1;
     }
@@ -45,13 +46,13 @@ public class Esfera extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public void setPosition(int x, int y) {
+    public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
     @Override
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
@@ -60,7 +61,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
@@ -69,7 +70,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public int getX() {
+    public double getX() {
         return this.x;
     }
 
@@ -78,7 +79,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public int getY() {
+    public double getY() {
         return this.y;
     }
 
@@ -98,26 +99,22 @@ public class Esfera extends ObjetoGrafico implements Movible {
     @Override
     public void draw(Graphics2D g) {
         g.drawImage(this.img_bola, (int) this.getX(), (int) this.getY(), null);
+        this.estructura.setRect(this.getX(), this.getY(), DIAMETER, DIAMETER);
 
     }
 
     @Override
     public int getWidth() {
-        return (int)this.DIAMETER;
+        return this.DIAMETER;
     }
 
     @Override
     public int getHeight() {
-        return (int)this.DIAMETER;
-    }
-
-    public void setDireccion(double x, double y, boolean colision) {
-
+        return this.DIAMETER;
     }
 
     @Override
     public void mover() {
-        // y = y + dy;
             if(this.getX()+this.getDX() > 474- this.DIAMETER)//colision derecha escenario
               this.setDX(-1);
             if(this.getX()+this.getDX() < 8 + this.DIAMETER)//colision izq escenario
@@ -132,8 +129,8 @@ public class Esfera extends ObjetoGrafico implements Movible {
                    //System.exit(0);
                }
                else{
-                    escenario.nave.setPosition(217, 550);
-                    this.setPosition(241,540);
+                    escenario.nave.setPosition(217.0, 550.0);
+                    this.setPosition(241.0,540.0);
                     this.parada = true;
                }
             }
@@ -142,8 +139,20 @@ public class Esfera extends ObjetoGrafico implements Movible {
             this.setY(this.getY()+(this.getDY()*this.velocidad()));
             this.setX(this.getX()+(this.getDX()*this.velocidad()));
             if (collision()){
-			this.dy = -1;
-			this.y = escenario.nave.getTOPY() - DIAMETER;
+                if(this.EsqIzqNave){
+                    this.setVelocidad(this.velocidad*1.5);
+                    this.setDX(-1);
+                    System.out.println("aumento de velocidad");
+                    this.EsqIzqNave=false;
+                }
+                if (this.EsqDerNave) {
+                    this.setVelocidad(this.velocidad*1.5);
+                    this.setDX(1);
+                    System.out.println("aumento de velocidad");
+                    this.EsqDerNave=false;
+                }
+			      this.dy = -1;
+			      this.y = escenario.nave.getTOPY() - DIAMETER;
 		}
         }
         else{
@@ -155,15 +164,31 @@ public class Esfera extends ObjetoGrafico implements Movible {
     }
 
     private boolean collision() {
-		return escenario.nave.getBounds().intersects(getBounds());
+        if(escenario.nave.getBounds().intersects(getBounds())){
+            if(((this.estructura.getMaxX() <= escenario.nave.cuerpo.getX()+5)
+                     &&(this.estructura.getMaxY() >= escenario.nave.getY()))){
+                        this.EsqIzqNave = true;
+            }
+            else if((this.estructura.getX() >= escenario.nave.cuerpo.getMaxX()-5)
+                           &&((this.estructura.getMaxY() >= escenario.nave.getY())
+                            &&(this.estructura.getMaxY() <= escenario.nave.getHeight()/2))){
+                            this.EsqDerNave = true;
+                 }             
+        }
+        return escenario.nave.getBounds().intersects(getBounds());
     }
     
     public Rectangle2D getBounds() {
         return new Rectangle2D.Double(this.getX(),this.getY(), DIAMETER, DIAMETER);
-	}
+    }
+    
+    public void setVelocidad(Double velocidad) {
+        this.velocidad = velocidad;
+    }
+
     @Override
-    public int velocidad() {
-        return 4;
+    public Double velocidad() {
+        return this.velocidad;
     }
 
     @Override
@@ -173,14 +198,19 @@ public class Esfera extends ObjetoGrafico implements Movible {
 
     public void rebote(){ 
         for (int i=0;i<escenario.getBloques().size();i++) {  
-            Bloque bloque=escenario.bloques.get(i);         
-            if(this.getBounds().intersects(bloque.getBounds())){  
-                if((this.getX()+this.DIAMETER)<=bloque.getX() || this.getX()<=(bloque.getX()+this.DIAMETER)){
+            Bloque bloque=escenario.bloques.get(i);    
+            if(this.getBounds().intersects(bloque.getBounds())){  //Divido en colisiones por arriba y abajo, y por otro lado laterales
+                System.out.println("bloque x:"+bloque.getX()+"bloque y:"+bloque.getY()+"ancho:"+bloque.getWidth()+"Alto:"+bloque.getHeight());
+                System.out.println("esfera en x:"+this.getX()+" esfera en y:"+this.getY()); 
+                if((this.getY()<=bloque.cuerpo.getMaxY())||((this.getY()+this.DIAMETER+this.velocidad())<=bloque.cuerpo.getY())
+                        &&(this.getX()>bloque.cuerpo.getMinX()&&this.getX()<bloque.cuerpo.getMaxX())){
                     this.setDY(this.getDY()*-1);
-                }else{
+                }else if(((this.getX()+this.DIAMETER+this.velocidad())<=bloque.cuerpo.getX())||(this.getX()<=bloque.cuerpo.getMaxX())
+                            &&(this.getY()>bloque.cuerpo.getMinY()&&this.getY()<bloque.cuerpo.getMaxY())){
                     this.setDX(this.getDX()*-1);
                 }
                 bloque.restarImpactos();
+                    
                 break;
             }
         }

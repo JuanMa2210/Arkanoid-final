@@ -10,20 +10,19 @@ import javax.imageio.ImageIO;
 
 public class Nave extends ObjetoGrafico implements Movible {
     protected int dx = 0;
-    protected int x;
-    protected int y;
+    protected Double x;
+    protected Double y;
     protected Image img_nave=null;
     protected Rectangle2D cuerpo=new Rectangle();
     private int width = 60;
     private int height = 12;
 
     public Nave() {
-        this.cuerpo.setRect(this.x, this.y, this.getWidth(), this.getHeight());
-        this.x = 217;
-        this.y = 550;
+        this.x = 217.0;
+        this.y = 550.0;
         try {
             // aca va a ir la nave que elija el usuario, ahora solo tenemos esta
-            this.img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus1.png"));
+            this.img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus3.png"));
             this.img_nave = img_nave.getScaledInstance(60, 12, Image.SCALE_SMOOTH);
         } catch (Exception e) {
             System.out.println("Error al cargar imagenes Nave");
@@ -31,13 +30,13 @@ public class Nave extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public void setPosition(int x, int y) {
+    public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
     @Override
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
@@ -46,12 +45,12 @@ public class Nave extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
     @Override
-    public int getX() {
+    public double getX() {
         return this.x;
     }
 
@@ -60,13 +59,13 @@ public class Nave extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public int getY() {
+    public double getY() {
         return this.y;
     }
 
     @Override
     public void update(double delta) {
-
+        this.cuerpo.setRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
     }
 
     public void setImagen(BufferedImage img) {
@@ -76,6 +75,7 @@ public class Nave extends ObjetoGrafico implements Movible {
     @Override
     public void draw(Graphics2D g) {
         g.drawImage(this.img_nave, (int) this.getX(), (int) this.getY(), null);
+        this.cuerpo.setRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
     }
 
     @Override
@@ -90,12 +90,12 @@ public class Nave extends ObjetoGrafico implements Movible {
 
     @Override
     public void mover(){
-        this.setX(getX()+(this.getDX()*this.velocidad()));
+        this.setX(this.getX()+(this.getDX()*this.velocidad()));
     }
 
     @Override
-    public int velocidad() {
-        return 5;
+    public Double velocidad() {
+        return 5.0;
     }
 
     @Override
@@ -105,11 +105,11 @@ public class Nave extends ObjetoGrafico implements Movible {
 
 
 	public Rectangle getBounds() {
-            return new Rectangle((int)this.getX()+3, (int)this.getY(), this.getWidth()-6, this.getHeight());
+            return (Rectangle) this.cuerpo;
         }
 
 
-	public int getTOPY() {
+	public Double getTOPY() {
 		return this.y - this.getHeight();
 	}
 }

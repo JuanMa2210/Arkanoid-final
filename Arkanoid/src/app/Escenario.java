@@ -57,7 +57,7 @@ public class Escenario{
             img_fondoVerde = ImageIO.read(getClass().getResource("imagenes/FondoVerde.png"));
             img_fondoRojo = ImageIO.read(getClass().getResource("imagenes/FondoRojo.jpg"));
             fondo_negro = ImageIO.read(getClass().getResource("imagenes/negro_solido.png"));
-            img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus1.png"));
+            img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus3.png"));
             img_bola = ImageIO.read(getClass().getResource("imagenes/bola.png"));
 
             fondos.add(img_fondoAzul);
@@ -241,14 +241,8 @@ public class Escenario{
                nave.mover();
             }
         }
-
         else{
          this.esfera.mover();
-          if(esfera.getY()==nave.getY()&&(esfera.getX()>=nave.getX()&&esfera.getX()<=(nave.getX()+nave.getWidth())))
-            {
-                esfera.setDY(-1);
-                esfera.setY(nave.getTOPY() - esfera.DIAMETER);
-            }
         }
         if(this.bloques.isEmpty()){
             siguienteNivel();
