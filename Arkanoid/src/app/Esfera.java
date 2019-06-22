@@ -9,6 +9,11 @@ import app.Escenario;
 import javax.imageio.ImageIO;
 import javax.lang.model.util.ElementScanner6;
 
+//para sonido
+import java.io.File;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 
 public class Esfera extends ObjetoGrafico implements Movible {
 
@@ -177,6 +182,17 @@ public class Esfera extends ObjetoGrafico implements Movible {
                             this.EsqDerNave = true;
                  }             
         }
+        try {
+            Clip sonido = AudioSystem.getClip();
+            File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/Poo-new/Arkanoid/bin/app/Sonidos/Rebotes.wav");
+            sonido.open(AudioSystem.getAudioInputStream(a));
+            sonido.start();
+            System.out.println("Reproduciendo 10s. de sonido...");
+            Thread.sleep(1000); // 10000 milisegundos (10 segundos)
+            sonido.close();
+         } catch (Exception tipoError) {
+            System.out.println("" + tipoError);
+         }
         return escenario.nave.getBounds().intersects(getBounds());
     }
     

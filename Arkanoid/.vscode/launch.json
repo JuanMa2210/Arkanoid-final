@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Sonido",
+            "request": "launch",
+            "mainClass": "app.Sonido",
+            "projectName": "Arkanoid"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Sonidos",
+            "request": "launch",
+            "mainClass": "app.Sonidos",
+            "projectName": "Arkanoid"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - EmulaThor",
             "request": "launch",
             "mainClass": "app.EmulaThor",
