@@ -192,7 +192,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
         }
         try {
             Clip sonido = AudioSystem.getClip();
-            File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/Poo-new/Arkanoid/bin/app/Sonidos/Rebotes.wav");
+            File a = new File("/Sonidos/Rebotes.wav");
             sonido.open(AudioSystem.getAudioInputStream(a));
             sonido.start();
             System.out.println("Reproduciendo 10s. de sonido...");
