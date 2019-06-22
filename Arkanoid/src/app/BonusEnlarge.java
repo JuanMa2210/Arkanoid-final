@@ -33,7 +33,7 @@ public class BonusEnlarge extends Bonus {
 
     @Override
     public double velocidad() {
-        return 1;
+        return 1.0;
     }
 
     @Override
@@ -84,7 +84,7 @@ public class BonusEnlarge extends Bonus {
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawImage(this.imagen, (int)this.x, (int)this.y, null);
+        g.drawImage(this.imagen,(int) this.x,(int) this.y, null);
     }
 
     @Override

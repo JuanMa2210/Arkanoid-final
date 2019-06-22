@@ -9,6 +9,11 @@ import app.Escenario;
 import javax.imageio.ImageIO;
 import javax.lang.model.util.ElementScanner6;
 
+//para sonido
+import java.io.File;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 
 public class Esfera extends ObjetoGrafico implements Movible {
 
@@ -185,6 +190,17 @@ public class Esfera extends ObjetoGrafico implements Movible {
                             this.EsqDerNave = true;
                  }             
         }
+        try {
+            Clip sonido = AudioSystem.getClip();
+            File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/Poo-new/Arkanoid/bin/app/Sonidos/Rebotes.wav");
+            sonido.open(AudioSystem.getAudioInputStream(a));
+            sonido.start();
+            System.out.println("Reproduciendo 10s. de sonido...");
+            Thread.sleep(1000); // 10000 milisegundos (10 segundos)
+            sonido.close();
+         } catch (Exception tipoError) {
+            System.out.println("" + tipoError);
+         }
         return escenario.nave.getBounds().intersects(getBounds());
     }
     
@@ -192,7 +208,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
         return new Rectangle2D.Double(this.getX(),this.getY(), DIAMETER, DIAMETER);
     }
     
-    public void setVelocidad(Double velocidad) {
+    public void setVelocidad(double velocidad) {
         this.velocidad = velocidad;
     }
 
@@ -210,19 +226,22 @@ public class Esfera extends ObjetoGrafico implements Movible {
         for (int i=0;i<escenario.getBloques().size();i++) {  
             Bloque bloque=escenario.bloques.get(i);    
             if(this.getBounds().intersects(bloque.getBounds())){  //Divido en colisiones por arriba y abajo, y por otro lado laterales
-                System.out.println("bloque x:"+bloque.getX()+"bloque y:"+bloque.getY()+"ancho:"+bloque.getWidth()+"Alto:"+bloque.getHeight());
-                System.out.println("esfera en x:"+this.getX()+" esfera en y:"+this.getY()); 
+              //  System.out.println("bloque x:"+bloque.getX()+"bloque y:"+bloque.getY()+"ancho:"+bloque.getWidth()+"Alto:"+bloque.getHeight());
+              //  System.out.println("esfera en x:"+this.getX()+" esfera en y:"+this.getY()); 
                 if((this.getY()<=bloque.cuerpo.getMaxY())||((this.getY()+this.DIAMETER+this.velocidad())<=bloque.cuerpo.getY())
                         &&(this.getX()>bloque.cuerpo.getMinX()&&this.getX()<bloque.cuerpo.getMaxX())){
                     this.setDY(this.getDY()*-1);
-                }else if(((this.getX()+this.DIAMETER+this.velocidad())<=bloque.cuerpo.getX())||(this.getX()<=bloque.cuerpo.getMaxX())
+                }
+                if(((this.getX()+this.DIAMETER+this.velocidad())<=bloque.cuerpo.getX())||(this.getX()+5<=bloque.cuerpo.getMaxX())
                             &&(this.getY()>bloque.cuerpo.getMinY()&&this.getY()<bloque.cuerpo.getMaxY())){
+                            System.out.println("entro");
                     this.setDX(this.getDX()*-1);
                 }
+            
                 bloque.restarImpactos();
                     
                 break;
-            }
+            }    
         }
     }
 }
