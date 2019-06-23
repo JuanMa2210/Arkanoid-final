@@ -136,7 +136,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
                 this.setDX(1);
             if(this.getY()+this.getDY() <30 + this.DIAMETER)//colision sup escenario
                 this.setDY(1);
-            if((this.getY()+this.getDY() > 540 - this.DIAMETER)){//&& colion nave)//colision inf escenario
+            if((this.getY()+this.getDY() > 590 - this.DIAMETER)){//&& colion nave)//colision inf escenario
                 this.activa=false;
                 try {
                     Clip sonido = AudioSystem.getClip();
@@ -253,7 +253,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
                 bloque.restarImpactos();
                 try {
                     Clip sonido = AudioSystem.getClip();
-                    File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/ReboteBloque.wav");
+                    File a = new File("//Sonidos/ReboteBloque.wav");
                     sonido.open(AudioSystem.getAudioInputStream(a));
                     sonido.start();
                    // System.out.println("Reproduciendo 10s. de sonido...");

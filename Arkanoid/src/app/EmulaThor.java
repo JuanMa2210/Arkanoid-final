@@ -71,7 +71,7 @@ public class EmulaThor extends JFrame implements ActionListener, ItemListener {
         ListPanel.add(Juegos, BorderLayout.CENTER);
 
         Comenzar.addActionListener(this);
-        Comenzar.setIcon(new ImageIcon("bin/app/imagenes/ComenzarJuego.jpg"));
+        Comenzar.setIcon(new ImageIcon("bin/app/imagenes/ComenzarJuego.png"));
         Comenzar.setCursor(new Cursor(java.awt.Cursor.HAND_CURSOR));
         Comenzar.setBorderPainted(false);
         Comenzar.setContentAreaFilled(false);

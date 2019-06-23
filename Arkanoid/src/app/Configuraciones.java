@@ -1,8 +1,12 @@
 package app;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Properties;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -27,8 +31,26 @@ public class Configuraciones extends JFrame implements ActionListener, ItemListe
     private JRadioButton Nave5;
     private String arrayNaves[]={};    
     private String arrayMusica[]={};  
+
+    private boolean fullScreenSupported;
+
+	private final GraphicsDevice defaultScreen;
+	private DisplayMode origDisplayMode;
+	private DisplayMode newDisplayMode;
+
+    protected Properties appProperties = new Properties();
     
     public Configuraciones(){
+
+        this.readPropertiesFile();
+		boolean bFullScreen=Boolean.valueOf(appProperties.getProperty("fullScreen","false"));
+        
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+      	this.defaultScreen = env.getDefaultScreenDevice();
+      	fullScreenSupported = defaultScreen.isFullScreenSupported();
+
     Base = new JPanel();
     Superior = new JPanel();
     Sound  = new JLabel("Sonido");
@@ -36,7 +58,6 @@ public class Configuraciones extends JFrame implements ActionListener, ItemListe
     FullScren =new JCheckBox("Fullscren");
     FullScren.setSelected(false);
     if (FullScren.isSelected());
-        //modificar propertis
     FullScren.setName("Fullscren");
     Superior.add(FullScren);
     Musica.addItemListener(this);
@@ -108,8 +129,7 @@ public class Configuraciones extends JFrame implements ActionListener, ItemListe
     /////////////////////////////////////////////////////////////////////
     JFrame config =new JFrame();
 
-  //  Superior.setBounds(500, 300, 300, 300);
-   // Base.setBounds(800, 300, 100, 300);
+    
     config.add(Base, BorderLayout.SOUTH);
     config.add(Superior, BorderLayout.NORTH);
 
@@ -130,4 +150,17 @@ public class Configuraciones extends JFrame implements ActionListener, ItemListe
         if (e.getSource().equals(Activado))
         System.out.println("sonido activado");
     }
+
+    protected void readPropertiesFile(){
+
+        try{
+               FileInputStream in = new FileInputStream("jgame.properties");
+               appProperties.load(in);
+               in.close();
+           }catch(IOException e){
+               System.out.println("Error en metodo  readPropertiesFile(): "+e);
+       }
+
+
+   }
 }

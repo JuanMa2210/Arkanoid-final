@@ -9,6 +9,8 @@ import java.awt.image.BufferedImage;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -16,7 +18,7 @@ import javax.imageio.ImageIO;
 
 import com.entropyinteractive.Keyboard;
 
-public class Escenario{
+public class Escenario implements Runnable{
     protected BufferedImage img_fondoAzul = null;
     protected BufferedImage img_fondoVerde = null;
     protected BufferedImage img_fondoRojo = null;
@@ -33,6 +35,10 @@ public class Escenario{
     protected ArrayList<BufferedImage> fondos=new ArrayList<BufferedImage>();
     protected float puntaje_actual=0;
     protected float puntaje_maximo=0;
+    public static boolean inicio = false;
+    //Thread crono;
+    public int minutos=0, segundos=0, horas=0;
+
 
     protected Rectangle limites;
     private int nivelActual= 3;
@@ -40,6 +46,10 @@ public class Escenario{
     private int cont;
     protected boolean nuevoNivel=false;
     //protected Thread t;     //lo puse para hacer el cronometro 
+	//private int contador;
+     Date dInit = new Date();
+	 Date dAhora;
+	 SimpleDateFormat ft = new SimpleDateFormat ("mm:ss");
  
 
 
@@ -48,6 +58,8 @@ public class Escenario{
         this.cargar();
         this.inicio();
         this.limites=new Rectangle(20, 45, img_fondoAzul.getWidth()-40,img_fondoAzul.getHeight()-90);
+
+        //crono = new Thread(this);
     }
 
     // ESTE METODO CARGA TODAS LAS IMAGENES NECESARIAS PARA EL ESCENARIO
@@ -187,6 +199,20 @@ public class Escenario{
         g.drawString("NIVEL:", limiteEscenario+150, 550);
         g.setColor(Color.white);
         g.drawString(""+nivelActual, limiteEscenario+250, 550);    //ACA VA EL NIVEL
+
+        dAhora= new Date( );
+    	long dateDiff = dAhora.getTime() - dInit.getTime();
+    	long diffSeconds = dateDiff / 1000 % 60;
+		long diffMinutes = dateDiff / (60 * 1000) % 60;
+
+        g.setFont(new Font("Courier", Font.BOLD, 15));
+        g.setColor(Color.black);
+        g.drawString("Tiempo de Juego: "+diffMinutes+":"+diffSeconds,limiteEscenario+25,592);
+
+    	g.setColor(Color.white);
+    	g.drawString("Tiempo de Juego: "+diffMinutes+":"+diffSeconds,limiteEscenario+27,594);
+		
+       
         //nave.setImagen(img_nave);
         
         nave.draw(g);
@@ -242,7 +268,7 @@ public class Escenario{
     }
 
     public void update(double delta,Keyboard keyboard){
-        if(this.cantidad_vidas== 1)
+        if(this.cantidad_vidas== 0)
          gameOver();
         else{
         for (int i=0;i<bolas.size();i++) {
@@ -272,6 +298,10 @@ public class Escenario{
         }
         if (keyboard.isKeyPressed(KeyEvent.VK_SPACE)){
             this.esfera.parada = false;
+            /*if(contador==1){ //Solo empieza una vez el cronometro
+                crono.start(); //Empezamos el cronometro
+                contador--;
+            }*/
         }
 
         if (this.esfera.parada){
@@ -353,6 +383,21 @@ public class Escenario{
         }
     }
     //CALCULA EL REBOTE DE LA PELOTA CON LOS BLOQUES
+
+    @Override
+    public void run() {
+        /*try {
+			for(;;) { //Que comience a contar todo el rato +1; en cada interaccion
+				if(this.segundos==59) { // Si llegamos el minuto
+					this.segundos=0; this.minutos++;} // Aadimos un minuto mas
+				if(this.minutos==59) { this.minutos=0; this.horas++;} // Si llegamos a la hora
+				this.segundos++;//Aadimos una hora mas
+				crono.sleep(1000); }
+		}
+
+		catch (InterruptedException e) { System.out.println(e.getMessage()); }*/
+	}
+}
+
     
 
-}

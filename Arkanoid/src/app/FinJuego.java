@@ -125,10 +125,6 @@ public class FinJuego extends JGame {
         public void setPosicion(double x, double y){
             posicion.setLocation(x, y);
         }
-
-        public void setY(double y){
-            posicion.y=y;
-        }
     
         public double getY(){
             return posicion.getY(); 
