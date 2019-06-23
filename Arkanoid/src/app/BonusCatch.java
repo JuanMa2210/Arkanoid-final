@@ -83,7 +83,7 @@ public class BonusCatch extends Bonus {
             for (Esfera esfera : escenario.getBolas()){
                 if(esfera.getBounds().intersects(nave.cuerpo))  //mejorar esto con el tiempo.
                     esfera.parada=true;
-                    try {
+                    /*try {
                         Clip sonido = AudioSystem.getClip();
                         File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/BonusGeneral.wav");
                         sonido.open(AudioSystem.getAudioInputStream(a));
@@ -93,7 +93,7 @@ public class BonusCatch extends Bonus {
                        // sonido.close();
                      } catch (Exception tipoError) {
                         System.out.println("" + tipoError);
-                     }
+                     }*/
 
             }
             nave.setActivo(true);

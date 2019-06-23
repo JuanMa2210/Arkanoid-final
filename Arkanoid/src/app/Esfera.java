@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import javax.lang.model.util.ElementScanner6;
 import java.io.File;
 //para sonido
+import java.awt.Color;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -139,10 +140,10 @@ public class Esfera extends ObjetoGrafico implements Movible {
             if((this.getY()+this.getDY() > 590 - this.DIAMETER)){//&& colion nave)//colision inf escenario
                 this.activa=false;
                 try {
-                    Clip sonido = AudioSystem.getClip();
+                    /*Clip sonido = AudioSystem.getClip();
                     File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/VidaPerdida.wav");
                     sonido.open(AudioSystem.getAudioInputStream(a));
-                    sonido.start();
+                    sonido.start();*/
                    // System.out.println("Reproduciendo 10s. de sonido...");
                    // Thread.sleep(200); // 10000 milisegundos (10 segundos)
                    // sonido.close();
@@ -160,6 +161,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
                     escenario.nave.update(0);
                     this.setPosition(241,540);
                     this.parada = true;
+
                 }
             }
           }
@@ -179,10 +181,10 @@ public class Esfera extends ObjetoGrafico implements Movible {
 			      this.dy = -1;
                   this.y = escenario.nave.getTOPY() - DIAMETER;
                   try {
-                    Clip sonido = AudioSystem.getClip();
+                    /*Clip sonido = AudioSystem.getClip();
                     File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/Rebotes.wav");
                     sonido.open(AudioSystem.getAudioInputStream(a));
-                    sonido.start();
+                    sonido.start();*/
                    // System.out.println("Reproduciendo 10s. de sonido...");
                    // Thread.sleep(200); // 10000 milisegundos (10 segundos)
                    // sonido.close();
@@ -234,37 +236,35 @@ public class Esfera extends ObjetoGrafico implements Movible {
         return 3; 
     }
 
-    public void rebote(){ 
-        for (int i=0;i<escenario.getBloques().size();i++) {  
-            Bloque bloque=escenario.bloques.get(i);    
-            if(this.getBounds().intersects(bloque.getBounds())){  //Divido en colisiones por arriba y abajo, y por otro lado laterales
-              //  System.out.println("bloque x:"+bloque.getX()+"bloque y:"+bloque.getY()+"ancho:"+bloque.getWidth()+"Alto:"+bloque.getHeight());
-              //  System.out.println("esfera en x:"+this.getX()+" esfera en y:"+this.getY()); 
-                if((this.getY()<=bloque.cuerpo.getMaxY())||((this.getY()+this.DIAMETER+this.velocidad())<=bloque.cuerpo.getY())
-                        &&(this.getX()>bloque.cuerpo.getMinX()&&this.getX()<bloque.cuerpo.getMaxX())){
-                    this.setDY(this.getDY()*-1);
+    public void rebote(){
+        for (Bloque bloque : escenario.getBloques()) {
+            if(this.getBounds().intersects(bloque.getBounds())){
+                if((this.getY()+12>=bloque.getY() && this.getY()+12<=bloque.getY()+20) && (this.getX()>bloque.getX() || this.getX()+12<bloque.getX()+45)){
+                    this.dy=this.dy*-1;
+                    System.out.println("ENTTRO AL PRIMERO");
+                }else{
+                    if((this.getY()<=bloque.getY()+20 && this.getY()>=bloque.getY()) && (this.getX()>bloque.getX() || this.getX()+12<bloque.getX()+45)){
+                        this.dy=this.dy*-1;
+                        System.out.println("ENTTRO AL SEGUNDO");
+                    }else{
+                        this.dx=this.dx*-1;
+                        System.out.println("ENTTRO AL TERCERO");
+                    }
                 }
-                if(((this.getX()+this.DIAMETER+this.velocidad())<=bloque.cuerpo.getX())||(this.getX()+5<=bloque.cuerpo.getMaxX())
-                            &&(this.getY()>bloque.cuerpo.getMinY()&&this.getY()<bloque.cuerpo.getMaxY())){
-                            System.out.println("entro");
-                    this.setDX(this.getDX()*-1);
-                }
-            
                 bloque.restarImpactos();
-                try {
+                /*try {
                     Clip sonido = AudioSystem.getClip();
                     File a = new File("//Sonidos/ReboteBloque.wav");
                     sonido.open(AudioSystem.getAudioInputStream(a));
                     sonido.start();
-                   // System.out.println("Reproduciendo 10s. de sonido...");
-                   // Thread.sleep(200); // 10000 milisegundos (10 segundos)
-                   // sonido.close();
-                 } catch (Exception tipoError) {
+                    System.out.println("Reproduciendo 10s. de sonido...");
+                    Thread.sleep(200); // 10000 milisegundos (10 segundos)
+                    sonido.close();
+                }catch (Exception tipoError) {
                     System.out.println("" + tipoError);
-                 }
-                    
+                }*/
                 break;
-            }    
+            }
         }
     }
 }

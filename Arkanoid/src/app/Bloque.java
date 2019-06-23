@@ -121,11 +121,11 @@ public class Bloque extends ObjetoGrafico {
             int azar=(int)Math.floor(Math.random()*6+1);
             switch(azar){
                 case 1: this.bonus=new BonusSlow(escenario,this.x,this.y);break;  //CATCH
-                case 2: this.bonus=new BonusSlow(escenario,this.x,this.y);break;  //DUPLICATE
-                case 3: this.bonus=new BonusSlow(escenario,this.x,this.y);break;  //ENLARGE
-                case 4: this.bonus=new BonusSlow(escenario,this.x,this.y);break;  //EXTRA_PLAYER
-                case 5: this.bonus=new BonusSlow(escenario,this.x,this.y);break;  //SLOW
-                case 6: this.bonus=new BonusSlow(escenario,this.x,this.y);break;  //WARP
+                case 2: this.bonus=new BonusCatch(escenario,this.x,this.y);break;  //DUPLICATE
+                case 3: this.bonus=new BonusDuplicate(escenario,this.x,this.y);break;  //ENLARGE
+                case 4: this.bonus=new BonusEnlarge(escenario,this.x,this.y);break;  //EXTRA_PLAYER
+                case 5: this.bonus=new BonusPlayer(escenario,this.x,this.y);break;  //SLOW
+                case 6: this.bonus=new BonusWarp(escenario,this.x,this.y);break;  //WARP
             }
             this.tieneBonus=true;
         }

@@ -79,10 +79,10 @@ public class BonusEnlarge extends Bonus {
         Nave nave=escenario.getNave();
         if(nave.isActivo()==false && this.getBounds().intersects(nave.getBounds())){
             try {
-                Clip sonido = AudioSystem.getClip();
+                /*Clip sonido = AudioSystem.getClip();
                 File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/BonusEnlarge.wav");
                 sonido.open(AudioSystem.getAudioInputStream(a));
-                sonido.start();
+                sonido.start();*/
                // System.out.println("Reproduciendo 10s. de sonido...");
                // Thread.sleep(200); // 10000 milisegundos (10 segundos)
                // sonido.close();

@@ -25,7 +25,7 @@ public class Escenario implements Runnable{
     protected BufferedImage fondo_negro = null;
     protected BufferedImage img_nave = null;
     protected BufferedImage img_bola = null;
-    protected int cantidad_vidas=1; //limitar cantidad de vidas a 5
+    protected int cantidad_vidas=3; //limitar cantidad de vidas a 5
     protected Nave nave = new Nave(this);
     protected Esfera esfera = new Esfera(this);  
     protected Vector<Bloque> bloques=new Vector<Bloque>();
@@ -35,13 +35,11 @@ public class Escenario implements Runnable{
     protected ArrayList<BufferedImage> fondos=new ArrayList<BufferedImage>();
     protected float puntaje_actual=0;
     protected float puntaje_maximo=0;
-    public static boolean inicio = false;
-    //Thread crono;
-    public int minutos=0, segundos=0, horas=0;
+    protected int cant_dorados;
 
 
     protected Rectangle limites;
-    private int nivelActual= 3;
+    private int nivelActual= 1;
     private boolean comenzo;
     private int cont;
     protected boolean nuevoNivel=false;
@@ -216,9 +214,13 @@ public class Escenario implements Runnable{
         //nave.setImagen(img_nave);
         
         nave.draw(g);
-        for (Esfera esfera : this.bolas) {
-            esfera.setImagen(img_bola);
-            esfera.draw(g);
+        for (int i=0;i<this.bolas.size();i++) {
+            if(this.bolas.get(i).isActiva()==false){
+                this.bolas.remove(this.bolas.get(i));             
+            }else{
+                this.bolas.get(i).setImagen(img_bola);
+                this.bolas.get(i).draw(g);
+            }
         }
         //ACA DIBUJO TODOS LOS BLOQUES QUE TENGA CARGADO
         for(int i=0;i<this.bloques.size();i++){
@@ -318,14 +320,10 @@ public class Escenario implements Runnable{
         }
         else{
             for (Esfera esfera : this.bolas) {
-                if(esfera.isActiva()==false){
-                    this.bolas.remove(esfera);      //TENGO ERRORES ACA
-                }else{
-                    esfera.mover();
-                }
+                esfera.mover();
             }
         }
-        if(this.bloques.isEmpty()){
+        if(this.bloques.size()==this.cant_dorados){
             siguienteNivel();
         }
     }
@@ -364,7 +362,7 @@ public class Escenario implements Runnable{
                         case "Z": bloques.add(new Bloque(this, "Z", x, y));break;
                         case "B": bloques.add(new Bloque(this, "B", x, y));break;
                         case "C": bloques.add(new Bloque(this, "C", x, y));break;
-                        case "D": bloques.add(new Bloque(this, "D", x, y));break;
+                        case "D": bloques.add(new Bloque(this, "D", x, y));this.cant_dorados++;break;
                         case "N": bloques.add(new Bloque(this, "N", x, y));break;
                         case "P": bloques.add(new Bloque(this, "P", x, y));break;
                         case "R": bloques.add(new Bloque(this, "R", x, y));break;
@@ -375,7 +373,7 @@ public class Escenario implements Runnable{
                     x=x+40;
                 }
                 x=25;
-                y = y + 20;
+                y = y + 23;
             }
             nivel1.close();
         } catch (Exception e) {
