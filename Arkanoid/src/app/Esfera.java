@@ -194,9 +194,9 @@ public class Esfera extends ObjetoGrafico implements Movible {
                   
 		}
         }
-        else{
+        /*else{
             this.setX(this.getX()+5); 
-        }
+        }*/
 
         
 
