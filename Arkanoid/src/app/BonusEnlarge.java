@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Timer;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class BonusEnlarge extends Bonus {
     //ESTE BONUS ALARGA LA NAVE
@@ -75,6 +78,17 @@ public class BonusEnlarge extends Bonus {
     public void update(double delta) {
         Nave nave=escenario.getNave();
         if(nave.isActivo()==false && this.getBounds().intersects(nave.getBounds())){
+            try {
+                Clip sonido = AudioSystem.getClip();
+                File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/BonusEnlarge.wav");
+                sonido.open(AudioSystem.getAudioInputStream(a));
+                sonido.start();
+               // System.out.println("Reproduciendo 10s. de sonido...");
+               // Thread.sleep(200); // 10000 milisegundos (10 segundos)
+               // sonido.close();
+             } catch (Exception tipoError) {
+                System.out.println("" + tipoError);
+             }
             nave.setWidth(nave.getWidth()+40);
             nave.getBounds().setRect(nave.getX(), nave.getY(), nave.getWidth(), nave.getHeight());
             nave.setActivo(true);

@@ -7,6 +7,11 @@ import java.awt.image.BufferedImage;
 import java.util.Collection;
 
 import javax.imageio.ImageIO;
+import java.io.File;
+//para sonido
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class BonusWarp extends Bonus {
     //ESTE BONUS ALARGA LA NAVE
@@ -74,7 +79,18 @@ public class BonusWarp extends Bonus {
     @Override
     public void update(double delta) {
         Nave nave=escenario.getNave();
-        if(nave.isActivo()==false){
+        if(nave.isActivo()==false){try {
+            Clip sonido = AudioSystem.getClip();
+            File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/BonusNextLevel.wav");
+            sonido.open(AudioSystem.getAudioInputStream(a));
+            sonido.start();
+           // System.out.println("Reproduciendo 10s. de sonido...");
+           // Thread.sleep(200); // 10000 milisegundos (10 segundos)
+           // sonido.close();
+         } catch (Exception tipoError) {
+            System.out.println("" + tipoError);
+         }
+
             escenario.siguienteNivel();
             nave.setActivo(true);
         }

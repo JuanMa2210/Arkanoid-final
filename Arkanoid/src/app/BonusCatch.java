@@ -7,6 +7,11 @@ import java.awt.image.BufferedImage;
 import java.util.Collection;
 
 import javax.imageio.ImageIO;
+import java.io.File;
+//para sonido
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class BonusCatch extends Bonus {
     //ESTE BONUS ALARGA LA NAVE
@@ -78,6 +83,18 @@ public class BonusCatch extends Bonus {
             for (Esfera esfera : escenario.getBolas()){
                 if(esfera.getBounds().intersects(nave.cuerpo))  //mejorar esto con el tiempo.
                     esfera.parada=true;
+                    try {
+                        Clip sonido = AudioSystem.getClip();
+                        File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/BonusGeneral.wav");
+                        sonido.open(AudioSystem.getAudioInputStream(a));
+                        sonido.start();
+                       // System.out.println("Reproduciendo 10s. de sonido...");
+                       // Thread.sleep(200); // 10000 milisegundos (10 segundos)
+                       // sonido.close();
+                     } catch (Exception tipoError) {
+                        System.out.println("" + tipoError);
+                     }
+
             }
             nave.setActivo(true);
         }

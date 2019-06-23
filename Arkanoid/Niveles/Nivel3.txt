@@ -3,3 +3,6 @@ D,X,D,B,B,B,B,B,B,B,B
 D,D,D,B,D,D,D,B,D,D,D
 D,B,B,B,D,X,D,B,D,X,D
 D,B,B,B,D,D,D,B,D,D,D
+B,B,B,B,B,B,B,B,B,B,B
+B,B,B,B,B,B,B,B,B,B,B
+B,B,B,B,B,B,B,B,B,B,B

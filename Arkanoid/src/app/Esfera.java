@@ -8,9 +8,9 @@ import java.awt.image.BufferedImage;
 import app.Escenario;
 import javax.imageio.ImageIO;
 import javax.lang.model.util.ElementScanner6;
-
-//para sonido
 import java.io.File;
+//para sonido
+
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
@@ -126,42 +126,52 @@ public class Esfera extends ObjetoGrafico implements Movible {
 
     @Override
     public void mover() {
-            if(this.getX()+this.getDX() > 474- this.DIAMETER)//colision derecha escenario
-              this.setDX(-1);
-            if(this.getX()+this.getDX() < 8 + this.DIAMETER)//colision izq escenario
-               this.setDX(1);
-            if(this.getY()+this.getDY() <30 + this.DIAMETER)//colision sup escenario
-               this.setDY(1);
-            if((this.getY()+this.getDY() > 590 - this.DIAMETER)){//&& colion nave)//colision inf escenario
-                this.activa=false;
-                if(escenario.cantidad_vidas == 0){
-                    System.out.println("GAME OVER");
-                    //mostrar pantalla de game over, junto a un pulsar para volver.
-                    //System.exit(0);
-                }
-                else{
-                    if(escenario.getBolas().isEmpty()){
-                        escenario.cantidad_vidas --;
-                        escenario.nave.setPosition(217, 550);
-                        escenario.nave.update(0);
-                        this.setPosition(241,540);
-                        this.parada = true;
-                    }
-               }
-            }
         if(!this.parada)
         {   
             this.setY(this.getY()+(this.getDY()*this.velocidad()));
             this.setX(this.getX()+(this.getDX()*this.velocidad()));
+            if(this.getX()+this.getDX() > 474- this.DIAMETER)//colision derecha escenario
+                this.setDX(-1);
+            if(this.getX()+this.getDX() < 8 + this.DIAMETER)//colision izq escenario
+                this.setDX(1);
+            if(this.getY()+this.getDY() <30 + this.DIAMETER)//colision sup escenario
+                this.setDY(1);
+            if((this.getY()+this.getDY() > 540 - this.DIAMETER)){//&& colion nave)//colision inf escenario
+                this.activa=false;
+                try {
+                    Clip sonido = AudioSystem.getClip();
+                    File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/VidaPerdida.wav");
+                    sonido.open(AudioSystem.getAudioInputStream(a));
+                    sonido.start();
+                   // System.out.println("Reproduciendo 10s. de sonido...");
+                   // Thread.sleep(200); // 10000 milisegundos (10 segundos)
+                   // sonido.close();
+                 } catch (Exception tipoError) {
+                    System.out.println("" + tipoError);
+                 }
+            if(escenario.cantidad_vidas == 0){
+                  System.out.println("GAME OVER");
+                  //System.exit(0);
+            }
+            else{
+                if(escenario.getBolas().isEmpty()){
+                    escenario.cantidad_vidas --;
+                    escenario.nave.setPosition(217, 550);
+                    escenario.nave.update(0);
+                    this.setPosition(241,540);
+                    this.parada = true;
+                }
+            }
+          }
             if (collision()){
                 if(this.EsqIzqNave){
-                    this.setVelocidad(this.velocidad*1.5);
+                    this.setVelocidad(this.velocidad+0.07);
                     this.setDX(-1);
                     System.out.println("aumento de velocidad");
                     this.EsqIzqNave=false;
                 }
                 if (this.EsqDerNave) {
-                    this.setVelocidad(this.velocidad*1.5);
+                    this.setVelocidad(this.velocidad+0.07);
                     this.setDX(1);
                     System.out.println("aumento de velocidad");
                     this.EsqDerNave=false;
@@ -174,8 +184,8 @@ public class Esfera extends ObjetoGrafico implements Movible {
                     sonido.open(AudioSystem.getAudioInputStream(a));
                     sonido.start();
                    // System.out.println("Reproduciendo 10s. de sonido...");
-                    Thread.sleep(1000); // 10000 milisegundos (10 segundos)
-                    sonido.close();
+                   // Thread.sleep(200); // 10000 milisegundos (10 segundos)
+                   // sonido.close();
                  } catch (Exception tipoError) {
                     System.out.println("" + tipoError);
                  }
@@ -192,12 +202,12 @@ public class Esfera extends ObjetoGrafico implements Movible {
 
     private boolean collision() {
         if(escenario.nave.getBounds().intersects(getBounds())){
-            if(((this.estructura.getMaxX() <= escenario.nave.cuerpo.getX()+5)
-                     &&(this.estructura.getMaxY() >= escenario.nave.getY()))){
+            if(((this.estructura.getMaxX() <= escenario.nave.cuerpo.getX()+10)
+                     &&(this.estructura.getMaxY() >= escenario.nave.cuerpo.getCenterY()-5))){
                         this.EsqIzqNave = true;
             }
-            else if((this.estructura.getX() >= escenario.nave.cuerpo.getMaxX()-5)
-                           &&((this.estructura.getMaxY() >= escenario.nave.getY())
+            else if((this.estructura.getX() >= escenario.nave.cuerpo.getMaxX()-10)
+                           &&((this.estructura.getMaxY() >= escenario.nave.cuerpo.getCenterY()-5)
                             &&(this.estructura.getMaxY() <= escenario.nave.getHeight()/2))){
                             this.EsqDerNave = true;
                  }             
@@ -207,7 +217,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
     }
     
     public Rectangle2D getBounds() {
-        return new Rectangle2D.Double(this.getX(),this.getY(), DIAMETER, DIAMETER);
+        return this.estructura;
     }
     
     public void setVelocidad(double velocidad) {
@@ -241,6 +251,17 @@ public class Esfera extends ObjetoGrafico implements Movible {
                 }
             
                 bloque.restarImpactos();
+                try {
+                    Clip sonido = AudioSystem.getClip();
+                    File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/ReboteBloque.wav");
+                    sonido.open(AudioSystem.getAudioInputStream(a));
+                    sonido.start();
+                   // System.out.println("Reproduciendo 10s. de sonido...");
+                   // Thread.sleep(200); // 10000 milisegundos (10 segundos)
+                   // sonido.close();
+                 } catch (Exception tipoError) {
+                    System.out.println("" + tipoError);
+                 }
                     
                 break;
             }    

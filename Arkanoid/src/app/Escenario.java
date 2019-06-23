@@ -23,7 +23,7 @@ public class Escenario{
     protected BufferedImage fondo_negro = null;
     protected BufferedImage img_nave = null;
     protected BufferedImage img_bola = null;
-    protected int cantidad_vidas=3; //limitar cantidad de vidas a 5
+    protected int cantidad_vidas=1; //limitar cantidad de vidas a 5
     protected Nave nave = new Nave(this);
     protected Esfera esfera = new Esfera(this);  
     protected Vector<Bloque> bloques=new Vector<Bloque>();
@@ -34,8 +34,8 @@ public class Escenario{
     protected float puntaje_actual=0;
     protected float puntaje_maximo=0;
 
-    protected Rectangle limites;//creo que aca es menos
-    private int nivelActual= 2;
+    protected Rectangle limites;
+    private int nivelActual= 3;
     private boolean comenzo;
     private int cont;
     protected boolean nuevoNivel=false;
@@ -57,7 +57,7 @@ public class Escenario{
             img_fondoVerde = ImageIO.read(getClass().getResource("imagenes/FondoVerde.png"));
             img_fondoRojo = ImageIO.read(getClass().getResource("imagenes/FondoRojo.jpg"));
             fondo_negro = ImageIO.read(getClass().getResource("imagenes/negro_solido.png"));
-            img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus3.png"));
+            img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus0.png"));
             img_bola = ImageIO.read(getClass().getResource("imagenes/bola.png"));
 
             fondos.add(img_fondoAzul);
@@ -101,7 +101,7 @@ public class Escenario{
             if (this.cantidad_vidas == 0){
                 // dibujar "GAME OVER, vuelve a intentarlo"
             
-            this.finJuego();//crear funcion
+            this.gameOver();//crear funcion
             }
         
             if (this.comenzo==true){
@@ -110,13 +110,7 @@ public class Escenario{
                         System.out.println("el juego comenzo");
                         this.cont--;
                    }
-                if(esfera.parada){
-                   // esfera.stop();
-                   System.out.println("la pelota se detuvo");
-                }else{
-                    //esfera.start();
-                    System.out.println("la pelota mueve");
-                }
+              
             }
         }      
     }
@@ -138,13 +132,14 @@ public class Escenario{
         }
     }
 
-    private void finJuego() {
+    private void gameOver() {
         //cargar puntaje en ranking
         // deberia volver al menu y abrirse la ventana ranking
 
         this.borrarNivel();
         //colocar en el nivel 1
-        //poner para iniciar un nuevo juego si lo desea
+        FinJuego finJuego= new FinJuego();
+        finJuego.run(1.0/60.0);
         this.cantidad_vidas=3;
         this.comenzo=false;
         //setear puntajes a cero
@@ -152,11 +147,12 @@ public class Escenario{
         this.inicio();
     }
 
-    private void borrarNivel() {
-        // borrar todos los ladrillos
-        //borrar los bonuses
+    private void borrarNivel(){
         bolas.clear();
+        bonuses.clear();
+        bloques.clear();
         this.nave=null;
+        this.nivelActual=1;
     }
 
     public void draw(Graphics2D g) {
@@ -192,8 +188,7 @@ public class Escenario{
         g.setColor(Color.white);
         g.drawString(""+nivelActual, limiteEscenario+250, 550);    //ACA VA EL NIVEL
         //nave.setImagen(img_nave);
-        Graphics2D g2 = (Graphics2D)g;
-        //g2.draw(this.limites);
+        
         nave.draw(g);
         for (Esfera esfera : this.bolas) {
             esfera.setImagen(img_bola);
@@ -247,6 +242,9 @@ public class Escenario{
     }
 
     public void update(double delta,Keyboard keyboard){
+        if(this.cantidad_vidas== 1)
+         gameOver();
+        else{
         for (int i=0;i<bolas.size();i++) {
            bolas.get(i).rebote();
         }
@@ -300,6 +298,7 @@ public class Escenario{
         if(this.bloques.isEmpty()){
             siguienteNivel();
         }
+    }
     }
     
     public void addBonus(Bloque bloque){
