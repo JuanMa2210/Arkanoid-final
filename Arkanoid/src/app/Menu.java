@@ -25,6 +25,7 @@ public class Menu extends JGame {
     protected Ranking ranking=new Ranking();
     protected boolean isEscenario=false;
     protected boolean isRanking=false;
+    protected boolean isMenu=true;
     
    
 
@@ -34,13 +35,16 @@ public class Menu extends JGame {
 
     @Override
     public void gameDraw(Graphics2D g) {
-
-        dibujarMenu(g);
-        if(isEscenario){
-            escenario.draw(g);
-        }
-        if(isRanking){
-            ranking.draw(g);
+        if(isMenu){
+            dibujarMenu(g);
+        }else{
+            if(isEscenario){
+                escenario.draw(g);
+            }else{
+                if(isRanking){
+                    ranking.draw(g);
+                }
+            }
         }
     }
 
@@ -69,7 +73,10 @@ public class Menu extends JGame {
             }
         }
     }
-    
+
+    public void setMenu(boolean verdad){
+        this.isMenu=verdad;
+    }
 
     @Override
     public void gameStartup() {
@@ -101,8 +108,8 @@ public class Menu extends JGame {
         
         if(keyboard.isKeyPressed(KeyEvent.VK_ENTER)){
             switch((int)nave.getY()){
-                case 290: isEscenario=true;break;
-                case 370: isRanking=true;ranking.activar();break;
+                case 290: isEscenario=true;escenario.activar();isMenu=false;break;
+                case 370: isRanking=true;ranking.activar();isEscenario=false;isMenu=false;break;
                 case 450: System.exit(0);break;
             }
         }
@@ -110,9 +117,14 @@ public class Menu extends JGame {
         if(isRanking && ranking.isActive()){
             ranking.update(delta,keyboard);
             isRanking=ranking.isActive();
+            if(isRanking==false)
+                isMenu=true;
         }
         if(isEscenario){
             escenario.update(delta,keyboard);
+            if(this.escenario.isActivo()==false){
+                this.isMenu=true;
+            }
         }
     }
     

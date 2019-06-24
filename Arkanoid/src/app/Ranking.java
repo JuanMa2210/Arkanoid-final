@@ -8,27 +8,32 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 
 import com.entropyinteractive.Keyboard;
-import com.google.gson.Gson;
+import java.io.*;
 
 
 
 public class Ranking{
     protected BufferedImage fondo=null;
     
-    protected Gson gson=new Gson();
-    protected BufferedReader br = null;
-    protected TodosLosPuntajes datos=new TodosLosPuntajes();
-
-    protected ArrayList<String> nombres=new ArrayList<>();
-    protected ArrayList<Integer> puntos=new ArrayList<>();
-    protected ArrayList<String> niveles=new ArrayList<>();
-    protected ArrayList<String> fechas=new ArrayList<>();
-
-
+    
+    /*protected static ArrayList<String> nombres=new ArrayList<>();
+    protected static ArrayList<Float> puntos=new ArrayList<>();
+    protected static ArrayList<Integer> niveles=new ArrayList<>();
+    protected static ArrayList<String> fechas=new ArrayList<>();*/
+    
+    protected static String[] nombres=new String[10];
+    protected static float[] puntos=new float[10];
+    protected static int[] niveles=new int[10];
+    protected static String[] fechas=new String[10];
+    
+    protected static int lineas=0;
+    
+    //protected BufferedReader datos = null;
     protected boolean isActive=true;
 
     public Ranking(){
@@ -40,7 +45,7 @@ public class Ranking{
         try {
             fondo=ImageIO.read(getClass().getResource("imagenes/fondoRanking.jpg"));
             RandomAccessFile datos = new RandomAccessFile("ranking.txt", "r");
-            int lineas=0;
+            
             while(datos.readLine()!=null){
                 lineas++;
             }
@@ -48,11 +53,12 @@ public class Ranking{
 
             for(int i=0;i<lineas;i++){
                 String renglon=datos.readLine();
+                System.out.println(renglon);
                 String palabras[]=renglon.split("-");
-                this.nombres.add(palabras[0]);
-                this.puntos.add(Integer.parseInt(palabras[1]));
-                this.niveles.add(palabras[2]);
-                this.fechas.add(palabras[3]);
+                nombres[i]=palabras[0];
+                puntos[i]=Float.parseFloat(palabras[1]);
+                niveles[i]=Integer.parseInt(palabras[2]);
+                fechas[i]=palabras[3];
             }
 
             for (String nombre : nombres) {
@@ -64,12 +70,70 @@ public class Ranking{
         }
     }
 
-
+//TENER EN CUENTA QUE SOLO PUEDEN SER 10
     
-    public void escribirInfo(){
-        
-        String json=gson.toJson(new Puntaje("Julian","1000","2","12/12/12"));
-        System.out.println(json);
+   public static void escribirInfo(String nombre,float puntaje,int nivel){ //la fecha la tengo que poner yo
+        String aux_nombre;
+        float aux_puntaje;
+        int aux_nivel;
+        String aux_fecha;
+        Calendar fecha=new GregorianCalendar();
+        String fecha_actual=fecha.get(Calendar.DAY_OF_MONTH)+"/"+fecha.get(Calendar.MONTH)+"/"+fecha.get(Calendar.YEAR);
+        boolean inserto=false;
+
+        try {
+            RandomAccessFile datos = new RandomAccessFile("ranking.txt", "rw");
+            //INSERTAR ORDENADO Y ESCRIBIR
+            if(lineas==0){
+                nombres[0]=nombre;
+                puntos[0]=puntaje;
+                niveles[0]=nivel;
+                fechas[0]=fecha_actual;
+            }else{
+                if(puntaje>puntos[lineas-1]){    
+                    for(int i=0;i<lineas && inserto==false;i++){
+                        if(puntaje>puntos[i]){
+                            aux_nombre=nombres[i];
+                            aux_puntaje=puntos[i];
+                            aux_nivel=niveles[i];
+                            aux_fecha=fechas[i];
+                            nombres[i]=nombre;
+                            puntos[i]=puntaje;
+                            niveles[i]=nivel;
+                            fechas[i]=fecha_actual;
+                            inserto=true;
+                            for(int j=lineas-1;j>i;j--){
+                                nombres[j+1]=nombres[j];
+                                puntos[j+1]=puntos[j];
+                                niveles[j+1]=niveles[j];
+                                fechas[j+1]=fechas[j];
+                            }
+                            nombres[i+1]=aux_nombre;
+                            puntos[i+1]=aux_puntaje;
+                            niveles[i+1]=aux_nivel;
+                            fechas[i+1]=aux_fecha;
+                        }
+                    }
+                    //AHORA QUE YA INSERTE TENGO QUE ESCRIBIR EL ARCHIVO
+                }
+            }
+            for(int i=0;i<10;i++){
+                if(nombres[i]!=null){
+                    datos.writeBytes(nombres[i]+"-");
+                    datos.writeBytes(puntos[i]+"-");
+                    datos.writeBytes(niveles[i]+"-");
+                    datos.writeBytes(fechas[i]+"\n");
+                }
+            }
+            datos.close();
+        } catch (Exception e) {
+            //System.out.println("ERROR AL ESCRIBIR EL RANKING");
+            System.out.println(e);
+        }
+    }
+
+    public static float getPuntajeMaximo(){
+        return puntos[0];
     }
 
     public void draw(Graphics2D g){
@@ -82,11 +146,13 @@ public class Ranking{
         g.drawString("Fecha",650,60);
         g.setColor(Color.ORANGE);
 
-        for (int i=0;i<nombres.size();i++){
-            g.drawString(this.nombres.get(i), 40, 100+40*i);
-            g.drawString(this.puntos.get(i).toString(), 250, 100+40*i);
-            g.drawString(this.niveles.get(i),470, 100+40*i);
-            g.drawString(this.fechas.get(i),640, 100+40*i);
+        for (int i=0;i<nombres.length;i++){
+            if(nombres[i]!=null){
+                g.drawString(nombres[i], 40, 100+40*i);
+                g.drawString(Float.toString(puntos[i]), 250, 100+40*i);
+                g.drawString(Integer.toString(niveles[i]),470, 100+40*i);
+                g.drawString(fechas[i],640, 100+40*i);
+            }
         }
         g.setColor(Color.WHITE);
         g.drawString("ESC para volver...",290,550);
