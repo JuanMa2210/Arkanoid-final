@@ -88,7 +88,7 @@ public class BonusCatch extends Bonus {
                 
                     try {
                         Clip sonido = AudioSystem.getClip();
-                        File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/BonusGeneral.wav");
+                        File a = new File("C:/Users/Julian/Documents/MEGAsync/Kraken/poo/Arkanoid/bin/app/Sonidos/BonusGeneral.wav");
                         sonido.open(AudioSystem.getAudioInputStream(a));
                         sonido.start();
                      } catch (Exception tipoError) {
