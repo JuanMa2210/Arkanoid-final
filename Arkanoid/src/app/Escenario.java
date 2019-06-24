@@ -107,37 +107,6 @@ public class Escenario implements ActionListener {
         cargarLadrillos(nivelActual);
     }
 
-    public void corriendo() {
-        // actualizo las bolas en el vector
-        for (int i = 0; i < bolas.size(); i++) {
-            Esfera esfera = bolas.get(i);
-            if (esfera.y <= nave.getTOPY()) {
-                bolas.remove(i);
-                // ahora cuando no haya mas bolas perderemos una vida
-                if (bolas.size() == 0) {
-                    this.cantidad_vidas--;
-                    Esfera esferaNew = new Esfera(this);
-                    esferaNew.parada = true;
-                    bolas.add(esferaNew);
-                }
-            }
-            if (this.cantidad_vidas == 0) {
-                // dibujar "GAME OVER, vuelve a intentarlo"
-
-                this.gameOver();// crear funcion
-            }
-
-            if (this.comenzo == true) {
-                if (this.cont == 1) {
-                    // crono.start(); //definir tanto crono como el start
-                    System.out.println("el juego comenzo");
-                    this.cont--;
-                }
-
-            }
-        }
-    }
-
     public void siguienteNivel() {
         if (this.nivelActual < this.niveles.size()) {
             this.nivelActual++;
@@ -160,7 +129,6 @@ public class Escenario implements ActionListener {
         // deberia volver al menu y abrirse la ventana ranking
 
         this.borrarNivel();
-        // colocar en el nivel 1
         dialog = new JFrame("Fin del juego");
         dialog.setLayout(null);
         dialog.setPreferredSize(new Dimension(400, 200));
@@ -180,8 +148,6 @@ public class Escenario implements ActionListener {
         dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         dialog.pack();
         dialog.setVisible(true);
-        // setear puntajes a cero
-        // setear el tiempo a cero
         this.isActivo = false;
         this.inicio();
     }
@@ -192,6 +158,9 @@ public class Escenario implements ActionListener {
         bloques.clear();
         this.nave = null;
         this.nivelActual = 1;
+        this.setVidas(3);
+        this.puntaje_actual=0;
+        this.puntaje_maximo=0;
     }
 
     public void draw(Graphics2D g) {
@@ -311,7 +280,9 @@ public class Escenario implements ActionListener {
             for (int i = 0; i < bonuses.size(); i++) {
                 if (bonuses.get(i) != null) {
                     bonuses.get(i).mover();
-                    if (bonuses.get(i).cuerpo.intersects(this.nave.cuerpo)) {
+                    if (bonuses.get(i).cuerpo.intersects(this.nave.cuerpo)){ 
+                        //nave.setTipoBonusActivo(bonuses.get(i).tipoBonus);
+                        //System.out.println("bonus activo"+bonuses.get(i).tipoBonus);
                         bonuses.get(i).update(0);
                         try {
                             bonuses.remove(i);
@@ -334,6 +305,7 @@ public class Escenario implements ActionListener {
             if (keyboard.isKeyPressed(KeyEvent.VK_SPACE)) {
                 this.esfera.parada = false;
             }
+            
 
             if (this.esfera.parada) {
 
@@ -351,6 +323,7 @@ public class Escenario implements ActionListener {
                             Esfera esferaNew = new Esfera(this);
                             esferaNew.parada = true;
                             bolas.add(esferaNew);
+                            nave.setActivo(false);
                             this.esfera = this.bolas.get(i);
                             this.nave.setPosition(217, 550);
                             this.nave.update(0);

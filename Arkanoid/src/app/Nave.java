@@ -16,6 +16,7 @@ public class Nave extends ObjetoGrafico implements Movible {
     private int width = 60;
     private int height = 12;
     protected boolean bonusActivo=false;
+    private int tipoBonusActivo=0;
 
     public Nave(Escenario escenario) {
         this.x = 217.0;
@@ -101,7 +102,7 @@ public class Nave extends ObjetoGrafico implements Movible {
     }
 
     @Override
-    public int aceleracion() {
+    public double aceleracion() {
         return 3;
     }
 
@@ -124,6 +125,14 @@ public class Nave extends ObjetoGrafico implements Movible {
     public boolean isActivo(){
         return this.bonusActivo;
     }
+
+	public void setTipoBonusActivo(int tipoBonusActivo) {
+	     this.tipoBonusActivo=tipoBonusActivo;
+	}
+
+	public int getTipoBonusActivo() {
+		return this.tipoBonusActivo;
+	}
 }
 
 

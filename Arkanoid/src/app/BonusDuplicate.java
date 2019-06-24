@@ -35,7 +35,7 @@ public class BonusDuplicate extends Bonus {
     }
 
     @Override
-    public int aceleracion() {
+    public double aceleracion() {
         return 0;
     }
 
