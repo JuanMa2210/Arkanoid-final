@@ -45,9 +45,12 @@ public class Escenario implements ActionListener {
     protected JFrame dialog;
     protected JTextField textField;
     protected JButton boton;
+    protected boolean llamo=false;
 
     protected Rectangle limites;
-    private int nivelActual = 1;
+    private int nivelActual;
+    private boolean comenzo;
+    private int cont;
     protected boolean nuevoNivel = false;
     protected Date dInit = new Date();
     protected Date dAhora;
@@ -62,8 +65,6 @@ public class Escenario implements ActionListener {
         this.inicio();
         this.limites = new Rectangle(20, 45, img_fondoAzul.getWidth() - 40, img_fondoAzul.getHeight() - 90);
         this.isActivo = true;
-
-        // crono = new Thread(this);
     }
 
     // ESTE METODO CARGA TODAS LAS IMAGENES NECESARIAS PARA EL ESCENARIO
@@ -96,6 +97,7 @@ public class Escenario implements ActionListener {
         this.bolas = new ArrayList<Esfera>();
         this.esfera = new Esfera(this);
         this.cantidad_vidas = 3;
+        this.nivelActual=1;
         this.comenzo = false;
         this.puntaje_actual=0;
         this.dInit=new Date();
@@ -125,7 +127,6 @@ public class Escenario implements ActionListener {
         // cargar puntaje en ranking
         // deberia volver al menu y abrirse la ventana ranking
 
-        this.borrarNivel();
         dialog = new JFrame("Fin del juego");
         dialog.setLayout(null);
         dialog.setPreferredSize(new Dimension(400, 200));
@@ -146,7 +147,7 @@ public class Escenario implements ActionListener {
         dialog.pack();
         dialog.setVisible(true);
         this.isActivo = false;
-        this.inicio();
+        
     }
 
     private void borrarNivel() {
@@ -269,8 +270,10 @@ public class Escenario implements ActionListener {
     }
 
     public void update(double delta, Keyboard keyboard) {
-        if (this.cantidad_vidas == 0)
+        if (this.cantidad_vidas == 0 && this.llamo==false){
+            this.llamo=true;
             this.gameOver();
+        }
         else {
             for (int i = 0; i < bolas.size(); i++) {
                 bolas.get(i).rebote();
@@ -415,6 +418,8 @@ public class Escenario implements ActionListener {
             if(this.textField.getText().isEmpty()==false){
                 Ranking.escribirInfo(this.textField.getText(), this.puntaje_actual, this.nivelActual);
                 this.dialog.dispose();
+                this.borrarNivel();
+                this.llamo=false;
             }
         }
     }

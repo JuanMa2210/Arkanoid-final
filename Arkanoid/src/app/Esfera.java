@@ -244,22 +244,30 @@ public class Esfera extends ObjetoGrafico implements Movible {
         return this.aceleracion; 
     }
 
+
     public void rebote(){
         for (Bloque bloque : escenario.getBloques()) {
             if(this.getBounds().intersects(bloque.getBounds())){
-                if((this.getY()+12>=bloque.getY() && this.getY()+12<=bloque.getY()+20) && (this.getX()>bloque.getX() || this.getX()+12<bloque.getX()+45)){
-                    this.dy=this.dy*-1;
-                    System.out.println("ENTRO AL PRIMERO");
-                }else{
-                    if((this.getY()<=bloque.getY()+20 && this.getY()>=bloque.getY()) && (this.getX()>bloque.getX() || this.getX()+12<bloque.getX()+45)){
-                        this.dy=this.dy*-1;
-                        System.out.println("ENTTRO AL SEGUNDO");
-                    }else{
-                        this.dx=this.dx*-1;
-                        System.out.println("ENTTRO AL TERCERO");
-                    }
-                }
+                
                 bloque.restarImpactos();
+
+                double overlapLeft = this.getX()+12 - bloque.getX();
+			    double overlapRight = bloque.getX()+45 - this.getX();
+			    double overlapTop = this.getY()+12 - bloque.getY();
+			    double overlapBottom = bloque.getY()+20 - this.getY();
+
+			    boolean ballFromLeft = overlapLeft < overlapRight;
+			    boolean ballFromTop = overlapTop < overlapBottom;
+			    double minOverlapX = ballFromLeft ? overlapLeft : overlapRight;
+                double minOverlapY = ballFromTop ? overlapTop : overlapBottom;
+                
+                if (minOverlapX < minOverlapY) {
+                    if (ballFromLeft)
+                        this.setDX(this.getDX()*-1);
+                } else {
+                    this.setDY(this.getDY()*-1);
+                }
+
                 try {
                     Clip sonido = AudioSystem.getClip();
                     File a = new File("C:/Users/Julian/Documents/MEGAsync/Kraken/poo/Arkanoid/bin/app/Sonidos/ReboteBloque.wav");

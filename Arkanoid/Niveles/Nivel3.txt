@@ -1,8 +1,8 @@
-D,D,D,B,B,B,B,B,B,B,B
-D,X,D,B,B,B,B,B,B,B,B
-D,D,D,B,D,D,D,B,D,D,D
-D,B,B,B,D,X,D,B,D,X,D
-D,B,B,B,D,D,D,B,D,D,D
-B,B,B,B,B,B,B,B,B,B,B
-B,B,B,B,B,B,B,B,B,B,B
-B,B,B,B,B,B,B,B,B,B,B
+P,P,P,Z,Z,Z,Z,Z,Z,Z,Z
+P,X,P,Z,Z,Z,Z,Z,Z,Z,Z
+P,P,P,Z,P,P,P,Z,P,P,P
+P,Z,Z,Z,P,X,P,Z,P,X,P
+P,Z,Z,Z,P,P,P,Z,P,P,P
+Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z
+Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z
+Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z

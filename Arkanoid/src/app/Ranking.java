@@ -75,7 +75,8 @@ public class Ranking{
         Calendar fecha=new GregorianCalendar();
         String fecha_actual=fecha.get(Calendar.DAY_OF_MONTH)+"/"+fecha.get(Calendar.MONTH)+"/"+fecha.get(Calendar.YEAR);
         boolean inserto=false;
-
+        
+        System.out.println(nivel);
         try {
             RandomAccessFile datos = new RandomAccessFile("ranking.txt", "rw");
             //INSERTAR ORDENADO Y ESCRIBIR
