@@ -5,15 +5,15 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
+
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
+
 import java.util.*;
 
 import javax.imageio.ImageIO;
 
 import com.entropyinteractive.Keyboard;
-import java.io.*;
+
 
 
 

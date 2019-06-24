@@ -109,7 +109,7 @@ public class BonusSlow extends Bonus {
                 esfera.setVelocidad(esfera.velocidad()+2);
                }
            }
-       },10000);
+       },7000);
     }
 
     @Override

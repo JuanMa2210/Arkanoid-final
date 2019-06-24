@@ -17,9 +17,7 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.*;
-import java.awt.*;
 
-import java.util.*;
 
 import javax.imageio.ImageIO;
 
@@ -50,8 +48,6 @@ public class Escenario implements ActionListener {
 
     protected Rectangle limites;
     private int nivelActual = 1;
-    private boolean comenzo;
-    private int cont;
     protected boolean nuevoNivel = false;
     protected Date dInit = new Date();
     protected Date dAhora;
@@ -59,6 +55,7 @@ public class Escenario implements ActionListener {
     protected long diffSeconds;
     protected long diffMinutes;
     protected SimpleDateFormat ft = new SimpleDateFormat("mm:ss");
+    private boolean comenzo=false;
 
     public Escenario() {
         this.cargar();
@@ -209,6 +206,7 @@ public class Escenario implements ActionListener {
         g.setColor(Color.white);
         g.drawString("Tiempo de Juego: " + diffMinutes + ":" + diffSeconds, limiteEscenario + 27, 594);
 
+        // nave.setImagen(img_nave);
 
         nave.draw(g);
         for (int i = 0; i < this.bolas.size(); i++) {
@@ -281,8 +279,6 @@ public class Escenario implements ActionListener {
                 if (bonuses.get(i) != null) {
                     bonuses.get(i).mover();
                     if (bonuses.get(i).cuerpo.intersects(this.nave.cuerpo)){ 
-                        //nave.setTipoBonusActivo(bonuses.get(i).tipoBonus);
-                        //System.out.println("bonus activo"+bonuses.get(i).tipoBonus);
                         bonuses.get(i).update(0);
                         try {
                             bonuses.remove(i);
@@ -312,7 +308,6 @@ public class Escenario implements ActionListener {
                 if ((keyboard.isKeyPressed(KeyEvent.VK_LEFT) || keyboard.isKeyPressed(KeyEvent.VK_RIGHT))
                         && (nave.getX() > 23 && nave.getX() + nave.getWidth() < img_fondoAzul.getWidth() - 20)) {
                     this.esfera.setX(nave.getX() + (nave.getWidth() / 2) - (this.esfera.getWidth() / 2));
-                    // this.esfera.mover();
                 }
             } else {
                 for (int i = 0; i < this.bolas.size(); i++) {

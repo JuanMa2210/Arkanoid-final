@@ -117,7 +117,7 @@ public class BonusEnlarge extends Bonus {
                nave.setWidth(nave.getWidth()-40);
                nave.getBounds().setRect(nave.getX(), nave.getY(), nave.getWidth(), nave.getHeight());  
            }
-       },10000);
+       },7000);
     }
 
     @Override

@@ -7,13 +7,10 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import app.Escenario;
 import javax.imageio.ImageIO;
-import javax.lang.model.util.ElementScanner6;
 import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 //para sonido
-import java.awt.Color;
-
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
@@ -167,12 +164,11 @@ public class Esfera extends ObjetoGrafico implements Movible {
             }
           }
             if (collision()){
-                if(escenario.nave.getTipoBonusActivo()==1){
+               /* if(escenario.nave.getTipoBonusActivo()==1){
                         this.parada=true;
-                        this.setY(escenario.nave.getY()-12);
-                    }
+                        this.setY(escenario.nave.getTOPY()-DIAMETER);
+                    }*/
                 this.cantcolisiones++;
-                System.out.println(this.cantcolisiones);
                 if(this.cantcolisiones==5){
                 this.incrementarAceleracion(); 
                 this.cantcolisiones=0;
@@ -186,9 +182,15 @@ public class Esfera extends ObjetoGrafico implements Movible {
                     this.setVelocidad(this.velocidad+0.07);
                     this.setDX(1);
                     this.EsqDerNave=false;
-                }
+                }if(escenario.nave.getTipoBonusActivo()==1){
+                    this.parada=true;
+                    this.setY(escenario.nave.getTOPY());
+                }else{
 			      this.dy = -1;
                   this.y = escenario.nave.getTOPY() - DIAMETER;
+                }
+
+
                   try {
                     Clip sonido = AudioSystem.getClip();
                     File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/Rebotes.wav");
@@ -235,7 +237,6 @@ public class Esfera extends ObjetoGrafico implements Movible {
             for (int i = 0; i < escenario.getBolas().size(); i++)
             {
                 escenario.getBolas().get(i).aceleracion+=0.158;
-                System.out.println("aceleracion aumentada");
             } 
                 
            }
