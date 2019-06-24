@@ -6,6 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+import java.io.FileOutputStream;
 
 public class Configuraciones2 extends JFrame implements ItemListener, ActionListener {
 
@@ -17,8 +23,8 @@ public class Configuraciones2 extends JFrame implements ItemListener, ActionList
     private JLabel MusicLabel = new JLabel("Musica: ");
     private List Musica;
     private ButtonGroup sonido;
-    private JRadioButton sonidoSi = new JRadioButton("Si", true);
-    private JRadioButton sonidoNo = new JRadioButton("No", false);
+    private JRadioButton sonidoSi = new JRadioButton("Si");
+    private JRadioButton sonidoNo = new JRadioButton("No");
 
     private ImageIcon nave1Icon = new ImageIcon("imagenes/Vaus0.png");
     private ImageIcon nave2Icon = new ImageIcon("imagenes/Vaus1.png");
@@ -32,6 +38,8 @@ public class Configuraciones2 extends JFrame implements ItemListener, ActionList
     private JRadioButton nave3 = new JRadioButton();
     private JRadioButton nave4 = new JRadioButton();
     private JRadioButton nave5 = new JRadioButton();
+
+    private Properties propiedades=new Properties();
 
     public Configuraciones2() {
         super("Configuracion");
@@ -47,7 +55,7 @@ public class Configuraciones2 extends JFrame implements ItemListener, ActionList
         Musica.add("Original");
         Musica.add("Techno");
         Musica.add("Rock");
-        Musica.add("Clasico");
+        Musica.add("Clasica");
         Musica.select(0);
 
         naves.add(nave1);
@@ -83,6 +91,9 @@ public class Configuraciones2 extends JFrame implements ItemListener, ActionList
         panel.add(agregarItem(ConfTeclas));
         panel.add(agregar2Item(Reset, Guardar));
 
+        //LEO LOS VALORES ACTUALES Y PONGO LOS ITEM ACORDE
+        this.leerPropiedades();
+
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setAlwaysOnTop(true);
         this.setLocationRelativeTo(null);
@@ -90,6 +101,36 @@ public class Configuraciones2 extends JFrame implements ItemListener, ActionList
         this.add(panel);
         this.setVisible(true);
         this.pack();
+    }
+
+
+    public void leerPropiedades(){
+        try {
+            propiedades.load(new FileInputStream("jgame.properties"));
+            switch (propiedades.getProperty("fullScreen")){
+                case "true": this.FullScreen.setSelected(true);break;
+                case "false": this.FullScreen.setSelected(false);break;
+            }
+            switch(propiedades.getProperty("sonido")){
+                case "true": this.sonidoSi.setSelected(true);break;
+                case "false": this.sonidoNo.setSelected(true);break;
+            }
+            switch (propiedades.getProperty("musica")){
+                case "Original": this.Musica.select(0);break;
+                case "Techno":  this.Musica.select(1);break;
+                case "Rock":    this.Musica.select(2);break;
+                case "Clasica":    this.Musica.select(3);break;
+            }
+            switch (propiedades.getProperty("nave")){
+                case "clasica":     this.nave1.setSelected(true);break;
+                case "futurista":   this.nave2.setSelected(true);break;
+                case "futuristaGris":   this.nave3.setSelected(true);break;
+                case "futuristaAzul":   this.nave4.setSelected(true);break;
+                case "futuristaRoja":   this.nave5.setSelected(true);break;
+            }
+        } catch (Exception exception) {
+            System.out.println("ERROR AL CARGAR PROPERTIES");
+        }
     }
 
     private JPanel agregarItem(Component com1) {
@@ -115,7 +156,56 @@ public class Configuraciones2 extends JFrame implements ItemListener, ActionList
     //botones y checkbox
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        if(e.getActionCommand()==this.Guardar.getActionCommand()){
+            //escribir properties con las opciones actuales
+            try {
+                propiedades.load(new FileInputStream("jgame.properties"));
+                propiedades.setProperty("fullScreen", this.FullScreen.isSelected()+"");
+                System.out.println(this.FullScreen.isSelected()+"");
+                propiedades.setProperty("sonido", this.sonidoSi.isSelected()+"");
+                System.out.println(this.sonidoSi.isSelected()+"");
+                propiedades.setProperty("musica", this.Musica.getSelectedItem());
+                System.out.println(this.Musica.getSelectedItem());
+                if(nave1.isSelected()){
+                    propiedades.setProperty("nave", "clasica");
+                }else{
+                    if(nave2.isSelected()){
+                        propiedades.setProperty("nave", "futurista");
+                    }else{
+                        if(nave3.isSelected()){
+                            propiedades.setProperty("nave", "futuristaGris");
+                        }else{
+                            if(nave4.isSelected()){
+                                propiedades.setProperty("nave", "futuristaAzul");
+                            }else{
+                                if(nave5.isSelected()){
+                                    propiedades.setProperty("nave", "futuristaRoja");
+                                }
+                            }
+                        }
+                    }
+                }
+                propiedades.store(new FileOutputStream("jgame.properties"), null);
+            } catch (Exception exception) {
+                System.out.println("ERROR AL CARGAR PROPERTIES");
+            }
+        }
+        if(e.getActionCommand()==this.Reset.getActionCommand()){
+            //resetear cambios
+            propiedades.setProperty("fullScreen", "false");
+            propiedades.setProperty("sonido", "true");
+            propiedades.setProperty("musica", "Original");
+            propiedades.setProperty("nave", "clasica");
+            try {
+                propiedades.store(new FileOutputStream("jgame.properties"), null);
+                this.leerPropiedades();
+            } catch (Exception eeException) {
+                System.out.println("ERROR AL RESETEAR CONFIGURACION");
+            }
+        }
+        if(e.getActionCommand()==this.ConfTeclas.getActionCommand()){
+            //abrir configuracion teclas
+        }
     }
     
 }

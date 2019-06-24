@@ -98,8 +98,10 @@ public class Escenario implements ActionListener {
         this.nave = new Nave(this);
         this.bolas = new ArrayList<Esfera>();
         this.esfera = new Esfera(this);
-        this.cantidad_vidas = 1;
+        this.cantidad_vidas = 3;
         this.comenzo = false;
+        this.puntaje_actual=0;
+        this.dInit=new Date();
         esfera.parada = true;
         bolas.add(esfera);
         cargarLadrillos(nivelActual);
@@ -177,7 +179,7 @@ public class Escenario implements ActionListener {
         dialog.setLocationRelativeTo(null);
         dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         dialog.pack();
-        dialog.show();
+        dialog.setVisible(true);
         // setear puntajes a cero
         // setear el tiempo a cero
         this.isActivo = false;

@@ -21,11 +21,6 @@ public class Ranking{
     protected BufferedImage fondo=null;
     
     
-    /*protected static ArrayList<String> nombres=new ArrayList<>();
-    protected static ArrayList<Float> puntos=new ArrayList<>();
-    protected static ArrayList<Integer> niveles=new ArrayList<>();
-    protected static ArrayList<String> fechas=new ArrayList<>();*/
-    
     protected static String[] nombres=new String[10];
     protected static float[] puntos=new float[10];
     protected static int[] niveles=new int[10];
