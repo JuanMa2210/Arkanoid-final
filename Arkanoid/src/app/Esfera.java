@@ -161,6 +161,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
                     escenario.nave.update(0);
                     this.setPosition(241,540);
                     this.parada = true;
+                    this.setVelocidad(3.0);
 
                 }
             }
@@ -169,13 +170,13 @@ public class Esfera extends ObjetoGrafico implements Movible {
                 if(this.EsqIzqNave){
                     this.setVelocidad(this.velocidad+0.07);
                     this.setDX(-1);
-                    System.out.println("aumento de velocidad");
+                    System.out.println("piuuum");
                     this.EsqIzqNave=false;
                 }
                 if (this.EsqDerNave) {
                     this.setVelocidad(this.velocidad+0.07);
                     this.setDX(1);
-                    System.out.println("aumento de velocidad");
+                    System.out.println("piuuum");
                     this.EsqDerNave=false;
                 }
 			      this.dy = -1;
@@ -205,12 +206,11 @@ public class Esfera extends ObjetoGrafico implements Movible {
     private boolean collision() {
         if(escenario.nave.getBounds().intersects(getBounds())){
             if(((this.estructura.getMaxX() <= escenario.nave.cuerpo.getX()+10)
-                     &&(this.estructura.getMaxY() >= escenario.nave.cuerpo.getCenterY()-5))){
+                     &&(this.estructura.getMaxY() <= escenario.nave.cuerpo.getCenterY()-7))){
                         this.EsqIzqNave = true;
             }
             else if((this.estructura.getX() >= escenario.nave.cuerpo.getMaxX()-10)
-                           &&((this.estructura.getMaxY() >= escenario.nave.cuerpo.getCenterY()-5)
-                            &&(this.estructura.getMaxY() <= escenario.nave.getHeight()/2))){
+                           &&((this.estructura.getMaxY() <= escenario.nave.cuerpo.getCenterY()-7))){
                             this.EsqDerNave = true;
                  }             
         }
@@ -241,7 +241,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
             if(this.getBounds().intersects(bloque.getBounds())){
                 if((this.getY()+12>=bloque.getY() && this.getY()+12<=bloque.getY()+20) && (this.getX()>bloque.getX() || this.getX()+12<bloque.getX()+45)){
                     this.dy=this.dy*-1;
-                    System.out.println("ENTTRO AL PRIMERO");
+                    System.out.println("ENTRO AL PRIMERO");
                 }else{
                     if((this.getY()<=bloque.getY()+20 && this.getY()>=bloque.getY()) && (this.getX()>bloque.getX() || this.getX()+12<bloque.getX()+45)){
                         this.dy=this.dy*-1;

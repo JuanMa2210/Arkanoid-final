@@ -16,9 +16,13 @@ public abstract class Bonus extends ObjetoGrafico implements Movible{
     protected double x;
     protected double y;
     protected Escenario escenario;
+    protected int tipoBonus;
 
     protected Rectangle2D getBounds(){
         return this.cuerpo;
     }
-
+    
+    protected int TipoBonus(){
+        return this.tipoBonus;
+    }
 }

@@ -22,6 +22,7 @@ public class BonusEnlarge extends Bonus {
         this.cuerpo=new Rectangle();
         this.cuerpo.setRect(this.x,this.y,ancho,alto);
         this.escenario=escenario;
+        this.tipoBonus=3;
         //LA POSICION DEL BONUS VA A SER LA MISMA POSICION DEL BLOQUE QUE LO TENGA
         try {
             this.imagen=ImageIO.read(getClass().getResource("imagenes/Enlarge.gif"));
@@ -92,6 +93,9 @@ public class BonusEnlarge extends Bonus {
              } catch (Exception tipoError) {
                 System.out.println("" + tipoError);
              }
+            if(nave.cuerpo.getMaxY()==escenario.limites.getWidth()){ 
+                nave.setPosition(nave.getX()-40, nave.getY());
+            }
             nave.setWidth(nave.getWidth()+40);
             nave.getBounds().setRect(nave.getX(), nave.getY(), nave.getWidth(), nave.getHeight());
             nave.setActivo(true);
