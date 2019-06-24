@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -81,8 +83,10 @@ public class BonusCatch extends Bonus {
         Nave nave=escenario.getNave();
         if(nave.isActivo()==false){
             for (Esfera esfera : escenario.getBolas()){
+                nave.setActivo(true);
                 if(esfera.getBounds().intersects(nave.cuerpo))  //mejorar esto con el tiempo.
                     esfera.parada=true;
+                
                     /*try {
                         Clip sonido = AudioSystem.getClip();
                         File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/BonusGeneral.wav");
@@ -96,9 +100,20 @@ public class BonusCatch extends Bonus {
                      }*/
 
             }
-            nave.setActivo(true);
+            duracion();
+            
         }
         
+    }
+
+    public void duracion(){
+        new Timer().schedule(new TimerTask() {
+            Nave nave=escenario.getNave();
+           @Override
+           public void run() {
+               nave.setActivo(false); 
+           }
+       },10000);
     }
 
     @Override

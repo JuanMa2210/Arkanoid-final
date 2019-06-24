@@ -5,14 +5,17 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Date;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 public class BonusEnlarge extends Bonus {
-    //ESTE BONUS ALARGA LA NAVE
+
+    // ESTE BONUS ALARGA LA NAVE
     public BonusEnlarge(Escenario escenario,double x,double y){
         this.x=x;
         this.y=y;
@@ -77,7 +80,7 @@ public class BonusEnlarge extends Bonus {
     @Override
     public void update(double delta) {
         Nave nave=escenario.getNave();
-        if(nave.isActivo()==false && this.getBounds().intersects(nave.getBounds())){
+        if(nave.isActivo()==false && this.getBounds().intersects(nave.getBounds())){ 
             try {
                 /*Clip sonido = AudioSystem.getClip();
                 File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/BonusEnlarge.wav");
@@ -92,8 +95,21 @@ public class BonusEnlarge extends Bonus {
             nave.setWidth(nave.getWidth()+40);
             nave.getBounds().setRect(nave.getX(), nave.getY(), nave.getWidth(), nave.getHeight());
             nave.setActivo(true);
-        }
+            duracion();
+       }
         
+    }
+
+    public void duracion(){
+        new Timer().schedule(new TimerTask() {
+            Nave nave=escenario.getNave();
+           @Override
+           public void run() {
+               nave.setActivo(false);
+               nave.setWidth(nave.getWidth()-40);
+               nave.getBounds().setRect(nave.getX(), nave.getY(), nave.getWidth(), nave.getHeight());  
+           }
+       },10000);
     }
 
     @Override

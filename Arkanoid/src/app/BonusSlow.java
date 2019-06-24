@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 //para sonido
@@ -88,12 +90,26 @@ public class BonusSlow extends Bonus {
              } catch (Exception tipoError) {
                 System.out.println("" + tipoError);
              }
-            for (Esfera esfera : escenario.getBolas()){     //MEJORAR LOS TIEMPOS
+            for (Esfera esfera : escenario.getBolas()){    
                 esfera.setVelocidad(esfera.velocidad()-2);
             }
             nave.setActivo(true);
+            duracion();
         }
         
+    }
+
+    public void duracion(){
+        new Timer().schedule(new TimerTask() {
+            Nave nave=escenario.getNave();
+           @Override
+           public void run() {
+               nave.setActivo(false);
+               for (Esfera esfera : escenario.getBolas()){    
+                esfera.setVelocidad(esfera.velocidad()+2);
+               }
+           }
+       },10000);
     }
 
     @Override

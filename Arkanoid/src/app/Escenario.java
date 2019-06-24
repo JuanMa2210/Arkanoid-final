@@ -18,7 +18,7 @@ import javax.imageio.ImageIO;
 
 import com.entropyinteractive.Keyboard;
 
-public class Escenario implements Runnable{
+public class Escenario{
     protected BufferedImage img_fondoAzul = null;
     protected BufferedImage img_fondoVerde = null;
     protected BufferedImage img_fondoRojo = null;
@@ -43,11 +43,12 @@ public class Escenario implements Runnable{
     private boolean comenzo;
     private int cont;
     protected boolean nuevoNivel=false;
-    //protected Thread t;     //lo puse para hacer el cronometro 
-	//private int contador;
-     Date dInit = new Date();
-	 Date dAhora;
-	 SimpleDateFormat ft = new SimpleDateFormat ("mm:ss");
+    protected Date dInit = new Date();
+    protected Date dAhora;
+    protected long dateDiff;
+    protected long diffSeconds;
+    protected long diffMinutes;
+	protected SimpleDateFormat ft = new SimpleDateFormat ("mm:ss");
  
 
 
@@ -147,7 +148,6 @@ public class Escenario implements Runnable{
         // deberia volver al menu y abrirse la ventana ranking
 
         this.borrarNivel();
-        //colocar en el nivel 1
         FinJuego finJuego= new FinJuego();
         finJuego.run(1.0/60.0);
         this.cantidad_vidas=3;
@@ -199,9 +199,9 @@ public class Escenario implements Runnable{
         g.drawString(""+nivelActual, limiteEscenario+250, 550);    //ACA VA EL NIVEL
 
         dAhora= new Date( );
-    	long dateDiff = dAhora.getTime() - dInit.getTime();
-    	long diffSeconds = dateDiff / 1000 % 60;
-		long diffMinutes = dateDiff / (60 * 1000) % 60;
+        long dateDiff = dAhora.getTime() - dInit.getTime();
+    	this.diffSeconds = dateDiff / 1000 % 60;
+		this.diffMinutes = dateDiff / (60 * 1000) % 60;
 
         g.setFont(new Font("Courier", Font.BOLD, 15));
         g.setColor(Color.black);
@@ -300,10 +300,6 @@ public class Escenario implements Runnable{
         }
         if (keyboard.isKeyPressed(KeyEvent.VK_SPACE)){
             this.esfera.parada = false;
-            /*if(contador==1){ //Solo empieza una vez el cronometro
-                crono.start(); //Empezamos el cronometro
-                contador--;
-            }*/
         }
 
         if (this.esfera.parada){
@@ -381,20 +377,6 @@ public class Escenario implements Runnable{
         }
     }
     //CALCULA EL REBOTE DE LA PELOTA CON LOS BLOQUES
-
-    @Override
-    public void run() {
-        /*try {
-			for(;;) { //Que comience a contar todo el rato +1; en cada interaccion
-				if(this.segundos==59) { // Si llegamos el minuto
-					this.segundos=0; this.minutos++;} // Aadimos un minuto mas
-				if(this.minutos==59) { this.minutos=0; this.horas++;} // Si llegamos a la hora
-				this.segundos++;//Aadimos una hora mas
-				crono.sleep(1000); }
-		}
-
-		catch (InterruptedException e) { System.out.println(e.getMessage()); }*/
-	}
 }
 
     
