@@ -439,14 +439,14 @@ public class Escenario implements ActionListener {
             System.out.println("Error al cargar los niveles");
         }
     }
-    // CALCULA EL REBOTE DE LA PELOTA CON LOS BLOQUES
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand()==this.boton.getActionCommand()){
-            //ESCRIBIR RANKING
-            Ranking.escribirInfo(this.textField.getText(), this.puntaje_actual, this.nivelActual);
-            this.dialog.dispose();
+            if(this.textField.getText().isEmpty()==false){
+                Ranking.escribirInfo(this.textField.getText(), this.puntaje_actual, this.nivelActual);
+                this.dialog.dispose();
+            }
         }
     }
 }

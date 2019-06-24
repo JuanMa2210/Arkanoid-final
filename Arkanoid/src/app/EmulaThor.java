@@ -93,7 +93,7 @@ public class EmulaThor extends JFrame implements ActionListener, ItemListener {
         if (evt.getSource().equals(Salir))
             System.exit(0);
         if (evt.getSource().equals(Configuraciones)){
-            new Configuraciones();
+            new Configuraciones2();
         }
         if (evt.getSource().equals(Comenzar) && Juegos.getSelectedItem().equals("Arkanoid")) {
             System.out.println("Juego");
