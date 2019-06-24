@@ -14,23 +14,31 @@ import java.awt.Graphics2D;
 import java.awt.geom.*; //Point2d
 import java.util.LinkedList;
 
+import java.io.FileInputStream;
+import java.util.Properties;
+import java.io.FileOutputStream;
+
 public class Menu extends JGame {
     
 
     protected BufferedImage img_fondo = null;
     protected BufferedImage img_titulo = null;
-    protected BufferedImage img_nave=null;
+    protected static BufferedImage img_nave=null;
     protected Puntero nave=new Puntero();
     protected Escenario escenario=new Escenario();
     protected Ranking ranking=new Ranking();
     protected boolean isEscenario=false;
     protected boolean isRanking=false;
     protected boolean isMenu=true;
+    protected boolean musica=true;
+    protected boolean sonido=true;
+    protected ReproduceAudio reproducir;
     
    
 
     public Menu(){
         super("Arkanoid", 800, 600);
+        this.leerPropiedades();
     }
 
     @Override
@@ -84,7 +92,7 @@ public class Menu extends JGame {
             img_fondo= ImageIO.read(getClass().getResource("imagenes/fondoMenu.jpg"));
             img_titulo=ImageIO.read(getClass().getResource("imagenes/arkanoid_logo.png"));
             img_nave=ImageIO.read(getClass().getResource("imagenes/Vaus0.png"));
-            nave.setImagen(img_nave);
+            nave.setImagen(this.img_nave);
             nave.setPosicion(308, 290);
             
         }
@@ -128,6 +136,44 @@ public class Menu extends JGame {
         }
     }
     
+
+    public void leerPropiedades(){
+        Properties propiedades=new Properties();
+        try {
+            propiedades.load(new FileInputStream("jgame.properties"));
+
+            /*switch(propiedades.getProperty("sonido")){
+                case "true": this.sonidoSi.setSelected(true);break;
+                case "false": this.sonidoNo.setSelected(true);break;
+            }*/
+            switch (propiedades.getProperty("musica")){
+                case "Original": this.reproducir=new ReproduceAudio("Musica/Arkanoid.wav");break;
+                case "Techno":  this.reproducir=new ReproduceAudio("Musica/Solar.wav");break;
+                case "Rock":    this.reproducir=new ReproduceAudio("Musica/Queen.wav");break;
+                case "Clasica":    this.reproducir=new ReproduceAudio("Musica/Vivaldi.wav");break;
+            }
+            reproducir.comenzar();
+            reproducir.loop();
+            try {
+                switch (propiedades.getProperty("nave")){
+                    case "clasica":     this.img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus0.png"));nave.setImagen(this.img_nave);break;
+                    case "futurista":   this.img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus1.png"));nave.setImagen(this.img_nave);break;
+                    case "futuristaGris":   this.img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus2.png"));nave.setImagen(this.img_nave);break;
+                    case "futuristaAzul":   this.img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus3.png"));nave.setImagen(this.img_nave);break;
+                    case "futuristaRoja":   this.img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus4.png"));nave.setImagen(this.img_nave);break;
+                }
+            } catch (Exception e) {
+               System.out.println("ERROR AL CARGAR IMAGENES");
+            }
+        } catch (Exception exception) {
+            System.out.println("ERROR AL CARGAR PROPERTIES");
+        }
+    }
+
+    public static BufferedImage getImagenNave(){
+        return img_nave;
+    }
+
 
     private class Puntero{
 

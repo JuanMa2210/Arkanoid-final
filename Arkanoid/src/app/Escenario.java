@@ -240,7 +240,6 @@ public class Escenario implements ActionListener {
         g.setColor(Color.white);
         g.drawString("Tiempo de Juego: " + diffMinutes + ":" + diffSeconds, limiteEscenario + 27, 594);
 
-        // nave.setImagen(img_nave);
 
         nave.draw(g);
         for (int i = 0; i < this.bolas.size(); i++) {

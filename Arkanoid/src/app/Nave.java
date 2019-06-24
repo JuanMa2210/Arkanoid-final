@@ -22,7 +22,7 @@ public class Nave extends ObjetoGrafico implements Movible {
         this.y = 550.0;
         try {
             // aca va a ir la nave que elija el usuario, ahora solo tenemos esta
-            this.img_nave = ImageIO.read(getClass().getResource("imagenes/Vaus0.png"));
+            this.img_nave = escenario.img_nave;
             this.img_nave = img_nave.getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
         } catch (Exception e) {
             System.out.println("Error al cargar imagenes Nave");

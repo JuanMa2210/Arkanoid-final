@@ -1,166 +1,239 @@
 package app;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.FileInputStream;
+import java.util.Properties;
+import java.io.FileOutputStream;
 
-import javax.swing.JFrame;
+public class Configuraciones extends JFrame implements ItemListener, ActionListener {
 
-public class Configuraciones extends JFrame implements ActionListener, ItemListener{
-    
-    private JPanel Base;
-    private JPanel Superior;
-    private JButton Guardar;
-    private JButton Reset;
-    private JLabel Sound;
-    private JRadioButton Activado;
-    private JRadioButton Desactivado;
+    private JCheckBox FullScreen;
+    private JButton Guardar = new JButton("Guardar");
+    private JButton Reset = new JButton("Reset");
+    private JButton ConfTeclas = new JButton("Conf.Teclado");
+    private JLabel sound = new JLabel("Sonido: ");
+    private JLabel MusicLabel = new JLabel("Musica: ");
     private List Musica;
-    private JCheckBox FullScren;
-    private Icon icon;
-    private JRadioButton Nave1;
-    private JRadioButton Nave2;
-    private JRadioButton Nave3;
-    private JRadioButton Nave4;
-    private JRadioButton Nave5;
-    private String arrayNaves[]={};    
-    private String arrayMusica[]={};  
+    private ButtonGroup sonido;
+    private JRadioButton sonidoSi = new JRadioButton("Si");
+    private JRadioButton sonidoNo = new JRadioButton("No");
 
-    private boolean fullScreenSupported;
+    private ImageIcon nave1Icon = new ImageIcon("imagenes/Vaus0.png");
+    private ImageIcon nave2Icon = new ImageIcon("imagenes/Vaus1.png");
+    private ImageIcon nave3Icon = new ImageIcon("imagenes/Vaus2.png");
+    private ImageIcon nave4Icon = new ImageIcon("imagenes/Vaus3.png");
+    private ImageIcon nave5Icon = new ImageIcon("imagenes/Vaus4.png");
 
-	private final GraphicsDevice defaultScreen;
-	private DisplayMode origDisplayMode;
-	private DisplayMode newDisplayMode;
+    private ButtonGroup naves = new ButtonGroup();
+    private JRadioButton nave1 = new JRadioButton();
+    private JRadioButton nave2 = new JRadioButton();
+    private JRadioButton nave3 = new JRadioButton();
+    private JRadioButton nave4 = new JRadioButton();
+    private JRadioButton nave5 = new JRadioButton();
 
-    protected Properties appProperties = new Properties();
-    
-    public Configuraciones(){
+    private Properties propiedades=new Properties();
 
-        this.readPropertiesFile();
-		boolean bFullScreen=Boolean.valueOf(appProperties.getProperty("fullScreen","false"));
-        
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+    public Configuraciones() {
+        super("Configuracion");
 
-        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-      	this.defaultScreen = env.getDefaultScreenDevice();
-      	fullScreenSupported = defaultScreen.isFullScreenSupported();
+        FullScreen = new JCheckBox("Fullscren");
+        FullScreen.addActionListener(this);
+        sonido = new ButtonGroup();
+        sonido.add(sonidoSi);
+        sonido.add(sonidoNo);
 
-    Base = new JPanel();
-    Superior = new JPanel();
-    Sound  = new JLabel("Sonido");
-    Musica = new List();
-    FullScren =new JCheckBox("Fullscren");
-    FullScren.setSelected(false);
-    if (FullScren.isSelected());
-    FullScren.setName("Fullscren");
-    Superior.add(FullScren);
-    Musica.addItemListener(this);
-    Musica.add("Original");
-    Musica.add("Techno");
-    Musica.add("Rock");
-    Musica.add("Clasico");
-    Musica.select(0);
-    for (int i = 0; i < arrayMusica.length; i++) {
-       // cargar musica
+        Musica = new List();
+        Musica.addItemListener(this);
+        Musica.add("Original");
+        Musica.add("Techno");
+        Musica.add("Rock");
+        Musica.add("Clasica");
+        Musica.select(0);
+
+        naves.add(nave1);
+        naves.add(nave2);
+        naves.add(nave3);
+        naves.add(nave4);
+        naves.add(nave5);
+
+        nave1.setLabel("Clasica");
+        nave2.setLabel("Futurista");
+        nave3.setLabel("FuturistaGris");
+        nave4.setLabel("FuturistaAzul");
+        nave5.setLabel("FuturistaRoja");
+
+        Guardar.addActionListener(this);
+        Reset.addActionListener(this);
+        ConfTeclas.addActionListener(this);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(agregarItem(FullScreen));
+        panel.add(agregarItem(sound));
+        panel.add(agregar2Item(sonidoSi, sonidoNo));
+        panel.add(agregar2Item(MusicLabel, Musica));
+        panel.add(agregarItem(new JLabel("Nave: ")));
+
+        panel.add(agregarItem(nave1));
+        panel.add(agregarItem(nave2));
+        panel.add(agregarItem(nave3));
+        panel.add(agregarItem(nave4));
+        panel.add(agregarItem(nave5));
+
+        panel.add(agregarItem(ConfTeclas));
+        panel.add(agregar2Item(Reset, Guardar));
+
+        //LEO LOS VALORES ACTUALES Y PONGO LOS ITEM ACORDE
+        this.leerPropiedades();
+
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setAlwaysOnTop(true);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.add(panel);
+        this.setVisible(true);
+        this.pack();
     }
 
-    Guardar = new JButton("Guardar");
-    Reset = new JButton("Reset");
-    Base.add(Guardar);
-    Base.add(Reset);
-    Superior.add(Sound);
-    //////////////////////////////////////////////////////////////
-    JRadioButton Activado= new JRadioButton("Activado", true);
-        Activado.setBounds(20, 200, 109, 23);
-        Superior.add(Activado);
-        Activado.addItemListener(this);
 
-        JRadioButton Desactivado = new JRadioButton("Desactivado", false);
-        Desactivado.setBounds(40, 220, 109, 23);
-        Superior.add(Desactivado);
-        Desactivado.addItemListener(this);
-
-        ButtonGroup bgroup = new ButtonGroup();
-        bgroup.add(Activado);
-        bgroup.add(Desactivado);
-    ///////////////////////////////////////////////////////////////////////
-    Superior.add(Musica);
-    //////////////////////////////////////////////////////////////////////
-    icon= new Icon(){
-    
-        @Override
-        public void paintIcon(Component c, Graphics g, int x, int y) {
-            
+    public void leerPropiedades(){
+        try {
+            propiedades.load(new FileInputStream("jgame.properties"));
+            switch (propiedades.getProperty("fullScreen")){
+                case "true": this.FullScreen.setSelected(true);break;
+                case "false": this.FullScreen.setSelected(false);break;
+            }
+            switch(propiedades.getProperty("sonido")){
+                case "true": this.sonidoSi.setSelected(true);break;
+                case "false": this.sonidoNo.setSelected(true);break;
+            }
+            switch (propiedades.getProperty("musica")){
+                case "Original": this.Musica.select(0);break;
+                case "Techno":  this.Musica.select(1);break;
+                case "Rock":    this.Musica.select(2);break;
+                case "Clasica":    this.Musica.select(3);break;
+            }
+            switch (propiedades.getProperty("nave")){
+                case "clasica":     this.nave1.setSelected(true);break;
+                case "futurista":   this.nave2.setSelected(true);break;
+                case "futuristaGris":   this.nave3.setSelected(true);break;
+                case "futuristaAzul":   this.nave4.setSelected(true);break;
+                case "futuristaRoja":   this.nave5.setSelected(true);break;
+            }
+        } catch (Exception exception) {
+            System.out.println("ERROR AL CARGAR PROPERTIES");
         }
-    
-        @Override
-        public int getIconWidth() {
-            return 0;
-        }
-    
-        @Override
-        public int getIconHeight() {
-            return 0;
-        }
-    };
-    JRadioButton Nave1= new JRadioButton(icon,true);
-    Superior.add(Nave1);
-    JRadioButton Nave2 = new JRadioButton();
-    Superior.add(Nave2);
-    JRadioButton Nave3 = new JRadioButton();
-    Superior.add(Nave3);
-    JRadioButton Nave4 = new JRadioButton();
-    Superior.add(Nave4);
-    JRadioButton Nave5 = new JRadioButton();
-    Superior.add(Nave5);
-
-    ButtonGroup navesGroup = new ButtonGroup();
-    navesGroup.add(Nave1);
-    navesGroup.add(Nave2);
-    navesGroup.add(Nave3);
-    navesGroup.add(Nave4);
-    navesGroup.add(Nave5);
-    /////////////////////////////////////////////////////////////////////
-    JFrame config =new JFrame();
-
-    
-    config.add(Base, BorderLayout.SOUTH);
-    config.add(Superior, BorderLayout.NORTH);
-
-    config.setVisible(true);
-    config.setResizable(false);
-    config.pack();
-    config.setTitle("Configuraciones");
-    config.setLocationRelativeTo(null);
     }
 
+    private JPanel agregarItem(Component com1) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.LEADING));
+        panel.add(com1);
+        return panel;
+    }
+
+    private JPanel agregar2Item(Component com1, Component com2) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.LEADING));
+        panel.add(com1);
+        panel.add(com2);
+        return panel;
+    }
+
+    // para la musica
     @Override
     public void itemStateChanged(ItemEvent e) {
 
     }
-
+    //botones y checkbox
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(Activado))
-        System.out.println("sonido activado");
+        if(e.getActionCommand()==this.Guardar.getActionCommand()){
+            //escribir properties con las opciones actuales
+            try {
+                propiedades.load(new FileInputStream("jgame.properties"));
+                propiedades.setProperty("fullScreen", this.FullScreen.isSelected()+"");
+                System.out.println(this.FullScreen.isSelected()+"");
+                propiedades.setProperty("sonido", this.sonidoSi.isSelected()+"");
+                System.out.println(this.sonidoSi.isSelected()+"");
+                propiedades.setProperty("musica", this.Musica.getSelectedItem());
+                System.out.println(this.Musica.getSelectedItem());
+                if(nave1.isSelected()){
+                    propiedades.setProperty("nave", "clasica");
+                }else{
+                    if(nave2.isSelected()){
+                        propiedades.setProperty("nave", "futurista");
+                    }else{
+                        if(nave3.isSelected()){
+                            propiedades.setProperty("nave", "futuristaGris");
+                        }else{
+                            if(nave4.isSelected()){
+                                propiedades.setProperty("nave", "futuristaAzul");
+                            }else{
+                                if(nave5.isSelected()){
+                                    propiedades.setProperty("nave", "futuristaRoja");
+                                }
+                            }
+                        }
+                    }
+                }
+                propiedades.store(new FileOutputStream("jgame.properties"), null);
+            } catch (Exception exception) {
+                System.out.println("ERROR AL CARGAR PROPERTIES");
+            }
+        }
+        if(e.getActionCommand()==this.Reset.getActionCommand()){
+            //resetear cambios
+            propiedades.setProperty("fullScreen", "false");
+            propiedades.setProperty("sonido", "true");
+            propiedades.setProperty("musica", "Original");
+            propiedades.setProperty("nave", "clasica");
+            try {
+                propiedades.store(new FileOutputStream("jgame.properties"), null);
+                this.leerPropiedades();
+            } catch (Exception eeException) {
+                System.out.println("ERROR AL RESETEAR CONFIGURACION");
+            }
+        }
+        if(e.getActionCommand()==this.ConfTeclas.getActionCommand()){
+            //abrir configuracion teclas
+            new ConfigurarTeclas();
+
+        }
     }
 
-    protected void readPropertiesFile(){
-
-        try{
-               FileInputStream in = new FileInputStream("jgame.properties");
-               appProperties.load(in);
-               in.close();
-           }catch(IOException e){
-               System.out.println("Error en metodo  readPropertiesFile(): "+e);
-       }
 
 
-   }
+    private class ConfigurarTeclas extends JFrame{
+        private JPanel principal=new JPanel();
+        private JButton izquierda=new JButton("     ");
+        private JButton derecha=new JButton("     ");
+        private JButton soltar_bola=new JButton("     ");
+        private JButton reset=new JButton("Reset");
+        private JButton aceptar=new JButton("Aceptar");
+
+        private ConfigurarTeclas(){
+            super("Conf.Teclas");
+            principal.setLayout(new BoxLayout(principal, BoxLayout.Y_AXIS));
+            principal.add(agregar2Item(new JLabel("Izquierda: "), this.izquierda));
+            principal.add(agregar2Item(new JLabel("Derecha: "), this.derecha));
+            principal.add(agregar2Item(new JLabel("Soltar bola: "), this.soltar_bola));
+            principal.add(agregar2Item(this.reset, this.aceptar));
+
+
+            this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            this.setAlwaysOnTop(true);
+            this.setLocationRelativeTo(null);
+            this.setResizable(false);
+            this.add(principal);
+            this.setVisible(true);
+            this.pack();
+        }
+    }
+    
 }
