@@ -140,7 +140,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
                 this.activa=false;
                 try {
                     Clip sonido = AudioSystem.getClip();
-                    File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/VidaPerdida.wav");
+                    File a = new File("C:/Users/Julian/Documents/MEGAsync/Kraken/poo/Arkanoid/bin/app/Sonidos/VidaPerdida.wav");
                     sonido.open(AudioSystem.getAudioInputStream(a));
                     sonido.start();
                  } catch (Exception tipoError) {
@@ -164,10 +164,6 @@ public class Esfera extends ObjetoGrafico implements Movible {
             }
           }
             if (collision()){
-               /* if(escenario.nave.getTipoBonusActivo()==1){
-                        this.parada=true;
-                        this.setY(escenario.nave.getTOPY()-DIAMETER);
-                    }*/
                 this.cantcolisiones++;
                 if(this.cantcolisiones==5){
                 this.incrementarAceleracion(); 
@@ -193,7 +189,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
 
                   try {
                     Clip sonido = AudioSystem.getClip();
-                    File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/Rebotes.wav");
+                    File a = new File("C:/Users/Julian/Documents/MEGAsync/Kraken/poo/Arkanoid/bin/app/Sonidos/Rebotes.wav");
                     sonido.open(AudioSystem.getAudioInputStream(a));
                     sonido.start();
                  } catch (Exception tipoError) {
@@ -266,7 +262,7 @@ public class Esfera extends ObjetoGrafico implements Movible {
                 bloque.restarImpactos();
                 try {
                     Clip sonido = AudioSystem.getClip();
-                    File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/ReboteBloque.wav");
+                    File a = new File("C:/Users/Julian/Documents/MEGAsync/Kraken/poo/Arkanoid/bin/app/Sonidos/ReboteBloque.wav");
                     sonido.open(AudioSystem.getAudioInputStream(a));
                     sonido.start();
                    
