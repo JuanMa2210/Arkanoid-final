@@ -215,12 +215,8 @@ public class Escenario{
         
         nave.draw(g);
         for (int i=0;i<this.bolas.size();i++) {
-            if(this.bolas.get(i).isActiva()==false){
-                this.bolas.remove(this.bolas.get(i));             
-            }else{
-                this.bolas.get(i).setImagen(img_bola);
-                this.bolas.get(i).draw(g);
-            }
+            this.bolas.get(i).setImagen(img_bola);
+            this.bolas.get(i).draw(g);
         }
         //ACA DIBUJO TODOS LOS BLOQUES QUE TENGA CARGADO
         for(int i=0;i<this.bloques.size();i++){
@@ -307,16 +303,26 @@ public class Escenario{
             if ((keyboard.isKeyPressed(KeyEvent.VK_LEFT) || keyboard.isKeyPressed(KeyEvent.VK_RIGHT)) 
                                 && (nave.getX()>23 && nave.getX()+nave.getWidth()<img_fondoAzul.getWidth()-20)){
               this.esfera.setX(nave.getX()+(nave.getWidth()/2)-(this.esfera.getWidth()/2));
-              this.esfera.mover();
-            }
-            if (keyboard.isKeyPressed(KeyEvent.VK_RIGHT) && nave.getX()+nave.getWidth()<img_fondoAzul.getWidth()-20){
-               nave.setDX(1);
-               nave.mover();
+              //this.esfera.mover();
             }
         }
         else{
-            for (Esfera esfera : this.bolas) {
-                esfera.mover();
+            for (int i=0;i<this.bolas.size();i++) {
+                if(this.bolas.get(i).isActiva()==false){
+                    this.bolas.remove(this.bolas.get(i));
+                    if (bolas.size()==0){
+                        this.cantidad_vidas--;
+                        Esfera esferaNew =new Esfera(this);
+                        esferaNew.parada=true;
+                        bolas.add(esferaNew);
+                        this.esfera=this.bolas.get(i);
+                        this.nave.setPosition(217, 550);
+                        this.nave.update(0);
+                    }           
+                }else{
+                    if(this.esfera.parada==false)
+                        this.bolas.get(i).mover();
+                }
             }
         }
         if(this.bloques.size()==this.cant_dorados){
