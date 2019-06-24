@@ -44,7 +44,7 @@ public class BonusCatch extends Bonus {
     }
 
     @Override
-    public int aceleracion() {
+    public double aceleracion() {
         return 0;
     }
 
@@ -84,20 +84,16 @@ public class BonusCatch extends Bonus {
         if(nave.isActivo()==false){
             for (Esfera esfera : escenario.getBolas()){
                 nave.setActivo(true);
-                if(esfera.getBounds().intersects(nave.cuerpo))  //mejorar esto con el tiempo.
-                    esfera.parada=true;
+                nave.setTipoBonusActivo(1);
                 
-                    /*try {
+                    try {
                         Clip sonido = AudioSystem.getClip();
                         File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/BonusGeneral.wav");
                         sonido.open(AudioSystem.getAudioInputStream(a));
                         sonido.start();
-                       // System.out.println("Reproduciendo 10s. de sonido...");
-                       // Thread.sleep(200); // 10000 milisegundos (10 segundos)
-                       // sonido.close();
                      } catch (Exception tipoError) {
                         System.out.println("" + tipoError);
-                     }*/
+                     }
 
             }
             duracion();
@@ -112,8 +108,9 @@ public class BonusCatch extends Bonus {
            @Override
            public void run() {
                nave.setActivo(false); 
+               nave.setTipoBonusActivo(0);
            }
-       },10000);
+       },7000);
     }
 
     @Override

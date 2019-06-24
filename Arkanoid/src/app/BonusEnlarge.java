@@ -22,7 +22,6 @@ public class BonusEnlarge extends Bonus {
         this.cuerpo=new Rectangle();
         this.cuerpo.setRect(this.x,this.y,ancho,alto);
         this.escenario=escenario;
-        this.tipoBonus=3;
         //LA POSICION DEL BONUS VA A SER LA MISMA POSICION DEL BLOQUE QUE LO TENGA
         try {
             this.imagen=ImageIO.read(getClass().getResource("imagenes/Enlarge.gif"));
@@ -44,7 +43,7 @@ public class BonusEnlarge extends Bonus {
     }
 
     @Override
-    public int aceleracion() {
+    public double aceleracion() {
         return 0;
     }
 
@@ -93,12 +92,16 @@ public class BonusEnlarge extends Bonus {
              } catch (Exception tipoError) {
                 System.out.println("" + tipoError);
              }
-            if(nave.cuerpo.getMaxY()==escenario.limites.getWidth()){ 
+            if(nave.cuerpo.getMaxY()>= escenario.img_fondoAzul.getWidth() - 40){ 
                 nave.setPosition(nave.getX()-40, nave.getY());
-            }
-            nave.setWidth(nave.getWidth()+40);
+                nave.setWidth(nave.getWidth()+40);
             nave.getBounds().setRect(nave.getX(), nave.getY(), nave.getWidth(), nave.getHeight());
+            }else{
+            nave.setWidth(nave.getWidth()+40);
+            nave.getBounds().setRect(nave.getX()-20, nave.getY(), nave.getWidth(), nave.getHeight());
+            }
             nave.setActivo(true);
+            nave.setTipoBonusActivo(3);
             duracion();
        }
         
@@ -110,6 +113,7 @@ public class BonusEnlarge extends Bonus {
            @Override
            public void run() {
                nave.setActivo(false);
+               nave.setTipoBonusActivo(0);
                nave.setWidth(nave.getWidth()-40);
                nave.getBounds().setRect(nave.getX(), nave.getY(), nave.getWidth(), nave.getHeight());  
            }

@@ -9,6 +9,8 @@ import app.Escenario;
 import javax.imageio.ImageIO;
 import javax.lang.model.util.ElementScanner6;
 import java.io.File;
+import java.util.Timer;
+import java.util.TimerTask;
 //para sonido
 import java.awt.Color;
 
@@ -28,13 +30,13 @@ public class Esfera extends ObjetoGrafico implements Movible {
     private int ancho;
     private int alto;
     protected Rectangle2D estructura=new Rectangle();
-    //protected Nave nave= new Nave();
     protected boolean parada;
     private Escenario escenario;
     private boolean EsqDerNave;
     private boolean EsqIzqNave;
     private boolean activa;
-
+    private double aceleracion = 1;
+    private int cantcolisiones=0;
 
     public Esfera(Escenario escenario) {
         this.escenario = escenario;
@@ -129,8 +131,8 @@ public class Esfera extends ObjetoGrafico implements Movible {
     public void mover() {
         if(!this.parada)
         {   
-            this.setY(this.getY()+(this.getDY()*this.velocidad()));
-            this.setX(this.getX()+(this.getDX()*this.velocidad()));
+            this.setY(this.getY()+(this.getDY()*this.velocidad()*this.aceleracion()));
+            this.setX(this.getX()+(this.getDX()*this.velocidad()*this.aceleracion()));
             if(this.getX()+this.getDX() > 474- this.DIAMETER)//colision derecha escenario
                 this.setDX(-1);
             if(this.getX()+this.getDX() < 8 + this.DIAMETER)//colision izq escenario
@@ -140,13 +142,10 @@ public class Esfera extends ObjetoGrafico implements Movible {
             if((this.getY()+this.getDY() > 590 - this.DIAMETER)){//&& colion nave)//colision inf escenario
                 this.activa=false;
                 try {
-                    /*Clip sonido = AudioSystem.getClip();
+                    Clip sonido = AudioSystem.getClip();
                     File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/VidaPerdida.wav");
                     sonido.open(AudioSystem.getAudioInputStream(a));
-                    sonido.start();*/
-                   // System.out.println("Reproduciendo 10s. de sonido...");
-                   // Thread.sleep(200); // 10000 milisegundos (10 segundos)
-                   // sonido.close();
+                    sonido.start();
                  } catch (Exception tipoError) {
                     System.out.println("" + tipoError);
                  }
@@ -162,45 +161,44 @@ public class Esfera extends ObjetoGrafico implements Movible {
                     this.setPosition(241,540);
                     this.parada = true;
                     this.setVelocidad(3.0);
+                    this.cantcolisiones=0;
 
                 }
             }
           }
             if (collision()){
+                if(escenario.nave.getTipoBonusActivo()==1){
+                        this.parada=true;
+                        this.setY(escenario.nave.getY()-12);
+                    }
+                this.cantcolisiones++;
+                System.out.println(this.cantcolisiones);
+                if(this.cantcolisiones==5){
+                this.incrementarAceleracion(); 
+                this.cantcolisiones=0;
+                }
                 if(this.EsqIzqNave){
                     this.setVelocidad(this.velocidad+0.07);
                     this.setDX(-1);
-                    System.out.println("piuuum");
                     this.EsqIzqNave=false;
                 }
                 if (this.EsqDerNave) {
                     this.setVelocidad(this.velocidad+0.07);
                     this.setDX(1);
-                    System.out.println("piuuum");
                     this.EsqDerNave=false;
                 }
 			      this.dy = -1;
                   this.y = escenario.nave.getTOPY() - DIAMETER;
                   try {
-                    /*Clip sonido = AudioSystem.getClip();
+                    Clip sonido = AudioSystem.getClip();
                     File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/Rebotes.wav");
                     sonido.open(AudioSystem.getAudioInputStream(a));
-                    sonido.start();*/
-                   // System.out.println("Reproduciendo 10s. de sonido...");
-                   // Thread.sleep(200); // 10000 milisegundos (10 segundos)
-                   // sonido.close();
+                    sonido.start();
                  } catch (Exception tipoError) {
                     System.out.println("" + tipoError);
-                 }
-                  
-		}
-        }
-        /*else{
-            this.setX(this.getX()+5); 
-        }*/
-
-        
-
+                 } 
+            }
+        }   
     }
 
     private boolean collision() {
@@ -214,7 +212,6 @@ public class Esfera extends ObjetoGrafico implements Movible {
                             this.EsqDerNave = true;
                  }             
         }
-    
         return escenario.nave.getBounds().intersects(getBounds());
     }
     
@@ -231,9 +228,23 @@ public class Esfera extends ObjetoGrafico implements Movible {
         return this.velocidad;
     }
 
+    public void incrementarAceleracion(){
+        new Timer().schedule(new TimerTask() {
+           @Override
+           public void run() {
+            for (int i = 0; i < escenario.getBolas().size(); i++)
+            {
+                escenario.getBolas().get(i).aceleracion+=0.158;
+                System.out.println("aceleracion aumentada");
+            } 
+                
+           }
+       },5000);
+    }
+
     @Override
-    public int aceleracion() {
-        return 3; 
+    public double aceleracion() {
+        return this.aceleracion; 
     }
 
     public void rebote(){
@@ -252,17 +263,15 @@ public class Esfera extends ObjetoGrafico implements Movible {
                     }
                 }
                 bloque.restarImpactos();
-                /*try {
+                try {
                     Clip sonido = AudioSystem.getClip();
-                    File a = new File("//Sonidos/ReboteBloque.wav");
+                    File a = new File("C:/Users/Juan Manuel Lara/OneDrive/Documentos/GitKraken/poo/Arkanoid/bin/app/Sonidos/ReboteBloque.wav");
                     sonido.open(AudioSystem.getAudioInputStream(a));
                     sonido.start();
-                    System.out.println("Reproduciendo 10s. de sonido...");
-                    Thread.sleep(200); // 10000 milisegundos (10 segundos)
-                    sonido.close();
+                   
                 }catch (Exception tipoError) {
                     System.out.println("" + tipoError);
-                }*/
+                }
                 break;
             }
         }
